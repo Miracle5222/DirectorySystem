@@ -1,0 +1,12 @@
+.background {
+  background-image: url("../images/drbg.jpg");
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+#bg {
+  padding-left: 0;
+  padding-right: 0;
+}
