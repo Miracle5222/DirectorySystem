@@ -22,7 +22,7 @@ $_SESSION['totalRecords'] = $row2['totalRecords'];
 
 $date = date('Y-m-d', strtotime('-5 days'));
 
-$sql3 = "delete from borrow_tbl where visit_date < $date";
+$sql3 = "delete from borrow_tbl where visit_date < '$date'";
 $result3 = $conn->query($sql3);
 
 // if ($conn->query($sql3) === TRUE) {

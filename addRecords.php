@@ -193,6 +193,7 @@
             <!-- ============================================================== -->
             <!-- Container fluid  -->
             <!-- ============================================================== -->
+
             <div class="container-fluid">
                 <?php include "./connection/config.php" ?>
                 <?php
@@ -200,57 +201,66 @@
                 if (isset($_POST['submit'])) {
                     // get name from the form when submitted
 
-
-
+                    $countfiles = count($_FILES['pdf_file']['name']);
                     $date = $_POST['date'];
                     $type = $_POST['type'];
                     $department_name = $_POST['course'];
-                    $status = "available";
+                    $status = "Available";
+                    for ($i = 0; $i < $countfiles; $i++) {
+                        $filename = $_FILES['pdf_file']['name'][$i];
 
-                    if (isset($_FILES['pdf_file']['name'])) {
-                        $file_name = $_FILES['pdf_file']['name'];
-                        $file_tmp = $_FILES['pdf_file']['tmp_name'];
+                        // Upload file
 
-                        move_uploaded_file($file_tmp, "./pdf/" . $file_name);
-                        $insertquery =
-                            "INSERT INTO record_tbl(date,status,type,department_name,fileName) VALUES('$date','$status','$type','$department_name','$file_name')";
+                        if (isset($_FILES['pdf_file']['name'])) {
+
+                            $file_name = $_FILES['pdf_file']['name'];
+
+                            // $file_tmp = $_FILES['pdf_file']['tmp_name'];
+                            $strClean =  str_replace("'", "",  "$file_name[$i]");
+
+                            // move_uploaded_file($file_tmp, "./pdf/" . $file_name[0]);
+                            move_uploaded_file($_FILES['pdf_file']['tmp_name'][$i], './pdf/' . $strClean);
+                            $insertquery =
+                                "INSERT INTO record_tbl(date,status,type,department_name,fileName) VALUES('$date','$status','$type','$department_name','$strClean')";
 
 
-                        // Execute insert query
-                        $iquery = mysqli_query($conn, $insertquery);
+                            // Execute insert query
+                            $iquery = mysqli_query($conn, $insertquery);
+                        } else {
 
-                        if ($iquery) { ?>
-
-
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Success!</strong> Data submitted successfully.
+                ?> <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Failed!</strong> File must be uploaded in PDF format!
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div><?php
 
-                                } else {
 
-                                    ?>
+                                } // end if
+                            } // end if
+                            if ($iquery) { ?>
 
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>Failed!</strong> Try Again!
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php
 
-                                }
-                            } else {
-
-                        ?> <div class="alert alert-warndangering alert-dismissible fade show" role="alert">
-                            <strong>Failed!</strong> File must be uploaded in PDF format!
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong> Data submitted successfully.
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div><?php
 
-
-                            } // end if
-
-                        } // end if
+                            } else {
 
                                 ?>
+
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Failed!</strong> Try Again!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                <?php
+
+                            }
+                        }
+
+
+
+
+                ?>
                 <div class="row">
                     <div class="col-sm-5">
                         <div class="white-box">
@@ -259,7 +269,14 @@
                                 <div class="form-group mb-4">
                                     <label class="col-md-12 p-0">Record Type</label>
                                     <div class="col-md-12 border-bottom p-0">
-                                        <input type="text" placeholder="Thesis | Capstone " name="type" required class="form-control p-0 border-0" />
+
+
+                                        <select class="form-select" aria-label="Default select example" name="type">
+                                            <option selected>Select Type</option>
+                                            <option value="Thesis">Thesis</option>
+                                            <option value="Capstone">Capstone</option>
+                                            <option value="Research">Research</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-4">
@@ -271,14 +288,25 @@
                                 <div class="form-group mb-4">
                                     <label class="col-md-12 p-0">Course</label>
                                     <div class="col-md-12 border-bottom p-0">
-                                        <input type="text" placeholder="BSIT | BSCS" name="course" required class="form-control p-0 border-0" />
+
+
+                                        <select class="form-select" aria-label="Default select example" name="course">
+                                            <option selected>Select Department</option>
+                                            <option value="BEED">BEED</option>
+                                            <option value="BSIT">BSIT</option>
+                                            <option value="BSC">BSC</option>
+                                            <option value="BSED">BSED</option>
+                                            <option value="BSHRM">BSHRM</option>
+                                            <option value="MAED">MAED</option>
+                                            <option value="MAGDEV">MAGDEV</option>
+                                        </select>
                                     </div>
                                 </div>
 
                                 <div class="form-group mb-4">
 
                                     <div class="col-md-12 border-bottom p-0">
-                                        <input type="file" placeholder="123 456 7890" id="pdf" required name="pdf_file" accept=".pdf" class="form-control p-2 border-0" />
+                                        <input type="file" placeholder="123 456 7890" id="pdf" multiple required name="pdf_file[]" accept=".pdf" class="form-control p-2 border-0" />
                                     </div>
                                 </div>
                                 <div class="form-group mb-4">
@@ -290,33 +318,74 @@
                             </form>
                         </div>
                     </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="card white-box py-0">
+
+
+                            <table class="table p-2">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Departments</th>
+                                        <th scope="col">Total Records</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <?php
+                                    $sql = " SELECT COUNT(department_name) AS TotalRecords,department_name  FROM record_tbl GROUP BY department_name";
+                                    $result = $conn->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                    ?>
+                                            <tr>
+                                                <th scope="row"><?= $row['department_name'] ?></th>
+                                                <td><?= $row['TotalRecords'] ?></td>
+
+                                            </tr>
+                                    <?php
+                                        }
+                                    }
+
+                                    $conn->close();
+                                    ?>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <!-- /.col -->
                 </div>
-                <!-- ============================================================== -->
-                <!-- End PAge Content -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Right sidebar -->
-                <!-- ============================================================== -->
-                <!-- .right-sidebar -->
-                <!-- ============================================================== -->
-                <!-- End Right sidebar -->
-                <!-- ============================================================== -->
             </div>
-            <!-- ============================================================== -->
-            <!-- End Container fluid  -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <footer class="footer text-center"> 2021 © Ample Admin brought to you by <a href="https://www.wrappixel.com/">wrappixel.com</a>
-            </footer>
-            <!-- ============================================================== -->
-            <!-- End footer -->
-            <!-- ============================================================== -->
         </div>
+
         <!-- ============================================================== -->
-        <!-- End Page wrapper  -->
+        <!-- End PAge Content -->
         <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right sidebar -->
+        <!-- ============================================================== -->
+        <!-- .right-sidebar -->
+        <!-- ============================================================== -->
+        <!-- End Right sidebar -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Container fluid  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- footer -->
+    <!-- ============================================================== -->
+    <footer class="footer text-center"> 2021 © Ample Admin brought to you by <a href="https://www.wrappixel.com/">wrappixel.com</a>
+    </footer>
+    <!-- ============================================================== -->
+    <!-- End footer -->
+    <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
     <!-- End Wrapper -->

@@ -38,20 +38,64 @@ session_start();
                 </div>
             </div>
 
-            <div class="col-md-4 d-flex justify-content-center align-items-center min-vh-100 bg-light">
+            <div class="col-md-4 d-flex justify-content-center align-items-center min-vh-100 bg-dark flex-column">
+
+                <?php
 
 
-                <div style="width: 100%; height:50%; background-color:bisque;">
 
 
-                    <form class=" p-15 m-15">
+
+                if (isset($_POST['submit'])) {
+                    $username = $_POST['username'];
+                    $password = $_POST['password'];
+                    $query = "select * from staff_tbl";
+                    $results = $conn->query($query);
+                    if ($results->num_rows > 0) {
+                        while ($row = $results->fetch_assoc()) {
+                            if ($username == $row['username'] && $password == $row['password']) {
+
+                                $_SESSION['username'] = $row['username'];
+
+                                $_SESSION['staff_id'] = $row['staff_id'];
+                                $_SESSION['email'] = $row['email'];
+                                $_SESSION['profile'] = $row['profile'];
+                                header("Location: ./dashboard.php");
+                            } else {
+                                if ($username == $row['username']) {
+                                    $_SESSION['username'] = $row['username'];
+                                } else { ?>
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>Invalid Username</strong>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                <?php }
+                                if ($password == $row['password']) {
+                                    $_SESSION['password'] = $row['password'];
+                                } else { ?>
+
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>Invalid Password</strong>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                <?php
+                                }
+                            }
+                        }
+                    }
+                }
+                ?>
+                <div style="width: 100%; height:50%; " class="bg-light">
+
+
+                    <form class=" p-15 m-15" method="POST" enctype="multipart/form-data">
                         <h2 class="text-center">Welcome</h2>
 
 
                         <!-- Email input -->
                         <div class="form-outline mb-4">
                             <label class="form-label" for="form3Example3">Username</label>
-                            <input type="email" id="form3Example3" class="form-control form-control-lg" name="username" placeholder="username" />
+                            <input type="text" id="form3Example3" class="form-control form-control-lg" name="username" placeholder="username" />
 
                         </div>
 
@@ -63,7 +107,7 @@ session_start();
                         </div>
                         <div class="form-outline mb-3 ">
 
-                            <input type="submit" id="form3Example4" class="form-control form-control-lg" value="Login" />
+                            <input type="submit" id="form3Example4" class="form-control form-control-lg" name="submit" value="Login" />
 
                         </div>
 

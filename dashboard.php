@@ -1,7 +1,9 @@
 <?php
 session_start();
 ?>
-
+<?php if (!isset($_SESSION['username'])) {
+  header("Location: index.php");
+} ?>
 <?php include "./query.php" ?>
 <?php include "./connection/config.php" ?>
 <!DOCTYPE html>
@@ -16,7 +18,7 @@ session_start();
   <meta name="description" content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework" />
   <meta name="robots" content="noindex,nofollow" />
   <title>Directory System | Dashboard</title>
-  <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
+
   <!-- Favicon icon -->
   <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png" />
   <!-- Custom CSS -->
@@ -103,7 +105,7 @@ session_start();
             <!-- ============================================================== -->
             <li class="px-4">
               <a class="profile-pic " href="#">
-                <img src="plugins/images/users/varun.jpg" alt="user-img" width="36" class="img-circle" /><span class="text-white font-medium">Steave</span></a>
+                <img src="./images/<?= $_SESSION['profile'] ?>" alt="user-img" width="36" height="36" class="img-circle" /><span class="text-white font-medium"><?php echo $_SESSION['username'] ?></span></a>
             </li>
             <!-- ============================================================== -->
             <!-- User profile and search -->
@@ -170,7 +172,7 @@ session_start();
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link waves-effect waves-dark sidebar-link" href="404.html" aria-expanded="false">
+              <a class="sidebar-link waves-effect waves-dark sidebar-link" href="./process/logout.php" aria-expanded="false">
                 <i class="fa fa-sign-out-alt" style="transform:rotate(180deg);" aria-hidden="true"></i>
                 <span class="hide-menu">Logout</span>
               </a>
@@ -394,10 +396,11 @@ session_start();
         <!-- ============================================================== -->
         <!-- $sql1 = "  SELECT * FROM borrow_tbl WHERE visit_date = CURDATE() AND borrow_status = granted"; -->
 
+
         <div class="row">
           <div class="col-md-12 col-lg-12 col-sm-12">
             <div class="white-box">
-              <h3 class="box-title" id="hint">Visit Request Today</h3>
+              <h3 class="box-title" id="hint">Visit Request</h3>
               <div class="row d-flex justify-content-start align-items-center ">
                 <!-- <div class="col-md-3 ">
 
@@ -416,37 +419,35 @@ session_start();
                   $q = isset($_GET['q']);
 
 
-                  $sql = " SELECT * FROM borrow_tbl WHERE visit_date = CURDATE() AND borrow_status = 'Granted';";
+                  $sql = "SELECT * from borrow_tbl";
                   $result = $conn->query($sql);
 
                   ?>
-                  <?php
-                  if ($result->num_rows > 0) { ?>
-                    <table class="table text-nowrap">
-                      <thead>
+                  <table class="table text-nowrap">
+                    <thead>
 
-                        <tr>
-                          <th class="border-top-0">Request ID</th>
-                          <th class="border-top-0">Purpose</th>
-                          <th class="border-top-0">Student ID</th>
-                          <th class="border-top-0">Visit Date</th>
-                          <th class="border-top-0">Record ID</th>
-                          <th class="border-top-0">Borrow Status</th>
+                      <tr>
+                        <th class="border-top-0">Request ID</th>
+                        <th class="border-top-0">Purpose</th>
+                        <th class="border-top-0">Student ID</th>
+                        <th class="border-top-0">Visit Date</th>
+                        <th class="border-top-0">Record ID</th>
+                        <th class="border-top-0">Borrow Status</th>
+                        <th class="border-top-0">Request Status</th>
+                      </tr>
 
-                        </tr>
-
-                      </thead>
-                      <tbody id="sort">
-                        <?php
-
+                    </thead>
+                    <tbody id="sort">
+                      <?php
+                      if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
 
-                        ?> <tr>
+                      ?> <tr>
                             <td><?= $row['br_id'] ?></td>
                             <td><?= $row['purpose'] ?></td>
                             <td><?= $row['student_id'] ?></td>
                             <td><?= $row['visit_date'] ?></td>
-                            <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" type="button" class="btn btn-primary"><?= $row['record_id'] ?></a></td>
+                            <td><a target="_blank" href="./viewpdf.php?id=<?= $row['record_id'] ?>" type="button" class="btn btn-primary"><?= $row['record_id'] ?></a></td>
                             <td>
                               <?php if ($row['borrow_status'] == "pending") { ?>
                                 <small class="d-block text-info fs-4"><?= $row['borrow_status'] ?></small>
@@ -463,38 +464,32 @@ session_start();
                               } ?>
 
                             </td>
+                            <td>
 
+                              <a href="./process/grant.php?id=<?= $row['br_id'] ?>" class="btn btn-success text-light">Grant</a>
+                              <a href="./process/update.php?id=<?= $row['br_id'] ?>" class="btn btn-danger text-light">Decline</a>
+                            </td>
 
                           </tr>
 
-                        <?php
+                      <?php
                         }
+                      }
+
+                      ?>
 
 
 
-
-                        ?>
-
-
-
-                      </tbody>
-                    </table>
-                  <?php
-
-                  }
-                  echo "No request visit today"
-
-
-                  ?>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
           </div>
-
           <div class="row">
             <div class="col-md-12 col-lg-12 col-sm-12">
               <div class="white-box">
-                <h3 class="box-title" id="hint">Visit Request</h3>
+                <h3 class="box-title" id="hint">Scheduled Today</h3>
                 <div class="row d-flex justify-content-start align-items-center ">
                   <!-- <div class="col-md-3 ">
 
@@ -513,35 +508,37 @@ session_start();
                     $q = isset($_GET['q']);
 
 
-                    $sql = "SELECT * from borrow_tbl";
+                    $sql = " SELECT * FROM borrow_tbl WHERE visit_date = CURDATE() AND borrow_status = 'Granted';";
                     $result = $conn->query($sql);
 
                     ?>
-                    <table class="table text-nowrap">
-                      <thead>
+                    <?php
+                    if ($result->num_rows > 0) { ?>
+                      <table class="table text-nowrap">
+                        <thead>
 
-                        <tr>
-                          <th class="border-top-0">Request ID</th>
-                          <th class="border-top-0">Purpose</th>
-                          <th class="border-top-0">Student ID</th>
-                          <th class="border-top-0">Visit Date</th>
-                          <th class="border-top-0">Record ID</th>
-                          <th class="border-top-0">Borrow Status</th>
-                          <th class="border-top-0">Request Status</th>
-                        </tr>
+                          <tr>
+                            <th class="border-top-0">Request ID</th>
+                            <th class="border-top-0">Purpose</th>
+                            <th class="border-top-0">Student ID</th>
+                            <th class="border-top-0">Visit Date</th>
+                            <th class="border-top-0">Record ID</th>
+                            <th class="border-top-0">Borrow Status</th>
 
-                      </thead>
-                      <tbody id="sort">
-                        <?php
-                        if ($result->num_rows > 0) {
+                          </tr>
+
+                        </thead>
+                        <tbody id="sort">
+                          <?php
+
                           while ($row = $result->fetch_assoc()) {
 
-                        ?> <tr>
+                          ?> <tr>
                               <td><?= $row['br_id'] ?></td>
                               <td><?= $row['purpose'] ?></td>
                               <td><?= $row['student_id'] ?></td>
                               <td><?= $row['visit_date'] ?></td>
-                              <td><a target="_blank" href="./viewpdf.php?id=<?= $row['record_id'] ?>" type="button" class="btn btn-primary"><?= $row['record_id'] ?></a></td>
+                              <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" type="button" class="btn btn-primary"><?= $row['record_id'] ?></a></td>
                               <td>
                                 <?php if ($row['borrow_status'] == "pending") { ?>
                                   <small class="d-block text-info fs-4"><?= $row['borrow_status'] ?></small>
@@ -558,28 +555,34 @@ session_start();
                                 } ?>
 
                               </td>
-                              <td>
 
-                                <a href="./process/grant.php?id=<?= $row['br_id'] ?>" class="btn btn-success text-light">Grant</a>
-                                <a href="./process/delete.php?id=<?= $row['br_id'] ?>" class="btn btn-danger text-light">Decline</a>
-                              </td>
 
                             </tr>
 
-                        <?php
+                          <?php
                           }
-                        }
-
-                        ?>
 
 
 
-                      </tbody>
-                    </table>
+
+                          ?>
+
+
+
+                        </tbody>
+                      </table>
+                    <?php
+
+                    }
+                    echo "No request visit today"
+
+
+                    ?>
                   </div>
                 </div>
               </div>
             </div>
+
             <!-- <div class="row">
        
             <div class="col-md-12 col-lg-8 col-sm-12">

@@ -1,3 +1,10 @@
+<?php
+session_start();
+?>
+<?php if (!isset($_SESSION['username'])) {
+  header("Location: index.php");
+} ?>
+<?php include "./connection/config.php" ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -88,7 +95,7 @@
             <!-- ============================================================== -->
             <li>
               <a class="profile-pic" href="#">
-                <img src="plugins/images/users/varun.jpg" alt="user-img" width="36" class="img-circle" /><span class="text-white font-medium">Steave</span></a>
+                <img src="./images/<?= $_SESSION['profile'] ?>" alt="user-img" width="36" height="36" class="img-circle" /><span class="text-white font-medium">Steave</span></a>
             </li>
             <!-- ============================================================== -->
             <!-- User profile and search -->
@@ -188,70 +195,130 @@
         <!-- Start Page Content -->
         <!-- ============================================================== -->
         <!-- Row -->
+        <?php include "./connection/config.php" ?>
+        <?php
+
+        if (isset($_POST['submit'])) {
+          $id = $_SESSION['staff_id'];
+          $username = $_POST['username'];
+          $phoneNum = $_POST['phoneNum'];
+          $email = $_POST['email'];
+          $password = $_POST['password'];
+
+          if (isset($_FILES['profile']['name'])) {
+            if ($_FILES['profile']['name'] == "") {
+              $file_name = $_SESSION['profile'];
+            } else {
+              $file_name = $_FILES['profile']['name'];
+            }
+
+            $file_tmp = $_FILES['profile']['tmp_name'];
+
+            move_uploaded_file($file_tmp, "./images/" . $file_name);
+            $insertquery =
+              "update staff_tbl set username = '$username', phoneNum = '$phoneNum', email = '$email', password = '$password', profile= '$file_name' where staff_id = $id";
+
+
+
+
+            if ($iquery = mysqli_query($conn, $insertquery)) { ?>
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Success!</strong> Data Updated successfully.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <?php } else { ?>
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong> Update Failed!</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+        <?php }
+          }
+        }
+
+
+        ?>
         <div class="row">
-          <!-- Column -->
-          <div class="col-lg-4 col-xlg-3 col-md-12">
-            <div class="white-box">
-              <div class="user-bg">
-                <img width="100%" alt="user" src="plugins/images/large/img1.jpg" />
-                <div class="overlay-box">
-                  <div class="user-content">
-                    <a href="javascript:void(0)"><img src="plugins/images/users/genu.jpg" class="thumb-lg img-circle" alt="img" /></a>
-                    <h4 class="text-white mt-2">User Name</h4>
-                    <h5 class="text-white mt-2">info@myadmin.com</h5>
+          <?php
+          $sql = "SELECT * from staff_tbl where staff_id = '$_SESSION[staff_id]'";
+          $result = $conn->query($sql);
+          if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+
+              $_SESSION['profile'] = $row['profile'];
+          ?>
+              <!-- Column -->
+              <div class="col-lg-4 col-xlg-3 col-md-12">
+                <div class="white-box">
+                  <div class="user-bg">
+                    <img width="100%" alt="user" src="<?= "./images/$row[profile]" ?>" />
+                    <div class="overlay-box">
+                      <div class="user-content">
+                        <a href="javascript:void(0)"><img src="<?= "./images/$row[profile]" ?>" class="thumb-lg img-circle" alt="img" /></a>
+                        <h4 class="text-white mt-2"><?= $_SESSION['username'] ?></h4>
+                        <h5 class="text-white mt-2"><?= $_SESSION['email'] ?></h5>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <!-- Column -->
+              <!-- Column -->
+
+
+              <div class="col-lg-8 col-xlg-9 col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <form class="form-horizontal form-material" method="POST" enctype="multipart/form-data">
+                      <div class="form-group mb-4">
+                        <label class="col-md-12 p-0">Username</label>
+                        <div class="col-md-12 border-bottom p-0">
+                          <input type="text" placeholder="Staff Username" value=<?= $row['username'] ?> name="username" class="form-control p-0 border-0" required />
+                        </div>
+                      </div>
+                      <div class="form-group mb-4">
+                        <label for="example-email" class="col-md-12 p-0">Email</label>
+                        <div class="col-md-12 border-bottom p-0">
+                          <input type="email" placeholder="sample@admin.com" value=<?= $row['email'] ?> name="email" class="form-control p-0 border-0" id="example-email" required />
+                        </div>
+                      </div>
+                      <div class="form-group mb-4">
+                        <label class="col-md-12 p-0">Password</label>
+                        <div class="col-md-12 border-bottom p-0">
+                          <input type="password" value=<?= $row['password'] ?> name="password" class="form-control p-0 border-0" required />
+                        </div>
+                      </div>
+                      <div class="form-group mb-4">
+                        <label class="col-md-12 p-0">Phone No</label>
+                        <div class="col-md-12 border-bottom p-0">
+                          <input type="text" placeholder="09435668984" value=<?= $row['phoneNum'] ?> name="phoneNum" class="form-control p-0 border-0" required />
+                        </div>
+                      </div>
+                      <div class="form-group mb-4">
+                        <label class="col-md-12 p-0">Profile</label>
+                        <div class="col-md-12 border-bottom p-0">
+                          <input type="file" placeholder="123 456 7890" name="profile" class="form-control p-2 border-0" />
+
+                        </div>
+                      </div>
+
+
+                      <div class="form-group mb-4">
+                        <div class="col-md-12 border-bottom p-2">
+                          <input type="submit" placeholder="123 456 7890" name="submit" class="btn btn-success " value="Update Profile" />
+                        </div>
+
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
+          <?php
+            }
+          }
 
-            </div>
-          </div>
-          <!-- Column -->
-          <!-- Column -->
-          <div class="col-lg-8 col-xlg-9 col-md-12">
-            <div class="card">
-              <div class="card-body">
-                <form class="form-horizontal form-material">
-                  <div class="form-group mb-4">
-                    <label class="col-md-12 p-0">Username</label>
-                    <div class="col-md-12 border-bottom p-0">
-                      <input type="text" placeholder="Staff Username" class="form-control p-0 border-0" />
-                    </div>
-                  </div>
-                  <div class="form-group mb-4">
-                    <label for="example-email" class="col-md-12 p-0">Email</label>
-                    <div class="col-md-12 border-bottom p-0">
-                      <input type="email" placeholder="sample@admin.com" class="form-control p-0 border-0" name="example-email" id="example-email" />
-                    </div>
-                  </div>
-                  <div class="form-group mb-4">
-                    <label class="col-md-12 p-0">Password</label>
-                    <div class="col-md-12 border-bottom p-0">
-                      <input type="password" value="password" class="form-control p-0 border-0" />
-                    </div>
-                  </div>
-                  <div class="form-group mb-4">
-                    <label class="col-md-12 p-0">Phone No</label>
-                    <div class="col-md-12 border-bottom p-0">
-                      <input type="text" placeholder="09435668984" class="form-control p-0 border-0" />
-                    </div>
-                  </div>
-                  <div class="form-group mb-4">
-                    <label class="col-md-12 p-0">Phone No</label>
-                    <div class="col-md-12 border-bottom p-0">
-                      <input type="file" placeholder="123 456 7890" class="form-control p-2 border-0" />
-                    </div>
-                  </div>
-
-
-                  <div class="form-group mb-4">
-                    <div class="col-sm-12">
-                      <button class="btn btn-success">Update Profile</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
+          $conn->close();
+          ?>
           <!-- Column -->
         </div>
         <!-- Row -->

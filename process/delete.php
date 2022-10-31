@@ -2,14 +2,24 @@
 
 
 <?php
-$record_id = $_GET['id'];
-$sql = "update borrow_tbl set borrow_status = 'Declined' where br_id = '$record_id'";
+
+
+$id = $_GET['id'];
+$fileName = "../pdf/$_GET[file]";
+
+$sql = "DELETE FROM record_tbl WHERE record_id='$id'";
 
 if ($conn->query($sql) === TRUE) {
-    echo "Record updated successfully";
-    header("Location: ../dashboard.php");
+    echo "Record deleted successfully";
+    if (!unlink($fileName)) {
+        echo ("$fileName cannot be deleted due to an error");
+    } else {
+        echo ("$fileName has been deleted");
+    }
+    header("Location: ../records.php");
 } else {
     echo "Error deleting record: " . $conn->error;
+    header("Location: ../records.php");
 }
 
 
