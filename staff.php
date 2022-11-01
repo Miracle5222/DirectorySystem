@@ -4,6 +4,7 @@ session_start();
 <?php if (!isset($_SESSION['username'])) {
     header("Location: index.php");
 } ?>
+<?php include "./connection/config.php" ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -15,28 +16,23 @@ session_start();
     <meta name="keywords" content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Ample lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Ample admin lite dashboard bootstrap 5 dashboard template">
     <meta name="description" content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Research Office Directory System | Profile</title>
+    <title>Research Office Directory System | Staff</title>
 
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
     <!-- Custom CSS -->
     <link href="css/style.min.css" rel="stylesheet">
     <link href="./css/mystyle.css" rel="stylesheet">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
 
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> -->
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css"> -->
+
+    <!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script> -->
 
     <!-- table styles -->
     <!-- <link rel="stylesheet" type="text/css" href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"> -->
-    <link rel="stylesheet" type="text/css" href="  https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="  https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"> -->
 </head>
 
 <body>
@@ -158,12 +154,12 @@ session_start();
                         </li>
                         <li class="sidebar-item">
 
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="staff.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-users" aria-hidden="true"></i>
                                 <span class="hide-menu">Staffs</span>
                             </a>
                             <ul class="dropdown-menu mx-4">
-                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="staff.php"> <i class="fas fa-search" aria-hidden="true"></i>List of Staff</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-search" aria-hidden="true"></i>List of Staff</a></li>
                                 <?php if ($_SESSION['admin_type'] === "1") { ?>
                                     <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addStaff.php">
                                             <i class="fas fa-edit" aria-hidden="true"></i>Add Staff</a></li>
@@ -199,7 +195,7 @@ session_start();
             <div class="page-breadcrumb bg-white">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                        <h4 class="page-title">Records Page</h4>
+                        <!-- <h4 class="page-title">Staff Page</h4> -->
                     </div>
                     <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
                         <div class="d-md-flex">
@@ -210,73 +206,84 @@ session_start();
                 <!-- /.col-lg-12 -->
             </div>
             <div class="container-fluid m-6   bg-light">
+                <div class="white-box">
+                    <h3 class="box-title" id="hint">Staff List</h3>
+                    <div class="table-responsive">
 
-                <div class="row mx-2">
-                    <table id="example" class="table table-responsive" style="width:100%">
-                        <thead>
+                        <?php
+                        $q = isset($_GET['q']);
 
-                            <tr>
-                                <th class="border-top-0 th-lg">ID</th>
-                                <th class="border-top-0 th-lg">File Name</th>
-                                <th class="border-top-0 th-lg">Department</th>
-                                <th class="border-top-0 th-lg">Type</th>
-                                <th class="border-top-0 th-lg">Status</th>
-                                <th class="border-top-0 th-lg">Date</th>
-                                <th class="border-top-0 th-lg">Edit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php include "./connection/config.php" ?>
-                            <?php
-                            $sql = " SELECT * FROM record_tbl";
-                            $result = $conn->query($sql);
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    $exp = explode('.', $row['fileName']);
 
-                            ?>
+                        $sql = "SELECT * from staff_tbl";
+                        $result = $conn->query($sql);
 
-                                    <tr class="fs-4" style="height:100px;">
-                                        <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View No. <?= $row['record_id'] ?> </a></td>
-                                        <td><?= $exp[0] ?></td>
-                                        <td><?= $row['department_name'] ?></td>
-                                        <td><?= $row['type'] ?></td>
-                                        <td>
-                                            <?php if ($row['status'] == "Available") { ?> <small class="d-block text-success fs-4"><?= $row['status'] ?></small>
-                                            <?php } else { ?>
-                                                <small class="d-block text-danger fs-4"><?= $row['status'] ?></small>
+                        ?>
+                        <table class="table text-nowrap">
+                            <thead>
+
+                                <tr>
+                                    <th class="border-top-0">Staff ID</th>
+                                    <th class="border-top-0">Username</th>
+                                    <th class="border-top-0">Email</th>
+                                    <th class="border-top-0">Phone Number</th>
+                                    <th class="border-top-0">Profile</th>
+
+                                </tr>
+
+                            </thead>
+                            <tbody id="sort">
+                                <?php
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+
+                                ?> <tr>
+                                            <td><?= $row['staff_id'] ?></td>
+                                            <td><?= $row['username'] ?></td>
+                                            <td><?= $row['email'] ?></td>
+                                            <td><?= $row['phoneNum'] ?></td>
+                                            <!-- <td><a target="_blank" href="./viewpdf.php?id=<?= $row['record_id'] ?>" type="button" class="btn btn-primary"><?= $row['record_id'] ?></a></td>
+                                            <td>
+                                                <?php if ($row['borrow_status'] == "pending") { ?>
+                                                    <small class="d-block text-info fs-4"><?= $row['borrow_status'] ?></small>
+                                                <?php } elseif ($row['borrow_status'] == "Declined") {
+                                                ?>
+                                                    <small class="d-block text-danger fs-4"><?= $row['borrow_status'] ?></small>
+                                                <?php
+                                                } else { ?>
+                                                    <small class="d-block text-success fs-4"><?= $row['borrow_status'] ?></small>
+                                                <?php
+
+
+
+                                                } ?>
+
+                                            </td> -->
+                                            <td class="px-4">
+
+                                                <div> <img src="./images/<?= $row['profile'] ?>" alt="user-img" width="56" height="56" style="display:flex;justify-content:center;align-items:center;margin-top:-5px;" class="img-circle" /></div>
+                                            </td>
+                                            <?php if ($_SESSION['admin_type'] === "1") { ?>
+                                                <td>
+
+                                                    <a href="./addStaff.php?id=<?= $row['staff_id'] ?>" class="btn btn-success text-light">Edit</a>
+                                                    <a href="./process/update.php?id=<?= $row['br_id'] ?>" class="btn btn-danger text-light">Delete</a>
+                                                </td>
                                             <?php } ?>
-                                        </td>
 
-                                        <td><?= $row['date'] ?></td>
-                                        <td>
 
-                                            <div class="d-flex">
+                                        </tr>
 
-                                                <a href="./editRecords.php?id=<?= $row['record_id'] ?>" class="btn btn-info text-light mx-2">Edit</a>
-                                                <a onClick="return confirm('are you sure you want to delete this file?')" href="./process/delete.php?id=<?= $row['record_id'] ?>&file=<?= $row['fileName'] ?>" class="btn btn-danger text-light">Delete</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                            <?php
+                                <?php
+                                    }
                                 }
-                            }
 
-                            $conn->close();
-                            ?>
+                                ?>
 
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
 
@@ -286,11 +293,7 @@ session_start();
 
 
 
-        <script>
-            $(document).ready(function() {
-                $('#example').DataTable();
-            });
-        </script>
+
 
         <footer class="footer text-center"> 2022 © Research Office Directory System
         </footer>
@@ -299,7 +302,7 @@ session_start();
 
     </div>
 
-    <!-- <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script> -->
+    <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
 
     <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/app-style-switcher.js"></script>

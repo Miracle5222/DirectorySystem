@@ -1,7 +1,7 @@
 <?php
 session_start();
 ?>
-<?php if (!isset($_SESSION['username'])) {
+<?php if (!isset($_SESSION['username']) && !isset($_SESSION['admin_type'])) {
   header("Location: index.php");
 } ?>
 <?php include "./query.php" ?>
@@ -17,7 +17,7 @@ session_start();
   <meta name="keywords" content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Ample lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Ample admin lite dashboard bootstrap 5 dashboard template" />
   <meta name="description" content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework" />
   <meta name="robots" content="noindex,nofollow" />
-  <title>Directory System | Dashboard</title>
+  <title>Research Office Directory System | Dashboard</title>
 
   <!-- Favicon icon -->
   <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png" />
@@ -103,10 +103,17 @@ session_start();
             <!-- ============================================================== -->
             <!-- User profile and search -->
             <!-- ============================================================== -->
-            <li class="px-4">
-              <a class="profile-pic " href="#">
-                <img src="./images/<?= $_SESSION['profile'] ?>" alt="user-img" width="36" height="36" class="img-circle" /><span class="text-white font-medium"><?php echo $_SESSION['username'] ?></span></a>
-            </li>
+            <?php if ($_SESSION['admin_type'] === "1") { ?>
+              <li class="px-4">
+                <a class="profile-pic " href="#">
+                  <img src="./images/admin.png" alt="user-img" width="36" height="36" class="img-circle" /><span class="text-white font-medium"><?php echo $_SESSION['username'] ?></span></a>
+              </li>
+            <?php } else { ?>
+              <li class="px-4">
+                <a class="profile-pic " href="#">
+                  <img src="./images/<?= $_SESSION['profile'] ?>" alt="user-img" width="36" height="36" class="img-circle" /><span class="text-white font-medium"><?php echo $_SESSION['username'] ?></span></a>
+              </li>
+            <?php } ?>
             <!-- ============================================================== -->
             <!-- User profile and search -->
             <!-- ============================================================== -->
@@ -152,12 +159,33 @@ session_start();
 
               </ul>
             </li>
+            <?php $_SESSION['admin_type'] ?>
+
+
             <li class="sidebar-item">
+
+              <a class="sidebar-link waves-effect waves-dark sidebar-link" href="staff.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-users" aria-hidden="true"></i>
+                <span class="hide-menu">Staffs</span>
+              </a>
+              <ul class="dropdown-menu mx-4">
+                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="staff.php"> <i class="fas fa-search" aria-hidden="true"></i>List of Staff</a></li>
+
+                <?php if ($_SESSION['admin_type'] === "1") { ?>
+                  <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addStaff.php">
+                      <i class="fas fa-edit" aria-hidden="true"></i>Add Staff</a></li>
+                <?php } ?>
+              </ul>
+            </li>
+
+
+            <!-- <li class="sidebar-item">
               <a class="sidebar-link waves-effect waves-dark sidebar-link" href="fontawesome.html" aria-expanded="false">
                 <i class="fa fa-font" aria-hidden="true"></i>
                 <span class="hide-menu">Icon</span>
               </a>
             </li>
+            
 
             <li class="sidebar-item">
               <a class="sidebar-link waves-effect waves-dark sidebar-link" href="map-google.html" aria-expanded="false">
@@ -170,7 +198,7 @@ session_start();
                 <i class="fa fa-columns" aria-hidden="true"></i>
                 <span class="hide-menu">Blank Page</span>
               </a>
-            </li>
+            </li> -->
             <li class="sidebar-item">
               <a class="sidebar-link waves-effect waves-dark sidebar-link" href="./process/logout.php" aria-expanded="false">
                 <i class="fa fa-sign-out-alt" style="transform:rotate(180deg);" aria-hidden="true"></i>
@@ -196,15 +224,9 @@ session_start();
       <div class="page-breadcrumb bg-white">
         <div class="row align-items-center">
           <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-            <h4 class="page-title">Dashboard</h4>
+            <h4 class="page-title">Dashboard </h4>
           </div>
-          <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-            <div class="d-md-flex">
-              <ol class="breadcrumb ms-auto">
-                <li><a href="#" class="fw-normal">Dashboard</a></li>
-              </ol>
-            </div>
-          </div>
+
         </div>
         <!-- /.col-lg-12 -->
       </div>
@@ -239,6 +261,7 @@ session_start();
               </ul>
             </div>
           </div>
+
           <div class="col-lg-4 col-md-12">
             <div class="white-box analytics-info">
               <h3 class="box-title">Total Staff</h3>
@@ -279,7 +302,42 @@ session_start();
               </ul>
             </div>
           </div>
+
+
         </div>
+
+        <div class="row justify-content-start">
+          <div class="col-lg-4 col-md-12">
+            <div class="white-box analytics-info">
+              <h3 class="box-title">Total Borrowed</h3>
+              <ul class="list-inline two-part d-flex align-items-center mb-0">
+                <li>
+                  <div id="sparklinedash4">
+                    <canvas width="67" height="30" style="
+                          display: inline-block;
+                          width: 67px;
+                          height: 30px;
+                          vertical-align: top;
+                        "></canvas>
+                  </div>
+                </li>
+                <li class="ms-auto">
+                  <span class="counter text-info"><?= $_SESSION['TotalBorrowed'] ?></span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- Three charts -->
+        <!-- ============================================================== -->
+
+
+
+
+
+
 
         <!-- ============================================================== -->
         <!-- PRODUCTS YEARLY SALES -->
@@ -433,7 +491,10 @@ session_start();
                         <th class="border-top-0">Visit Date</th>
                         <th class="border-top-0">Record ID</th>
                         <th class="border-top-0">Borrow Status</th>
-                        <th class="border-top-0">Request Status</th>
+
+                        <?php if ($_SESSION['admin_type'] === "1") { ?>
+                          <th class="border-top-0">Request Status</th>
+                        <?php } ?>
                       </tr>
 
                     </thead>
@@ -464,11 +525,14 @@ session_start();
                               } ?>
 
                             </td>
-                            <td>
+                            <?php if ($_SESSION['admin_type'] === "1") { ?>
+                              <td>
 
-                              <a href="./process/grant.php?id=<?= $row['br_id'] ?>" class="btn btn-success text-light">Grant</a>
-                              <a href="./process/update.php?id=<?= $row['br_id'] ?>" class="btn btn-danger text-light">Decline</a>
-                            </td>
+                                <a href="./process/grant.php?id=<?= $row['br_id'] ?>" class="btn btn-success text-light">Grant</a>
+                                <a href="./process/update.php?id=<?= $row['br_id'] ?>" class="btn btn-danger text-light">Decline</a>
+                              </td>
+                            <?php } ?>
+
 
                           </tr>
 
@@ -678,7 +742,7 @@ session_start();
             <div class="col-lg-4 col-md-12 col-sm-12">
               <div class="card white-box p-0">
                 <div class="card-heading">
-                  <h3 class="box-title mb-0">List of Staff</h3>
+                  <h3 class="box-title mb-0">List of Staff </h3>
                 </div>
                 <div class="card-body">
                   <ul class="chatonline">
@@ -697,7 +761,7 @@ session_start();
                               <i class="far fa-comments text-white"></i>
                             </button>
                           </div>
-                          <a href="javascript:void(0)" class="d-flex align-items-center"><img src="plugins/images/users/varun.jpg" alt="user-img" class="img-circle" />
+                          <a href="javascript:void(0)" class="d-flex align-items-center"><img src="<?= "./images/$row[profile]" ?>" height="36" alt="user-img" class="img-circle" />
                             <div class="ms-2">
                               <span class="text-dark"><?= $row['username'] ?>
                                 <small class="d-block text-success d-block">online</small></span>
@@ -725,8 +789,8 @@ session_start();
         <!-- footer -->
         <!-- ============================================================== -->
         <footer class="footer text-center">
-          2021 © Ample Admin brought to you by
-          <a href="https://www.wrappixel.com/">wrappixel.com</a>
+          2022 © Research Office Directory System
+
         </footer>
         <script>
 

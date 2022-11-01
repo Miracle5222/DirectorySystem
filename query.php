@@ -19,6 +19,11 @@ $result2 = $conn->query($sql2);
 $row2 = $result2->fetch_assoc();
 $_SESSION['totalRecords'] = $row2['totalRecords'];
 
+$sql4 = "SELECT count(borrowed_id) as TotalBorrowed from borrowed_tbl";
+$result4 = $conn->query($sql4);
+$row4 = $result4->fetch_assoc();
+$_SESSION['TotalBorrowed'] = $row4['TotalBorrowed'];
+
 
 $date = date('Y-m-d', strtotime('-5 days'));
 

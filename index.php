@@ -35,6 +35,9 @@ session_start();
 
                 <div class="background ">
 
+                    <div class="white-box " style="height: 150px; display:flex;align-items:center;justify-content:center;">
+                        <h1 class="text-center">Research Office Directory System</h1>
+                    </div>
                 </div>
             </div>
 
@@ -60,19 +63,19 @@ session_start();
                                 $_SESSION['staff_id'] = $row['staff_id'];
                                 $_SESSION['email'] = $row['email'];
                                 $_SESSION['profile'] = $row['profile'];
+                                $_SESSION['admin_type'] = $row['admin_type'];
                                 header("Location: ./dashboard.php");
                             } else {
                                 if ($username == $row['username']) {
-                                    $_SESSION['username'] = $row['username'];
-                                } else { ?>
+
+                ?>
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                         <strong>Invalid Username</strong>
                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
                                 <?php }
                                 if ($password == $row['password']) {
-                                    $_SESSION['password'] = $row['password'];
-                                } else { ?>
+                                ?>
 
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                         <strong>Invalid Password</strong>
@@ -84,6 +87,37 @@ session_start();
                         }
                     }
                 }
+                if (isset($_POST['submit'])) {
+
+                    $query = "select * from admin_tbl";
+                    $results = $conn->query($query);
+                    if ($results->num_rows > 0) {
+                        while ($row = $results->fetch_assoc()) {
+                            if ($username == $row['username'] && $password == $row['password']) {
+
+                                $_SESSION['username'] = $row['username'];
+
+                                $_SESSION['admin_id'] = $row['admin_id'];
+                                $_SESSION['email'] = $row['email'];
+                                $_SESSION['admin_type'] = $row['admin_type'];
+
+                                header("Location: ./dashboard.php");
+                            } else {
+                                if ($username == $row['username']) {
+                                    $_SESSION['username'] = $row['username'];
+                                } else {
+                                    echo "Wrong Username ";
+                                }
+                                if ($password == $row['password']) {
+                                    $_SESSION['password'] = $row['password'];
+                                } else {
+                                    echo "Wrong Password";
+                                }
+                            }
+                        }
+                    }
+                }
+
                 ?>
                 <div style="width: 100%; height:50%; " class="bg-light">
 
