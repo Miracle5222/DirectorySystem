@@ -23,4 +23,25 @@ if ($conn->query($sql) === TRUE) {
 }
 
 
+if (isset($_GET['deleteStaff'])) {
+
+    $id = $_GET['deleteStaff'];
+    $sql = "DELETE FROM staff_tbl WHERE staff_id='$id'";
+    $fileName = "../images/$_GET[profile]";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Staff deleted successfully";
+        if (!unlink($fileName)) {
+            echo ("$fileName cannot be deleted due to an error");
+        } else {
+            echo ("$fileName has been deleted");
+        }
+        header("Location: ../staff.php");
+    } else {
+        echo "Error deleting record: " . $conn->error;
+        header("Location: ../staff.php");
+    }
+}
+
+
 ?>

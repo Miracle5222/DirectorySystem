@@ -105,12 +105,12 @@ session_start();
             <!-- ============================================================== -->
             <?php if ($_SESSION['admin_type'] === "1") { ?>
               <li class="px-4">
-                <a class="profile-pic " href="#">
+                <a class="profile-pic " href="profile.php">
                   <img src="./images/admin.png" alt="user-img" width="36" height="36" class="img-circle" /><span class="text-white font-medium"><?php echo $_SESSION['username'] ?></span></a>
               </li>
             <?php } else { ?>
               <li class="px-4">
-                <a class="profile-pic " href="#">
+                <a class="profile-pic " href="profile.php">
                   <img src="./images/<?= $_SESSION['profile'] ?>" alt="user-img" width="36" height="36" class="img-circle" /><span class="text-white font-medium"><?php echo $_SESSION['username'] ?></span></a>
               </li>
             <?php } ?>
@@ -156,6 +156,10 @@ session_start();
                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-search" aria-hidden="true"></i>View Records</a></li>
                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addRecords.php">
                     <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
+                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="borrowed.php">
+                    <i class="fas fa-eject" aria-hidden="true"></i>Add Borrowed Records</a></li>
+                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="returnRecords.php">
+                    <i class="fas fa-file" aria-hidden="true"></i>Return Records</a></li>
 
               </ul>
             </li>
@@ -174,6 +178,7 @@ session_start();
                 <?php if ($_SESSION['admin_type'] === "1") { ?>
                   <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addStaff.php">
                       <i class="fas fa-edit" aria-hidden="true"></i>Add Staff</a></li>
+
                 <?php } ?>
               </ul>
             </li>
@@ -240,6 +245,7 @@ session_start();
         <!-- ============================================================== -->
         <!-- Three charts -->
         <!-- ============================================================== -->
+
         <div class="row justify-content-center">
           <div class="col-lg-4 col-md-12">
             <div class="white-box analytics-info">
@@ -328,7 +334,9 @@ session_start();
             </div>
           </div>
 
+
         </div>
+
         <!-- ============================================================== -->
         <!-- Three charts -->
         <!-- ============================================================== -->
@@ -489,7 +497,7 @@ session_start();
                         <th class="border-top-0">Purpose</th>
                         <th class="border-top-0">Student ID</th>
                         <th class="border-top-0">Visit Date</th>
-                        <th class="border-top-0">Record ID</th>
+                        <th class="border-top-0">Record </th>
                         <th class="border-top-0">Borrow Status</th>
 
                         <?php if ($_SESSION['admin_type'] === "1") { ?>
@@ -508,7 +516,7 @@ session_start();
                             <td><?= $row['purpose'] ?></td>
                             <td><?= $row['student_id'] ?></td>
                             <td><?= $row['visit_date'] ?></td>
-                            <td><a target="_blank" href="./viewpdf.php?id=<?= $row['record_id'] ?>" type="button" class="btn btn-primary"><?= $row['record_id'] ?></a></td>
+                            <td><a target="_blank" href="./viewpdf.php?id=<?= $row['record_id'] ?>" type="button" class="btn btn-primary">View</a></td>
                             <td>
                               <?php if ($row['borrow_status'] == "pending") { ?>
                                 <small class="d-block text-info fs-4"><?= $row['borrow_status'] ?></small>
@@ -586,7 +594,7 @@ session_start();
                             <th class="border-top-0">Purpose</th>
                             <th class="border-top-0">Student ID</th>
                             <th class="border-top-0">Visit Date</th>
-                            <th class="border-top-0">Record ID</th>
+                            <th class="border-top-0">Record</th>
                             <th class="border-top-0">Borrow Status</th>
 
                           </tr>
@@ -602,7 +610,7 @@ session_start();
                               <td><?= $row['purpose'] ?></td>
                               <td><?= $row['student_id'] ?></td>
                               <td><?= $row['visit_date'] ?></td>
-                              <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" type="button" class="btn btn-primary"><?= $row['record_id'] ?></a></td>
+                              <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" type="button" target="_blank" class="btn btn-primary">View</a></td>
                               <td>
                                 <?php if ($row['borrow_status'] == "pending") { ?>
                                   <small class="d-block text-info fs-4"><?= $row['borrow_status'] ?></small>
@@ -637,8 +645,10 @@ session_start();
                       </table>
                     <?php
 
+                    } else {
+                      echo "No request visit today";
                     }
-                    echo "No request visit today"
+
 
 
                     ?>
@@ -646,8 +656,90 @@ session_start();
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-12 col-lg-12 col-sm-12">
+                <div class="white-box">
+                  <h3 class="box-title" id="hint">Borrowed Records</h3>
+                  <div class="row d-flex justify-content-start align-items-center ">
+                    <!-- <div class="col-md-3 ">
 
-            <!-- <div class="row">
+                  <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                    <option>Sort By</option>
+                    <option selected value="visit_date">Visit Date</option>
+                    <option value="br_id">Request ID</option>
+                    <option value="record_id">Record ID</option>
+                  </select>
+
+                </div> -->
+
+                    <div class="table-responsive">
+
+                      <?php
+
+
+
+                      $sql = " SELECT * FROM borrowed_tbl";
+                      $result = $conn->query($sql);
+
+                      ?>
+                      <?php
+                      if ($result->num_rows > 0) { ?>
+                        <table class="table text-nowrap">
+                          <thead>
+
+                            <tr>
+                              <th class="border-top-0">Borrowed ID</th>
+                              <th class="border-top-0">Record</th>
+                              <th class="border-top-0">Return Date</th>
+                              <th class="border-top-0">Student ID</th>
+
+
+                            </tr>
+
+                          </thead>
+                          <tbody id="sort">
+                            <?php
+
+                            while ($row = $result->fetch_assoc()) {
+
+                            ?> <tr>
+                                <td><?= $row['borrowed_id'] ?></td>
+                                <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View </a></td>
+                                <td><?= $row['return_date'] ?></td>
+                                <td><?= $row['student_id'] ?></td>
+
+
+
+
+                              </tr>
+
+                            <?php
+                            }
+
+
+
+
+                            ?>
+
+
+
+                          </tbody>
+                        </table>
+                      <?php
+
+                      } else {
+                        echo "No Borrowed Records";
+                      }
+
+
+
+                      ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="row">
        
             <div class="col-md-12 col-lg-8 col-sm-12">
               <div class="card white-box p-0">
@@ -739,92 +831,104 @@ session_start();
 
 
 
-            <div class="col-lg-4 col-md-12 col-sm-12">
-              <div class="card white-box p-0">
-                <div class="card-heading">
-                  <h3 class="box-title mb-0">List of Staff </h3>
-                </div>
-                <div class="card-body">
-                  <ul class="chatonline">
-                    <?php
-                    $sql = "SELECT * from staff_tbl";
-                    $result = $conn->query($sql);
-                    if ($result->num_rows > 0) {
-                      while ($row = $result->fetch_assoc()) {
-                    ?>
-                        <li>
-                          <div class="call-chat">
-                            <button class="btn btn-success text-white btn-circle btn" type="button">
-                              <i class="fas fa-phone"></i>
-                            </button>
-                            <button class="btn btn-info btn-circle btn" type="button">
-                              <i class="far fa-comments text-white"></i>
-                            </button>
-                          </div>
-                          <a href="javascript:void(0)" class="d-flex align-items-center"><img src="<?= "./images/$row[profile]" ?>" height="36" alt="user-img" class="img-circle" />
-                            <div class="ms-2">
-                              <span class="text-dark"><?= $row['username'] ?>
-                                <small class="d-block text-success d-block">online</small></span>
+              <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="card white-box p-0">
+                  <div class="card-heading">
+                    <h3 class="box-title mb-0">List of Staff </h3>
+                  </div>
+                  <div class="card-body">
+                    <ul class="chatonline">
+                      <?php
+                      $sql = "SELECT * from staff_tbl";
+                      $result = $conn->query($sql);
+                      if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                      ?>
+                          <li>
+                            <div class="call-chat">
+                              <button class="btn btn-success text-white btn-circle btn" type="button">
+                                <i class="fas fa-phone"></i>
+                              </button>
+                              <button class="btn btn-info btn-circle btn" type="button">
+                                <i class="far fa-comments text-white"></i>
+                              </button>
                             </div>
-                          </a>
-                        </li>
-                    <?php
+                            <a href="javascript:void(0)" class="d-flex align-items-center"><img src="<?= "./images/$row[profile]" ?>" height="36" alt="user-img" class="img-circle" />
+                              <div class="ms-2">
+                                <span class="text-dark"><?= $row['username'] ?>
+                                  <small class="d-block text-success d-block">online</small></span>
+                              </div>
+                            </a>
+                          </li>
+                      <?php
+                        }
                       }
-                    }
 
-                    $conn->close();
-                    ?>
+                      $conn->close();
+                      ?>
 
-                  </ul>
+                    </ul>
+                  </div>
                 </div>
               </div>
+              <!-- /.col -->
             </div>
-            <!-- /.col -->
           </div>
+          <!-- ============================================================== -->
+          <!-- End Container fluid  -->
+          <!-- ============================================================== -->
+          <!-- ============================================================== -->
+          <!-- footer -->
+          <!-- ============================================================== -->
+          <footer class="footer text-center">
+            2022 © Research Office Directory System
+
+          </footer>
+          <script>
+
+          </script>
+          <!-- ============================================================== -->
+          <!-- End footer -->
+          <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
-        <!-- End Container fluid  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- footer -->
-        <!-- ============================================================== -->
-        <footer class="footer text-center">
-          2022 © Research Office Directory System
-
-        </footer>
-        <script>
-
-        </script>
-        <!-- ============================================================== -->
-        <!-- End footer -->
+        <!-- End Page wrapper  -->
         <!-- ============================================================== -->
       </div>
+      <script>
+        const data = [0, 5, 6, 10, 9, 12, 4, 9]
+        const config = {
+          type: 'bar',
+          height: '50',
+          barWidth: '10',
+          resize: true,
+          barSpacing: '5',
+          barColor: '#7ace4c'
+        }
+        $('#sparklinedash5').sparkline(data, config)
+      </script>
       <!-- ============================================================== -->
-      <!-- End Page wrapper  -->
+      <!-- End Wrapper -->
       <!-- ============================================================== -->
-    </div>
-    <!-- ============================================================== -->
-    <!-- End Wrapper -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- All Jquery -->
-    <!-- ============================================================== -->
-    <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/app-style-switcher.js"></script>
-    <script src="plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
-    <!--Wave Effects -->
-    <script src="js/waves.js"></script>
-    <!--Menu sidebar -->
-    <script src="js/sidebarmenu.js"></script>
-    <!--Custom JavaScript -->
-    <script src="js/custom.js"></script>
-    <!--This page JavaScript -->
-    <!--chartis chart-->
-    <script src="plugins/bower_components/chartist/dist/chartist.min.js"></script>
-    <script src="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
-    <script src="js/pages/dashboards/dashboard1.js"></script>
+      <!-- ============================================================== -->
+      <!-- All Jquery -->
+      <!-- ============================================================== -->
+      <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
+      <!-- Bootstrap tether Core JavaScript -->
+      <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="js/app-style-switcher.js"></script>
+      <script src="plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
+      <!--Wave Effects -->
+      <script src="js/waves.js"></script>
+      <!--Menu sidebar -->
+      <script src="js/sidebarmenu.js"></script>
+      <!--Custom JavaScript -->
+      <script src="js/custom.js"></script>
+      <!--This page JavaScript -->
+      <!--chartis chart-->
+      <script src="plugins/bower_components/chartist/dist/chartist.min.js"></script>
+      <script src="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+      <script src="js/pages/dashboards/dashboard1.js"></script>
 </body>
 
 </html>

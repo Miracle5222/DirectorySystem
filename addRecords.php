@@ -15,7 +15,7 @@ session_start();
     <meta name="keywords" content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Ample lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Ample admin lite dashboard bootstrap 5 dashboard template">
     <meta name="description" content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Ample Admin Lite Template by WrapPixel</title>
+    <title>Research Office Directory System | Add Records</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
@@ -87,12 +87,12 @@ session_start();
                         <!-- ============================================================== -->
                         <?php if ($_SESSION['admin_type'] === "1") { ?>
                             <li class="px-4">
-                                <a class="profile-pic " href="#">
+                                <a class="profile-pic " href="profile.php">
                                     <img src="./images/admin.png" alt="user-img" width="36" height="36" class="img-circle" /><span class="text-white font-medium"><?php echo $_SESSION['username'] ?></span></a>
                             </li>
                         <?php } else { ?>
                             <li class="px-4">
-                                <a class="profile-pic " href="#">
+                                <a class="profile-pic " href="profile.php">
                                     <img src="./images/<?= $_SESSION['profile'] ?>" alt="user-img" width="36" height="36" class="img-circle" /><span class="text-white font-medium"><?php echo $_SESSION['username'] ?></span></a>
                             </li>
                         <?php } ?>
@@ -138,6 +138,10 @@ session_start();
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-search" aria-hidden="true"></i>View Records</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="#">
                                         <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="borrowed.php">
+                                        <i class="fas fa-eject" aria-hidden="true"></i>Add Borrowed Records</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="returnRecords.php">
+                                        <i class="fas fa-file" aria-hidden="true"></i>Return Records</a></li>
 
                             </ul>
                         </li>

@@ -88,12 +88,12 @@ session_start();
                         <!-- ============================================================== -->
                         <?php if ($_SESSION['admin_type'] === "1") { ?>
                             <li class="px-4">
-                                <a class="profile-pic " href="#">
+                                <a class="profile-pic " href="profile.php">
                                     <img src="./images/admin.png" alt="user-img" width="36" height="36" class="img-circle" /><span class="text-white font-medium"><?php echo $_SESSION['username'] ?></span></a>
                             </li>
                         <?php } else { ?>
                             <li class="px-4">
-                                <a class="profile-pic " href="#">
+                                <a class="profile-pic " href="profile.php">
                                     <img src="./images/<?= $_SESSION['profile'] ?>" alt="user-img" width="36" height="36" class="img-circle" /><span class="text-white font-medium"><?php echo $_SESSION['username'] ?></span></a>
                             </li>
                         <?php } ?>

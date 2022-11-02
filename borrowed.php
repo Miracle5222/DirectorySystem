@@ -4,7 +4,6 @@ session_start();
 <?php if (!isset($_SESSION['username'])) {
     header("Location: index.php");
 } ?>
-<?php include "./connection/config.php" ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -16,23 +15,18 @@ session_start();
     <meta name="keywords" content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Ample lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Ample admin lite dashboard bootstrap 5 dashboard template">
     <meta name="description" content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Research Office Directory System | Staff</title>
-
+    <title>Research Office Directory System | Borrowed Records</title>
+    <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
     <!-- Custom CSS -->
     <link href="css/style.min.css" rel="stylesheet">
-    <link href="./css/mystyle.css" rel="stylesheet">
-
-
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> -->
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css"> -->
-
-    <!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script> -->
-
-    <!-- table styles -->
-    <!-- <link rel="stylesheet" type="text/css" href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"> -->
-    <!-- <link rel="stylesheet" type="text/css" href="  https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"> -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 
 <body>
@@ -57,7 +51,6 @@ session_start();
                 <a href="dashboard.php" class="w-75">
                     <h4 class="m-15 text-light">Directory Management System</h4>
                 </a>
-                <a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
                 <div class="navbar-header" data-logobg="skin6">
                     <!-- ============================================================== -->
                     <!-- Logo -->
@@ -75,7 +68,6 @@ session_start();
                 <!-- End Logo -->
                 <!-- ============================================================== -->
                 <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
-
                     <ul class="navbar-nav d-none d-md-block d-lg-none">
                         <li class="nav-item">
                             <a class="nav-toggler nav-link waves-effect waves-light text-white" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
@@ -117,12 +109,9 @@ session_start();
         <!-- ============================================================== -->
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
-
         <aside class="left-sidebar" data-sidebarbg="skin6">
-
             <!-- Sidebar scroll-->
             <div class="scroll-sidebar">
-
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
@@ -147,22 +136,23 @@ session_start();
                             </a>
                             <ul class="dropdown-menu mx-4">
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-search" aria-hidden="true"></i>View Records</a></li>
-                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addRecords.php">
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="#">
                                         <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="borrowed.php">
                                         <i class="fas fa-eject" aria-hidden="true"></i>Add Borrowed Records</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="returnRecords.php">
                                         <i class="fas fa-file" aria-hidden="true"></i>Return Records</a></li>
+
                             </ul>
                         </li>
                         <li class="sidebar-item">
 
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="staff.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-users" aria-hidden="true"></i>
                                 <span class="hide-menu">Staffs</span>
                             </a>
                             <ul class="dropdown-menu mx-4">
-                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-search" aria-hidden="true"></i>List of Staff</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="staff.php"> <i class="fas fa-search" aria-hidden="true"></i>List of Staff</a></li>
                                 <?php if ($_SESSION['admin_type'] === "1") { ?>
                                     <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addStaff.php">
                                             <i class="fas fa-edit" aria-hidden="true"></i>Add Staff</a></li>
@@ -198,122 +188,195 @@ session_start();
             <div class="page-breadcrumb bg-white">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                        <!-- <h4 class="page-title">Staff Page</h4> -->
-                    </div>
-                    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-                        <div class="d-md-flex">
+                        <h4 class="page-title">Borrowed Records</h4>
 
-                        </div>
                     </div>
+
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            <div class="container-fluid m-6   bg-light">
-                <div class="white-box">
-                    <h3 class="box-title" id="hint">Staff List</h3>
-                    <div class="table-responsive">
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
 
+            <div class="container-fluid">
+                <?php include "./connection/config.php" ?>
+                <?php
+
+                if (isset($_POST['submit'])) {
+                    $record_id = $_POST['record_id'];
+                    $return_date = $_POST['return_date'];
+                    $student_id = $_POST['student_id'];
+                    $date_today = $_POST['date_today'];
+
+                    $insertquery =
+                        "INSERT INTO borrowed_tbl(record_id,return_date,student_id,date_today) VALUES(' $record_id ','$return_date','$student_id','$date_today')";
+
+
+                    // Execute insert query
+                    $iquery = mysqli_query($conn, $insertquery);
+
+                    if ($iquery) { ?>
                         <?php
-                        $q = isset($_GET['q']);
+                        $updatequery =
+                            "update record_tbl set status = 'Not Available' where record_id = '$record_id'";
+                        $iquery = mysqli_query($conn, $updatequery);
 
 
-                        $sql = "SELECT * from staff_tbl";
-                        $result = $conn->query($sql);
-
+                        // Execute insert query
+                        $iquery = mysqli_query($conn, $insertquery);
                         ?>
-                        <table class="table text-nowrap">
-                            <thead>
 
-                                <tr>
-                                    <th class="border-top-0">Staff ID</th>
-                                    <th class="border-top-0">Username</th>
-                                    <th class="border-top-0">Email</th>
-                                    <th class="border-top-0">Phone Number</th>
-                                    <th class="border-top-0">Profile</th>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong> Data Added successfully.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div><?php
 
-                                </tr>
-
-                            </thead>
-                            <tbody id="sort">
-                                <?php
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-
-                                ?> <tr>
-                                            <td><?= $row['staff_id'] ?></td>
-                                            <td><?= $row['username'] ?></td>
-                                            <td><?= $row['email'] ?></td>
-                                            <td><?= $row['phoneNum'] ?></td>
-                                            <!-- <td><a target="_blank" href="./viewpdf.php?id=<?= $row['record_id'] ?>" type="button" class="btn btn-primary"><?= $row['record_id'] ?></a></td>
-                                            <td>
-                                                <?php if ($row['borrow_status'] == "pending") { ?>
-                                                    <small class="d-block text-info fs-4"><?= $row['borrow_status'] ?></small>
-                                                <?php } elseif ($row['borrow_status'] == "Declined") {
-                                                ?>
-                                                    <small class="d-block text-danger fs-4"><?= $row['borrow_status'] ?></small>
-                                                <?php
-                                                } else { ?>
-                                                    <small class="d-block text-success fs-4"><?= $row['borrow_status'] ?></small>
-                                                <?php
-
-
-
-                                                } ?>
-
-                                            </td> -->
-                                            <td class="px-4">
-
-                                                <div> <img src="./images/<?= $row['profile'] ?>" alt="user-img" width="56" height="56" style="display:flex;justify-content:center;align-items:center;margin-top:-5px;" class="img-circle" /></div>
-                                            </td>
-                                            <?php if ($_SESSION['admin_type'] === "1") { ?>
-                                                <td>
-
-                                                    <a href="./addStaff.php?id=<?= $row['staff_id'] ?>" class="btn btn-success text-light">Edit</a>
-                                                    <a onClick="return confirm('are you sure you want to remove this staff?')" href="./process/delete.php?deleteStaff=<?= $row['staff_id'] ?>&file=<?= $row['profile'] ?>" class="btn btn-danger text-light">Delete</a>
-                                                </td>
-                                            <?php } ?>
-
-
-                                        </tr>
-
-                                <?php
-                                    }
-                                }
+                            } else {
 
                                 ?>
 
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Failed!</strong> Try Again!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                <?php
+
+                            }
+                        }
 
 
-                            </tbody>
-                        </table>
+
+
+                ?>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="white-box">
+                            <form class="form-horizontal form-material" method="POST" enctype="multipart/form-data">
+
+                                <div class="form-group mb-4">
+                                    <label class="col-md-12 p-0">Record ID</label>
+                                    <div class="col-md-12 border-bottom p-0">
+                                        <input type="number" class="form-control p-0 border-0" required name="record_id" />
+                                    </div>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <label class="col-md-12 p-0">Date Today</label>
+                                    <div class="col-md-12 border-bottom p-0">
+                                        <input type="date" class="form-control p-0 border-0" required name="date_today" />
+                                    </div>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <label class="col-md-12 p-0">Student ID</label>
+                                    <div class="col-md-12 border-bottom p-0">
+                                        <input type="text" class="form-control p-0 border-0" required name="student_id" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-4">
+                                    <label class="col-md-12 p-0">Return Date</label>
+                                    <div class="col-md-12 border-bottom p-0">
+                                        <input type="date" class="form-control p-0 border-0" required name="return_date" />
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group mb-4">
+                                    <div class="col-sm-12">
+                                        <input type="submit" name="submit" required class="btn btn-success" />
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="card white-box py-0">
+
+
+                            <table class="table p-2">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Departments</th>
+                                        <th scope="col">Total Records</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <?php
+                                    $sql = " SELECT COUNT(department_name) AS TotalRecords,department_name  FROM record_tbl GROUP BY department_name";
+                                    $result = $conn->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                    ?>
+                                            <tr>
+                                                <th scope="row"><?= $row['department_name'] ?></th>
+                                                <td><?= $row['TotalRecords'] ?></td>
+
+                                            </tr>
+                                    <?php
+                                        }
+                                    }
+
+                                    $conn->close();
+                                    ?>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <!-- /.col -->
                 </div>
-
-
             </div>
         </div>
 
-
-
-
-
-
-        <footer class="footer text-center"> 2022 © Research Office Directory System
-        </footer>
-
+        <!-- ============================================================== -->
+        <!-- End PAge Content -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right sidebar -->
+        <!-- ============================================================== -->
+        <!-- .right-sidebar -->
+        <!-- ============================================================== -->
+        <!-- End Right sidebar -->
+        <!-- ============================================================== -->
     </div>
-
+    <!-- ============================================================== -->
+    <!-- End Container fluid  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- footer -->
+    <!-- ============================================================== -->
+    <footer class="footer text-center"> 2022 © Research Office Directory System
+    </footer>
+    <!-- ============================================================== -->
+    <!-- End footer -->
+    <!-- ============================================================== -->
     </div>
-
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
     <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
-
+    <!-- Bootstrap tether Core JavaScript -->
     <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/app-style-switcher.js"></script>
-
+    <!--Wave Effects -->
     <script src="js/waves.js"></script>
-
+    <!--Menu sidebar -->
     <script src="js/sidebarmenu.js"></script>
-
+    <!--Custom JavaScript -->
     <script src="js/custom.js"></script>
 </body>
 

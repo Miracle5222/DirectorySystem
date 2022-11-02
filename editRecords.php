@@ -141,6 +141,10 @@ session_start();
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-search" aria-hidden="true"></i>View Records</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="#">
                                         <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="borrowed.php">
+                                        <i class="fas fa-eject" aria-hidden="true"></i>Add Borrowed Records</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="returnRecords.php">
+                                        <i class="fas fa-file" aria-hidden="true"></i>Return Records</a></li>
 
                             </ul>
                         </li>

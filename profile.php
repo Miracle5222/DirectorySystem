@@ -88,12 +88,12 @@ session_start();
             <!-- ============================================================== -->
             <?php if ($_SESSION['admin_type'] === "1") { ?>
               <li class="px-4">
-                <a class="profile-pic " href="#">
+                <a class="profile-pic " href="profile.php">
                   <img src="./images/admin.png" alt="user-img" width="36" height="36" class="img-circle" /><span class="text-white font-medium"><?php echo $_SESSION['username'] ?></span></a>
               </li>
             <?php } else { ?>
               <li class="px-4">
-                <a class="profile-pic " href="#">
+                <a class="profile-pic " href="profile.php">
                   <img src="./images/<?= $_SESSION['profile'] ?>" alt="user-img" width="36" height="36" class="img-circle" /><span class="text-white font-medium"><?php echo $_SESSION['username'] ?></span></a>
               </li>
             <?php } ?>
@@ -139,7 +139,10 @@ session_start();
                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-search" aria-hidden="true"></i>View Records</a></li>
                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addRecords.php">
                     <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
-
+                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="borrowed.php">
+                    <i class="fas fa-eject" aria-hidden="true"></i>Add Borrowed Records</a></li>
+                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="returnRecords.php">
+                    <i class="fas fa-file" aria-hidden="true"></i>Return Records</a></li>
               </ul>
             </li>
             <li class="sidebar-item">
@@ -212,7 +215,7 @@ session_start();
             $username = $_POST['username'];
             $phoneNum = $_POST['phoneNum'];
             $email = $_POST['email'];
-            $password = $_POST['password'];
+            $password = md5($_POST['password']);
 
             if (isset($_FILES['profile']['name'])) {
               if ($_FILES['profile']['name'] == "") {
@@ -250,7 +253,7 @@ session_start();
           $username = $_POST['username'];
           $phoneNum = $_POST['phoneNum'];
           $email = $_POST['email'];
-          $password = $_POST['password'];
+          $password = md5($_POST['password']);
 
           $insertquery =
             "update admin_tbl set username = '$username', phoneNum = '$phoneNum', email = '$email', password = '$password' where admin_id = $id";

@@ -25,6 +25,12 @@ $row4 = $result4->fetch_assoc();
 $_SESSION['TotalBorrowed'] = $row4['TotalBorrowed'];
 
 
+$sql5 = "SELECT count(student_id) as TotalStudent from student_tbl";
+$result5 = $conn->query($sql5);
+$row5 = $result5->fetch_assoc();
+$_SESSION['TotalStudent'] = $row5['TotalStudent'];
+
+
 $date = date('Y-m-d', strtotime('-5 days'));
 
 $sql3 = "delete from borrow_tbl where visit_date < '$date'";
