@@ -38,6 +38,8 @@ session_start();
       <div class="lds-pos"></div>
     </div>
   </div>
+
+
   <!-- ============================================================== -->
   <!-- Main wrapper - style you can find in pages.scss -->
   <!-- ============================================================== -->
@@ -48,7 +50,7 @@ session_start();
     <header class="topbar" data-navbarbg="skin5">
       <nav class="navbar top-navbar navbar-expand-md navbar-dark">
         <a href="dashboard.php" class="w-75">
-          <h4 class="m-15 text-light">Directory Management System</h4>
+          <h4 class="m-15 text-light">Research Office Directory System </h4>
         </a>
         <div class="navbar-header" data-logobg="skin6">
           <!-- ============================================================== -->
@@ -163,6 +165,13 @@ session_start();
 
               </ul>
             </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link waves-effect waves-dark sidebar-link" href="addStudents.php" aria-expanded="false">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <span class="hide-menu">Students</span>
+              </a>
+            </li>
+
             <?php $_SESSION['admin_type'] ?>
 
 
@@ -704,7 +713,7 @@ session_start();
 
                             ?> <tr>
                                 <td><?= $row['borrowed_id'] ?></td>
-                                <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View </a></td>
+                                <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View <?= $row['record_id'] ?> </a></td>
                                 <td><?= $row['return_date'] ?></td>
                                 <td><?= $row['student_id'] ?></td>
 
@@ -845,14 +854,14 @@ session_start();
                         while ($row = $result->fetch_assoc()) {
                       ?>
                           <li>
-                            <div class="call-chat">
+                            <!-- <div class="call-chat">
                               <button class="btn btn-success text-white btn-circle btn" type="button">
                                 <i class="fas fa-phone"></i>
                               </button>
                               <button class="btn btn-info btn-circle btn" type="button">
                                 <i class="far fa-comments text-white"></i>
                               </button>
-                            </div>
+                            </div> -->
                             <a href="javascript:void(0)" class="d-flex align-items-center"><img src="<?= "./images/$row[profile]" ?>" height="36" alt="user-img" class="img-circle" />
                               <div class="ms-2">
                                 <span class="text-dark"><?= $row['username'] ?>

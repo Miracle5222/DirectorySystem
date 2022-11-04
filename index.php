@@ -36,7 +36,7 @@ session_start();
                 <div class="background ">
 
                     <div class="white-box " style="height: 150px; display:flex;align-items:center;justify-content:center;">
-                        <h1 class="text-center">Research Office Directory System</h1>
+                        <h4 class="m-15 text-light">Research Office Directory System </h4>
                     </div>
                 </div>
             </div>
@@ -88,7 +88,9 @@ session_start();
                     }
                 }
                 if (isset($_POST['submit'])) {
-
+                    $username = $_POST['username'];
+                    $password = $_POST['password'];
+                    $password = md5($password);
                     $query = "select * from admin_tbl";
                     $results = $conn->query($query);
                     if ($results->num_rows > 0) {
@@ -99,6 +101,7 @@ session_start();
 
                                 $_SESSION['admin_id'] = $row['admin_id'];
                                 $_SESSION['email'] = $row['email'];
+                                $_SESSION['admin_type'] = $row['admin_type'];
                                 $_SESSION['admin_type'] = $row['admin_type'];
 
                                 header("Location: ./dashboard.php");

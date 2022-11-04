@@ -43,5 +43,25 @@ if (isset($_GET['deleteStaff'])) {
     }
 }
 
+if (isset($_GET['deleteStudent'])) {
+
+    $id = $_GET['deleteStudent'];
+    $sql = "DELETE FROM student_tbl WHERE student_id='$id'";
+    $fileName = "../images/$_GET[profile]";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "student deleted successfully";
+        if (!unlink($fileName)) {
+            echo ("$fileName cannot be deleted due to an error");
+        } else {
+            echo ("$fileName has been deleted");
+        }
+        header("Location: ../addStudents.php");
+    } else {
+        echo "Error deleting record: " . $conn->error;
+        header("Location: ../addStudents.php");
+    }
+}
+
 
 ?>

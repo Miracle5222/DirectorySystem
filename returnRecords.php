@@ -146,6 +146,12 @@ session_start();
                             </ul>
                         </li>
                         <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="addStudents.php" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <span class="hide-menu">Students</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
 
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="staff.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-users" aria-hidden="true"></i>

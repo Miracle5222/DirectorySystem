@@ -193,9 +193,9 @@ session_start();
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
                         <?php if (isset($_GET['id'])) { ?>
-                            <h4 class="page-title">Edit Staff </h4>
+                            <h4 class="page-title">Edit Student </h4>
                         <?php  } else { ?>
-                            <h4 class="page-title">Add Staff </h4>
+                            <h4 class="page-title">Add Student </h4>
                         <?php } ?>
                     </div>
                     <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12"></div>
@@ -218,82 +218,73 @@ session_start();
 
                 if (isset($_POST['submit'])) {
                     // $id = $_SESSION['staff_id'];
-                    $username = $_POST['username'];
-                    $phoneNum = $_POST['phoneNum'];
+                    $student_id = $_POST['student_id'];
+                    $fname = $_POST['fname'];
+                    $lname = $_POST['lname'];
+                    $number = $_POST['number'];
                     $email = $_POST['email'];
+                    $course = $_POST['course'];
                     $password = $_POST['password'];
-                    $admin_type = 2;
 
 
-                    if (isset($_FILES['profile']['name'])) {
-
-                        $file_name = $_FILES['profile']['name'];
-
-
-                        $file_tmp = $_FILES['profile']['tmp_name'];
-
-                        move_uploaded_file($file_tmp, "./images/" . $file_name);
-
-                        $addquerry = "insert into staff_tbl(username,password,email,admin_type,phoneNum,profile) values ('$username','$password','$email','$admin_type','$phoneNum ','$file_name')";
+                    $checkquerry = "select * from student_tbl where student_id = '$student_id'";
+                    $cquery = mysqli_query($conn, $checkquerry);
+                    // print_r($cquery);
+                    if (!$cquery) { ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong> Student_ID Already Exist!</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php } else { ?>
+                        <?php
+                        $addquerry = "insert into student_tbl(student_id,fname,lname,email,number,password,course) values ('$student_id','$fname','$lname','$email','$number ','$password','$course')";
                         $iquery = mysqli_query($conn, $addquerry);
 
 
                         if ($iquery) { ?>
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Success!</strong> Staff added successfully.
+                                <strong>Success!</strong> Student added successfully.
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <?php } else { ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong> Add Staff Failed!</strong>
+                                <strong> Add Student Failed!</strong>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
-                        <?php }
-                    }
-                }
-
-
-                if (isset($_POST['updateStaff'])) {
-
-                    $id = $_GET['id'];
-
-
-                    $username = $_POST['username'];
-                    $phoneNum = $_POST['phoneNum'];
-                    $email = $_POST['email'];
-                    $password = $_POST['password'];
-                    $admin_type = 2;
-
-
-                    if (isset($_FILES['profile']['name'])) {
-
-                        if ($_FILES['profile']['name'] == "") {
-                            $file_name = $_SESSION['profile'];
-                        } else {
-                            $file_name = $_FILES['profile']['name'];
+                <?php
                         }
-
-
-                        $file_tmp = $_FILES['profile']['tmp_name'];
-
-                        move_uploaded_file($file_tmp, "./images/" . $file_name);
-
-                        $updatequerry = "update staff_tbl set username = '$username', email = '$email', password = '$password', phoneNum = '$phoneNum', profile= '$file_name' where staff_id = '$id' ";
-                        $iquery = mysqli_query($conn, $updatequerry);
-
-
-                        if ($iquery) { ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>Success!</strong> Staff Updated successfully.
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php } else { ?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>Failed Update!</strong>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                <?php }
                     }
+                } ?>
+                <?php
+
+
+
+                if (isset($_POST['updateStudent'])) {
+                    $id = $_GET['id'];
+                    $student_id = $_POST['student_id'];
+                    $fname = $_POST['fname'];
+                    $lname = $_POST['lname'];
+                    $number = $_POST['number'];
+                    $email = $_POST['email'];
+                    $course = $_POST['course'];
+                    $password = $_POST['password'];
+
+
+                    $updatequerry = "update student_tbl set student_id = '$student_id', fname = '$fname', lname = '$lname', number = '$number', email= '$email' ,course = '$course',password = '$password' where student_id = '$id' ";
+                    $iquery = mysqli_query($conn, $updatequerry);
+
+
+                    if ($iquery) { ?>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Success!</strong> Student Updated successfully.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php } else { ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Failed Update!</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                <?php }
                 }
 
                 ?>
@@ -309,50 +300,133 @@ session_start();
 
 
                 if (!isset($_GET['id'])) { ?>
-                    <div class="col-lg-4 col-xlg-9 col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <form class="form-horizontal form-material" method="POST" enctype="multipart/form-data">
-                                    <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Username</label>
-                                        <div class="col-md-12 border-bottom p-0">
-                                            <input type="text" placeholder="Staff Username" name="username" class="form-control p-0 border-0" required />
+                    <div class="row">
+                        <div class="col-lg-3 col-xlg-9 col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form class="form-horizontal form-material" method="POST" enctype="multipart/form-data">
+                                        <div class="form-group mb-4">
+                                            <label class="col-md-12 p-0">Student ID</label>
+                                            <div class="col-md-12 border-bottom p-0">
+                                                <input type="text" placeholder="Student_ID" name="student_id" class="form-control p-0 border-0" required />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group mb-4">
-                                        <label for="example-email" class="col-md-12 p-0">Email</label>
-                                        <div class="col-md-12 border-bottom p-0">
-                                            <input type="email" placeholder="sample@admin.com" name="email" class="form-control p-0 border-0" id="example-email" required />
+                                        <div class="form-group mb-4">
+                                            <label class="col-md-12 p-0">First Name</label>
+                                            <div class="col-md-12 border-bottom p-0">
+                                                <input type="text" placeholder="First Name" name="fname" class="form-control p-0 border-0" required />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Password</label>
-                                        <div class="col-md-12 border-bottom p-0">
-                                            <input type="password" name="password" class="form-control p-0 border-0" required placeholder="password" />
+                                        <div class="form-group mb-4">
+                                            <label for="example-email" class="col-md-12 p-0">Last Name</label>
+                                            <div class="col-md-12 border-bottom p-0">
+                                                <input type="text" placeholder="Last Name" name="lname" class="form-control p-0 border-0" id="example-email" required />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Phone No</label>
-                                        <div class="col-md-12 border-bottom p-0">
-                                            <input type="text" placeholder="09435668984" name="phoneNum" class="form-control p-0 border-0" required />
+                                        <div class="form-group mb-4">
+                                            <label class="col-md-12 p-0">Email</label>
+                                            <div class="col-md-12 border-bottom p-0">
+                                                <input type="email" name="email" class="form-control p-0 border-0" required placeholder="sample@email.com" />
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Profile</label>
-                                        <div class="col-md-12 border-bottom p-0">
-                                            <input type="file" placeholder="123 456 7890" name="profile" class="form-control p-2 border-0" />
+                                        <div class="form-group mb-4">
+                                            <label class="col-md-12 p-0">Phone No</label>
+                                            <div class="col-md-12 border-bottom p-0">
+                                                <input type="text" placeholder="09435668984" name="number" class="form-control p-0 border-0" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <label class="col-md-12 p-0">Course</label>
+                                            <div class="col-md-12 border-bottom p-0">
+                                                <input type="text" placeholder="cource" name="course" class="form-control p-2 border-0" />
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <label class="col-md-12 p-0">Password</label>
+                                            <div class="col-md-12 border-bottom p-0">
+                                                <input type="password" placeholder="password" name="password" class="form-control p-2 border-0" />
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group mb-4">
+                                            <div class="col-md-12 border-bottom p-2">
+                                                <input type="submit" placeholder="123 456 7890" name="submit" class="btn btn-success " value="Submit" />
+                                            </div>
 
                                         </div>
-                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-9 col-xlg-9 col-md-12 ">
+                            <div class="white-box">
+                                <div class="table-responsive">
+
+                                    <?php
+                                    $q = isset($_GET['q']);
 
 
-                                    <div class="form-group mb-4">
-                                        <div class="col-md-12 border-bottom p-2">
-                                            <input type="submit" placeholder="123 456 7890" name="submit" class="btn btn-success " value="Submit" />
-                                        </div>
+                                    $sql = "SELECT * from student_tbl";
+                                    $result = $conn->query($sql);
 
-                                    </div>
-                                </form>
+                                    ?>
+                                    <table class="table text-nowrap">
+                                        <thead>
+
+                                            <tr>
+                                                <th class="border-top-0">Student ID</th>
+                                                <th class="border-top-0">First Name</th>
+                                                <th class="border-top-0">Last Name ID</th>
+                                                <th class="border-top-0">Email</th>
+                                                <th class="border-top-0">Contact Number </th>
+                                                <th class="border-top-0">Course</th>
+
+                                                <?php if ($_SESSION['admin_type'] === "1") { ?>
+                                                    <th class="border-top-0">Edit</th>
+                                                <?php } ?>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody id="sort">
+                                            <?php
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+
+                                            ?> <tr>
+                                                        <td><?= $row['student_id'] ?></td>
+                                                        <td><?= $row['fname'] ?></td>
+                                                        <td><?= $row['lname'] ?></td>
+                                                        <td><?= $row['email'] ?></td>
+                                                        <td><?= $row['number'] ?></td>
+                                                        <td><?= $row['course'] ?></td>
+
+                                                        </td>
+                                                        <?php if ($_SESSION['admin_type'] === "1") { ?>
+                                                            <td>
+
+                                                                <a href="./addStudents.php?id=<?= $row['student_id'] ?>" class="btn btn-success text-light">Edit</a>
+                                                                <a onClick="return confirm('are you sure you want to delete this student?')" href="./process/delete.php?deleteStudent=<?= $row['student_id'] ?>" class="btn btn-danger text-light">Delete</a>
+                                                            </td>
+                                                        <?php } ?>
+
+
+                                                    </tr>
+
+                                            <?php
+                                                }
+                                            }
+
+                                            ?>
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -362,12 +436,12 @@ session_start();
                 ?>
                     <?php
 
-                    $sql = "SELECT * from staff_tbl where staff_id = '$_GET[id]'";
+                    $sql = "SELECT * from student_tbl where student_id = '$_GET[id]'";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
 
-                            $_SESSION['profile'] = $row['profile'];
+
                     ?>
 
                             <div class="col-lg-4 col-xlg-9 col-md-12">
@@ -375,33 +449,46 @@ session_start();
                                     <div class="card-body">
                                         <form class="form-horizontal form-material" method="POST" enctype="multipart/form-data">
                                             <div class="form-group mb-4">
-                                                <label class="col-md-12 p-0">Username</label>
+                                                <label class="col-md-12 p-0">Student ID</label>
                                                 <div class="col-md-12 border-bottom p-0">
-                                                    <input type="text" placeholder="Staff Username" value=<?= $row['username'] ?> name="username" class="form-control p-0 border-0" required />
+                                                    <input type="text" placeholder="Student_ID" name="student_id" value="<?= $row['student_id'] ?>" class="form-control p-0 border-0" required />
                                                 </div>
                                             </div>
                                             <div class="form-group mb-4">
-                                                <label for="example-email" class="col-md-12 p-0">Email</label>
+                                                <label class="col-md-12 p-0">First Name</label>
                                                 <div class="col-md-12 border-bottom p-0">
-                                                    <input type="email" placeholder="sample@admin.com" value=<?= $row['email'] ?> name="email" class="form-control p-0 border-0" id="example-email" required />
+                                                    <input type="text" placeholder="First Name" name="fname" value="<?= $row['fname'] ?>" class="form-control p-0 border-0" required />
                                                 </div>
                                             </div>
                                             <div class="form-group mb-4">
-                                                <label class="col-md-12 p-0">Password</label>
+                                                <label for="example-email" class="col-md-12 p-0">Last Name</label>
                                                 <div class="col-md-12 border-bottom p-0">
-                                                    <input type="password" name="password" class="form-control p-0 border-0" value=<?= $row['password'] ?> required placeholder="password" />
+                                                    <input type="text" placeholder="Last Name" name="lname" value="<?= $row['lname'] ?>" class="form-control p-0 border-0" id="example-email" required />
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label class="col-md-12 p-0">Email</label>
+                                                <div class="col-md-12 border-bottom p-0">
+                                                    <input type="email" name="email" class="form-control p-0 border-0" value="<?= $row['email'] ?>" required placeholder="sample@email.com" />
                                                 </div>
                                             </div>
                                             <div class="form-group mb-4">
                                                 <label class="col-md-12 p-0">Phone No</label>
                                                 <div class="col-md-12 border-bottom p-0">
-                                                    <input type="text" placeholder="09435668984" name="phoneNum" value=<?= $row['phoneNum'] ?> class="form-control p-0 border-0" required />
+                                                    <input type="text" placeholder="09435668984" name="number" value="<?= $row['number'] ?>" class="form-control p-0 border-0" required />
                                                 </div>
                                             </div>
                                             <div class="form-group mb-4">
-                                                <label class="col-md-12 p-0">Profile</label>
+                                                <label class="col-md-12 p-0">Course</label>
                                                 <div class="col-md-12 border-bottom p-0">
-                                                    <input type="file" placeholder="123 456 7890" name="profile" class="form-control p-2 border-0" />
+                                                    <input type="text" placeholder="cource" name="course" value="<?= $row['course'] ?>" class="form-control p-2 border-0" />
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label class="col-md-12 p-0">Password</label>
+                                                <div class="col-md-12 border-bottom p-0">
+                                                    <input type="password" placeholder="password" name="password" value="<?= $row['password'] ?>" class="form-control p-2 border-0" />
 
                                                 </div>
                                             </div>
@@ -409,14 +496,16 @@ session_start();
 
                                             <div class="form-group mb-4">
                                                 <div class="col-md-12 border-bottom p-2">
-                                                    <input type="submit" placeholder="123 456 7890" name="updateStaff" class="btn btn-success " value="Update" />
+                                                    <input type="submit" name="updateStudent" class="btn btn-success " value="Update" />
                                                 </div>
 
                                             </div>
                                         </form>
                                     </div>
                                 </div>
+
                             </div>
+
                     <?php
                         }
                     }
@@ -424,6 +513,10 @@ session_start();
                     $conn->close();
                     ?>
                 <?php } ?>
+
+                <div>
+
+                </div>
                 <!-- Column -->
             </div>
             <!-- Row -->

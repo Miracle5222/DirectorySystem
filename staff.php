@@ -55,7 +55,7 @@ session_start();
         <header class="topbar" data-navbarbg="skin5">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <a href="dashboard.php" class="w-75">
-                    <h4 class="m-15 text-light">Directory Management System</h4>
+                    <h4 class="m-15 text-light">Research Office Directory System </h4>
                 </a>
                 <a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
                 <div class="navbar-header" data-logobg="skin6">
@@ -154,6 +154,12 @@ session_start();
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="returnRecords.php">
                                         <i class="fas fa-file" aria-hidden="true"></i>Return Records</a></li>
                             </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="addStudents.php" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <span class="hide-menu">Students</span>
+                            </a>
                         </li>
                         <li class="sidebar-item">
 

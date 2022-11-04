@@ -36,11 +36,18 @@ $date = date('Y-m-d', strtotime('-5 days'));
 $sql3 = "delete from borrow_tbl where visit_date < '$date'";
 $result3 = $conn->query($sql3);
 
-// if ($conn->query($sql3) === TRUE) {
-//     echo "Record deleted successfully";
-// } else {
-//     echo "Error deleting record: " . $conn->error;
-// }
+
+// $resquestdate = date('Y-m-d', strtotime('-5 days'));
+
+// $sql6 = "delete from borrow_tbl where visit_date < '$date'";
+// $result6 = $conn->query($sql6);
+
+
+
+// $sql6 = "SELECT * from student_tbl";
+// $result6 = $conn->query($sql6);
+// $row6 = $result6->fetch_assoc();
+// $_SESSION['studentId'] = $row6['student_id'];
 
 
 

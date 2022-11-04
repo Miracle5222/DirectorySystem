@@ -49,7 +49,7 @@ session_start();
         <header class="topbar" data-navbarbg="skin5">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <a href="dashboard.php" class="w-75">
-                    <h4 class="m-15 text-light">Directory Management System</h4>
+                    <h4 class="m-15 text-light">Research Office Directory System </h4>
                 </a>
                 <div class="navbar-header" data-logobg="skin6">
                     <!-- ============================================================== -->
@@ -146,6 +146,12 @@ session_start();
                             </ul>
                         </li>
                         <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="addStudents.php" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <span class="hide-menu">Students</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
 
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="staff.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-users" aria-hidden="true"></i>
@@ -212,40 +218,54 @@ session_start();
                     $student_id = $_POST['student_id'];
                     $date_today = $_POST['date_today'];
 
-                    $insertquery =
-                        "INSERT INTO borrowed_tbl(record_id,return_date,student_id,date_today) VALUES(' $record_id ','$return_date','$student_id','$date_today')";
+                    $Recordquery = " select * from borrowed_tbl where record_id = '$record_id'";
+                    $rquery = mysqli_query($conn, $Recordquery);
 
 
-                    // Execute insert query
-                    $iquery = mysqli_query($conn, $insertquery);
-
-                    if ($iquery) { ?>
-                        <?php
-                        $updatequery =
-                            "update record_tbl set status = 'Not Available' where record_id = '$record_id'";
-                        $iquery = mysqli_query($conn, $updatequery);
+                    if (!$rquery->num_rows > 0) {
+                        $insertquery =
+                            "INSERT INTO borrowed_tbl(record_id,return_date,student_id,date_today) VALUES(' $record_id ','$return_date','$student_id','$date_today')";
 
 
                         // Execute insert query
                         $iquery = mysqli_query($conn, $insertquery);
-                        ?>
+                        if ($iquery) {
 
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Success!</strong> Data Added successfully.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div><?php
 
-                            } else {
+                            if ($iquery) { ?>
+                                <?php
+                                $updatequery =
+                                    "update record_tbl set status = 'Not Available' where record_id = '$record_id'";
 
+
+
+                                // Execute insert query
+                                $uquery = mysqli_query($conn, $updatequery);
                                 ?>
 
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Success!</strong> Data Added successfully.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div><?php
+
+                                    } else {
+
+                                        ?>
+
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Failed!</strong> Try Again!
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                        <?php
+
+                                    }
+                                }
+                            } else { ?>
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Failed!</strong> Try Again!
+                            <strong>Failed!</strong> Record Not Available
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                <?php
-
-                            }
+                <?php }
                         }
 
 
@@ -256,12 +276,13 @@ session_start();
                     <div class="col-sm-5">
                         <div class="white-box">
                             <form class="form-horizontal form-material" method="POST" enctype="multipart/form-data">
-
+                                <!-- $_SESSION['studentId'] -->
                                 <div class="form-group mb-4">
                                     <label class="col-md-12 p-0">Record ID</label>
                                     <div class="col-md-12 border-bottom p-0">
                                         <input type="number" class="form-control p-0 border-0" required name="record_id" />
                                     </div>
+
                                 </div>
                                 <div class="form-group mb-4">
                                     <label class="col-md-12 p-0">Date Today</label>
@@ -274,6 +295,8 @@ session_start();
                                     <div class="col-md-12 border-bottom p-0">
                                         <input type="text" class="form-control p-0 border-0" required name="student_id" />
                                     </div>
+
+
                                 </div>
 
                                 <div class="form-group mb-4">
