@@ -136,7 +136,7 @@ session_start();
                 <span class="hide-menu">Records</span>
               </a>
               <ul class="dropdown-menu mx-4">
-                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-search" aria-hidden="true"></i>View Records</a></li>
+                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-eye" aria-hidden="true"></i>View Records</a></li>
                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addRecords.php">
                     <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="borrowed.php">
@@ -158,7 +158,7 @@ session_start();
                 <span class="hide-menu">Staffs</span>
               </a>
               <ul class="dropdown-menu mx-4">
-                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="staff.php"> <i class="fas fa-search" aria-hidden="true"></i>List of Staff</a></li>
+                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="staff.php"> <i class="fas fa-eye" aria-hidden="true"></i>List of Staff</a></li>
                 <?php if ($_SESSION['admin_type'] === "1") { ?>
                   <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addStaff.php">
                       <i class="fas fa-edit" aria-hidden="true"></i>Add Staff</a></li>
@@ -379,7 +379,7 @@ session_start();
                   <div class="col-lg-4 col-xlg-3 col-md-12">
                     <div class="white-box">
                       <div class="user-bg">
-                        <img width="100%" style="background-position:center;background-size:contain;height:100%" alt="user" src="<?= "./images/$row[profile]" ?>" />
+
                         <div class="overlay-box">
                           <div class="user-content">
                             <a href="javascript:void(0)"><img src="<?= "./images/admin.png" ?>" class="thumb-lg img-circle" alt="img" /></a>

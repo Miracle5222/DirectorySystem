@@ -6,6 +6,7 @@ session_start();
 } ?>
 <?php include "./query.php" ?>
 <?php include "./connection/config.php" ?>
+<?php include "./sendText.php" ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -155,7 +156,7 @@ session_start();
                 <span class="hide-menu">Records</span>
               </a>
               <ul class="dropdown-menu mx-4">
-                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-search" aria-hidden="true"></i>View Records</a></li>
+                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-eye" aria-hidden="true"></i>View Records</a></li>
                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addRecords.php">
                     <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="borrowed.php">
@@ -182,7 +183,7 @@ session_start();
                 <span class="hide-menu">Staffs</span>
               </a>
               <ul class="dropdown-menu mx-4">
-                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="staff.php"> <i class="fas fa-search" aria-hidden="true"></i>List of Staff</a></li>
+                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="staff.php"> <i class="fas fa-eye" aria-hidden="true"></i>List of Staff</a></li>
 
                 <?php if ($_SESSION['admin_type'] === "1") { ?>
                   <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addStaff.php">
@@ -525,7 +526,7 @@ session_start();
                             <td><?= $row['purpose'] ?></td>
                             <td><?= $row['student_id'] ?></td>
                             <td><?= $row['visit_date'] ?></td>
-                            <td><a target="_blank" href="./viewpdf.php?id=<?= $row['record_id'] ?>" type="button" class="btn btn-primary">View</a></td>
+                            <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View No. <?= $row['record_id'] ?> </a></td>
                             <td>
                               <?php if ($row['borrow_status'] == "pending") { ?>
                                 <small class="d-block text-info fs-4"><?= $row['borrow_status'] ?></small>
@@ -619,7 +620,7 @@ session_start();
                               <td><?= $row['purpose'] ?></td>
                               <td><?= $row['student_id'] ?></td>
                               <td><?= $row['visit_date'] ?></td>
-                              <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" type="button" target="_blank" class="btn btn-primary">View</a></td>
+                              <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View No. <?= $row['record_id'] ?> </a></td>
                               <td>
                                 <?php if ($row['borrow_status'] == "pending") { ?>
                                   <small class="d-block text-info fs-4"><?= $row['borrow_status'] ?></small>

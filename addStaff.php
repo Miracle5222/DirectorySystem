@@ -136,7 +136,7 @@ session_start();
                                 <span class="hide-menu">Records</span>
                             </a>
                             <ul class="dropdown-menu mx-4">
-                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-search" aria-hidden="true"></i>View Records</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-eye" aria-hidden="true"></i>View Records</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addRecords.php">
                                         <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
 
@@ -159,7 +159,7 @@ session_start();
                                 <span class="hide-menu">Staffs</span>
                             </a>
                             <ul class="dropdown-menu mx-4">
-                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="staff.php"> <i class="fas fa-search" aria-hidden="true"></i>List of Staff</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="staff.php"> <i class="fas fa-eye" aria-hidden="true"></i>List of Staff</a></li>
                                 <?php if ($_SESSION['admin_type'] === "1") { ?>
                                     <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addStaff.php">
                                             <i class="fas fa-edit" aria-hidden="true"></i>Add Staff</a></li>

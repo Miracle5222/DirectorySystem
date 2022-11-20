@@ -138,7 +138,7 @@ session_start();
                                 <span class="hide-menu">Records</span>
                             </a>
                             <ul class="dropdown-menu mx-4">
-                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-search" aria-hidden="true"></i>View Records</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-eye" aria-hidden="true"></i>View Records</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="#">
                                         <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="borrowed.php">
@@ -161,7 +161,7 @@ session_start();
                                 <span class="hide-menu">Staffs</span>
                             </a>
                             <ul class="dropdown-menu mx-4">
-                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="staff.php"> <i class="fas fa-search" aria-hidden="true"></i>List of Staff</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="staff.php"> <i class="fas fa-eye" aria-hidden="true"></i>List of Staff</a></li>
                                 <?php if ($_SESSION['admin_type'] === "1") { ?>
                                     <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addStaff.php">
                                             <i class="fas fa-edit" aria-hidden="true"></i>Add Staff</a></li>
@@ -218,7 +218,7 @@ session_start();
                     $id = $_GET['id'];
 
                     $type = $_POST['type'];
-                    $fileName = "$_POST[fileName].pdf";
+                    $fileName = trim($_POST['fileName']) . ".pdf";
                     $department_name = $_POST['course'];
                     $status = $_POST['status'];
 
@@ -277,7 +277,7 @@ session_start();
                                         <div class="form-group mb-4">
                                             <label class="col-md-12 p-0">Status</label>
                                             <select class="form-select" aria-label="Default select example" name="status">
-                                                <option value=<?= $row['status']  ?> selected><?= $row['status']  ?></option>
+
                                                 <option value="Available">Available</option>
                                                 <option value="Not Available">Not Available</option>
 

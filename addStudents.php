@@ -136,7 +136,7 @@ session_start();
                                 <span class="hide-menu">Records</span>
                             </a>
                             <ul class="dropdown-menu mx-4">
-                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-search" aria-hidden="true"></i>View Records</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-eye" aria-hidden="true"></i>View Records</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addRecords.php">
                                         <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
 
@@ -159,7 +159,7 @@ session_start();
                                 <span class="hide-menu">Staffs</span>
                             </a>
                             <ul class="dropdown-menu mx-4">
-                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="staff.php"> <i class="fas fa-search" aria-hidden="true"></i>List of Staff</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="staff.php"> <i class="fas fa-eye" aria-hidden="true"></i>List of Staff</a></li>
                                 <?php if ($_SESSION['admin_type'] === "1") { ?>
                                     <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addStaff.php">
                                             <i class="fas fa-edit" aria-hidden="true"></i>Add Staff</a></li>
@@ -264,13 +264,13 @@ session_start();
                     $student_id = $_POST['student_id'];
                     $fname = $_POST['fname'];
                     $lname = $_POST['lname'];
-                    $number = $_POST['number'];
+                    $updateNumber = $_POST['number'];
                     $email = $_POST['email'];
                     $course = $_POST['course'];
                     $password = $_POST['password'];
 
 
-                    $updatequerry = "update student_tbl set student_id = '$student_id', fname = '$fname', lname = '$lname', number = '$number', email= '$email' ,course = '$course',password = '$password' where student_id = '$id' ";
+                    $updatequerry = "update student_tbl set student_id = '$student_id', fname = '$fname', lname = '$lname', number = '$updateNumber', email= '$email' ,course = '$course',password = '$password' where student_id = '$id' ";
                     $iquery = mysqli_query($conn, $updatequerry);
 
 
@@ -332,7 +332,7 @@ session_start();
                                         <div class="form-group mb-4">
                                             <label class="col-md-12 p-0">Phone No</label>
                                             <div class="col-md-12 border-bottom p-0">
-                                                <input type="text" placeholder="09435668984" name="number" class="form-control p-0 border-0" required />
+                                                <input type="text" placeholder="+639661337494" name="number" class="form-control p-0 border-0" required />
                                             </div>
                                         </div>
                                         <div class="form-group mb-4">
@@ -353,7 +353,7 @@ session_start();
 
                                         <div class="form-group mb-4">
                                             <div class="col-md-12 border-bottom p-2">
-                                                <input type="submit" placeholder="123 456 7890" name="submit" class="btn btn-success " value="Submit" />
+                                                <input type="submit" name="submit" class="btn btn-success " value="Submit" />
                                             </div>
 
                                         </div>
@@ -408,7 +408,7 @@ session_start();
                                                         <?php if ($_SESSION['admin_type'] === "1") { ?>
                                                             <td>
 
-                                                                <a href="./addStudents.php?id=<?= $row['student_id'] ?>" class="btn btn-success text-light">Edit</a>
+                                                                <a href="./addStudents.php?id=<?= $row['student_id'] ?>" name="updateStudent" class="btn btn-success text-light">Edit</a>
                                                                 <a onClick="return confirm('are you sure you want to delete this student?')" href="./process/delete.php?deleteStudent=<?= $row['student_id'] ?>" class="btn btn-danger text-light">Delete</a>
                                                             </td>
                                                         <?php } ?>
@@ -475,7 +475,7 @@ session_start();
                                             <div class="form-group mb-4">
                                                 <label class="col-md-12 p-0">Phone No</label>
                                                 <div class="col-md-12 border-bottom p-0">
-                                                    <input type="text" placeholder="09435668984" name="number" value="<?= $row['number'] ?>" class="form-control p-0 border-0" required />
+                                                    <input type="text" name="number" value="<?= $row['number'] ?>" placeholder="+639661337494" class="form-control p-0 border-0" required />
                                                 </div>
                                             </div>
                                             <div class="form-group mb-4">

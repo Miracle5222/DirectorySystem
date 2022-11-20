@@ -2,7 +2,7 @@
 session_start();
 ?>
 
-<?php include "./query.php" ?>
+
 <?php include "./connection/config.php" ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
@@ -36,7 +36,7 @@ session_start();
                 <div class="background ">
 
                     <div class="white-box " style="height: 150px; display:flex;align-items:center;justify-content:center;">
-                        <h4 class="m-15 text-light">Research Office Directory System </h4>
+                        <h1 class="m-15 text-dark">Research Office Directory System </h1>
                     </div>
                 </div>
             </div>
@@ -66,22 +66,17 @@ session_start();
                                 $_SESSION['admin_type'] = $row['admin_type'];
                                 header("Location: ./dashboard.php");
                             } else {
-                                if ($username == $row['username']) {
-
-                ?>
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <strong>Invalid Username</strong>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                <?php }
-                                if ($password == $row['password']) {
-                                ?>
-
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <strong>Invalid Password</strong>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                <?php
+                                if ($username != $row['username']) {
+                                    $GLOBALS['invalidUsername'] = ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Invalid Username</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
+                                }
+                                if ($password != $row['password']) {
+                                    $GLOBALS['invalidPassword'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Invalid Password</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
                                 }
                             }
                         }
@@ -108,13 +103,21 @@ session_start();
                             } else {
                                 if ($username == $row['username']) {
                                     $_SESSION['username'] = $row['username'];
+                                    $GLOBALS['invalidUsername'] = '';
                                 } else {
-                                    echo "Wrong Username ";
+                                    $GLOBALS['invalidUsername'] = ' <div class="alert alert-danger my-2 alert-dismissible fade show" role="alert">
+                                    <strong>Invalid Username</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
                                 }
                                 if ($password == $row['password']) {
                                     $_SESSION['password'] = $row['password'];
+                                    $GLOBALS['invalidUsername'] = '';
                                 } else {
-                                    echo "Wrong Password";
+                                    $GLOBALS['invalidPassword'] = '<div class="alert alert-danger my-2 alert-dismissible fade show" role="alert">
+                                    <strong>Invalid Password</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
                                 }
                             }
                         }
@@ -122,7 +125,7 @@ session_start();
                 }
 
                 ?>
-                <div style="width: 100%; height:50%; " class="bg-light">
+                <div style="width: 100%; height:auto; " class="bg-light">
 
 
                     <form class=" p-15 m-15" method="POST" enctype="multipart/form-data">
@@ -133,14 +136,18 @@ session_start();
                         <div class="form-outline mb-4">
                             <label class="form-label" for="form3Example3">Username</label>
                             <input type="text" id="form3Example3" class="form-control form-control-lg" name="username" placeholder="username" />
-
+                            <?php if (isset($GLOBALS['invalidPassword'])) {
+                                echo  $GLOBALS['invalidUsername'];
+                            } ?>
                         </div>
 
                         <!-- Password input -->
                         <div class="form-outline mb-3">
                             <label class="form-label" for="form3Example4">Password</label>
                             <input type="password" id="form3Example4" class="form-control form-control-lg" name="password" placeholder="password" />
-
+                            <?php if (isset($GLOBALS['invalidPassword'])) {
+                                echo  $GLOBALS['invalidPassword'];
+                            } ?>
                         </div>
                         <div class="form-outline mb-3 ">
 
