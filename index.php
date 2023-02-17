@@ -85,7 +85,7 @@ session_start();
                 if (isset($_POST['submit'])) {
                     $username = $_POST['username'];
                     $password = $_POST['password'];
-                    $password = md5($password);
+                    // $password = md5($password);
                     $query = "select * from admin_tbl";
                     $results = $conn->query($query);
                     if ($results->num_rows > 0) {
@@ -134,24 +134,24 @@ session_start();
 
                         <!-- Email input -->
                         <div class="form-outline mb-4">
-                            <label class="form-label" for="form3Example3">Username</label>
-                            <input type="text" id="form3Example3" class="form-control form-control-lg" name="username" placeholder="username" />
+                            <label class="form-label" for="username">Username</label>
+                            <input type="text" id="username" class="form-control form-control-lg" name="username" placeholder="username" />
                             <?php if (isset($GLOBALS['invalidPassword'])) {
                                 echo  $GLOBALS['invalidUsername'];
                             } ?>
                         </div>
 
                         <!-- Password input -->
-                        <div class="form-outline mb-3">
-                            <label class="form-label" for="form3Example4">Password</label>
-                            <input type="password" id="form3Example4" class="form-control form-control-lg" name="password" placeholder="password" />
+                        <div class="form-outline mb-3 ">
+                            <label class="form-label" for="password">Password</label>
+                            <input type="password" id="password" class="form-control form-control-lg" name="password" placeholder="password" />
                             <?php if (isset($GLOBALS['invalidPassword'])) {
                                 echo  $GLOBALS['invalidPassword'];
                             } ?>
                         </div>
                         <div class="form-outline mb-3 ">
 
-                            <input type="submit" id="form3Example4" class="form-control form-control-lg" name="submit" value="Login" />
+                            <input type="submit" id="submit" class="form-control form-control-lg" name="submit" value="Login" />
 
                         </div>
 

@@ -224,7 +224,7 @@ session_start();
                     $number = $_POST['number'];
                     $email = $_POST['email'];
                     $course = $_POST['course'];
-                    $password = $_POST['password'];
+                    $password = "student";
 
 
                     $checkquerry = "select * from student_tbl where student_id = '$student_id'";
@@ -248,7 +248,7 @@ session_start();
                             </div>
                         <?php } else { ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong> Add Student Failed!</strong>
+                                <strong> Failed to add student!</strong>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                 <?php
@@ -267,8 +267,8 @@ session_start();
                     $updateNumber = $_POST['number'];
                     $email = $_POST['email'];
                     $course = $_POST['course'];
-                    $password = $_POST['password'];
 
+                    $password = $_POST['password'];
 
                     $updatequerry = "update student_tbl set student_id = '$student_id', fname = '$fname', lname = '$lname', number = '$updateNumber', email= '$email' ,course = '$course',password = '$password' where student_id = '$id' ";
                     $iquery = mysqli_query($conn, $updatequerry);
@@ -288,11 +288,7 @@ session_start();
                 }
 
                 ?>
-                <div class="row">
 
-                    <!-- Column -->
-
-                </div>
                 <!-- Column -->
                 <!-- Column -->
 
@@ -343,11 +339,11 @@ session_start();
                                             </div>
                                         </div>
                                         <div class="form-group mb-4">
-                                            <label class="col-md-12 p-0">Password</label>
-                                            <div class="col-md-12 border-bottom p-0">
+                                            <label class="col-md-12 p-0">Default Password <span class="text-danger">*student</span></label>
+                                            <!-- <div class="col-md-12 border-bottom p-0">
                                                 <input type="password" placeholder="password" name="password" class="form-control p-2 border-0" />
 
-                                            </div>
+                                            </div> -->
                                         </div>
 
 
@@ -444,9 +440,12 @@ session_start();
 
                     ?>
 
-                            <div class="col-lg-4 col-xlg-9 col-md-12">
+                            <div class="col-lg-4 col-xlg-9 col-md-12 ">
+                                <a href="./addStudents.php" class="btn btn-info text-white my-4">Back</a>
                                 <div class="card">
+
                                     <div class="card-body">
+
                                         <form class="form-horizontal form-material" method="POST" enctype="multipart/form-data">
                                             <div class="form-group mb-4">
                                                 <label class="col-md-12 p-0">Student ID</label>
@@ -497,14 +496,22 @@ session_start();
                                             <div class="form-group mb-4">
                                                 <div class="col-md-12 border-bottom p-2">
                                                     <input type="submit" name="updateStudent" class="btn btn-success " value="Update" />
+
                                                 </div>
 
                                             </div>
                                         </form>
+
                                     </div>
+
                                 </div>
 
+
                             </div>
+
+
+
+
 
                     <?php
                         }
@@ -517,6 +524,7 @@ session_start();
                 <div>
 
                 </div>
+
                 <!-- Column -->
             </div>
             <!-- Row -->

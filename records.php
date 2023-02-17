@@ -264,7 +264,11 @@ session_start();
                                             <div class="d-flex">
 
                                                 <a href="./editRecords.php?id=<?= $row['record_id'] ?>" class="btn btn-info text-light mx-2">Edit</a>
-                                                <a onClick="return confirm('are you sure you want to delete this file?')" href="./process/delete.php?id=<?= $row['record_id'] ?>&file=<?= $row['fileName'] ?>" class="btn btn-danger text-light">Delete</a>
+
+
+                                                <?php if ($_SESSION['admin_type'] === "1") { ?>
+                                                    <a onClick="return confirm('are you sure you want to delete this file?')" href="./process/delete.php?id=<?= $row['record_id'] ?>&file=<?= $row['fileName'] ?>" class="btn btn-danger text-light">Delete</a>
+                                                <?php } ?>
                                             </div>
                                         </td>
                                     </tr>

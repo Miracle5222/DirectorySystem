@@ -67,7 +67,7 @@ session_start();
                 <?php
                 if (isset($_POST['updateStudent'])) {
                     $id = $_SESSION['student_id'];
-                    $student_id = $_POST['student_id'];
+
                     $fname = $_POST['fname'];
                     $lname = $_POST['lname'];
                     $updateNumber = $_POST['number'];
@@ -129,7 +129,7 @@ session_start();
                                     <div class="form-group mb-4">
                                         <label class="col-md-12 p-0">Student ID</label>
                                         <div class="col-md-12 border-bottom p-0">
-                                            <input type="text" placeholder="Student_ID" name="student_id" value="<?= $row['student_id'] ?>" class="form-control p-0 border-0" required />
+                                            <input type="text" placeholder="Student_ID" name="student_id" disabled value="<?= $row['student_id'] ?>" class="form-control p-0 border-0" required />
                                         </div>
                                     </div>
                                     <div class="form-group mb-4">

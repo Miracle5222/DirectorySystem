@@ -348,7 +348,7 @@ session_start();
 
                                 <tbody>
                                     <?php
-                                    $sql = " SELECT * from return_tbl";
+                                    $sql = " SELECT * from return_tbl order by date_today desc limit 10";
                                     $result = $conn->query($sql);
                                     if ($result->num_rows > 0) {
                                         while ($row = $result->fetch_assoc()) {

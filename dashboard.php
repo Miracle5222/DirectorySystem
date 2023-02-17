@@ -6,7 +6,7 @@ session_start();
 } ?>
 <?php include "./query.php" ?>
 <?php include "./connection/config.php" ?>
-<?php include "./sendText.php" ?>
+
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -669,8 +669,14 @@ session_start();
             <div class="row">
               <div class="col-md-12 col-lg-12 col-sm-12">
                 <div class="white-box">
-                  <h3 class="box-title" id="hint">Borrowed Records</h3>
+                  <div class="d-flex justify-content-between align-items-center ">
+                    <h3 class="box-title" id="hint">Borrowed Records</h3>
+                    <form action="./sendText.php">
+                      <button class="btn btn-outline-info" type="submit">Notify Student</button>
+                    </form>
+                  </div>
                   <div class="row d-flex justify-content-start align-items-center ">
+
                     <!-- <div class="col-md-3 ">
 
                   <select class="form-select form-select-sm" aria-label=".form-select-sm example">
@@ -841,46 +847,7 @@ session_start();
 
 
 
-              <div class="col-lg-4 col-md-12 col-sm-12">
-                <div class="card white-box p-0">
-                  <div class="card-heading">
-                    <h3 class="box-title mb-0">List of Staff </h3>
-                  </div>
-                  <div class="card-body">
-                    <ul class="chatonline">
-                      <?php
-                      $sql = "SELECT * from staff_tbl";
-                      $result = $conn->query($sql);
-                      if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                      ?>
-                          <li>
-                            <!-- <div class="call-chat">
-                              <button class="btn btn-success text-white btn-circle btn" type="button">
-                                <i class="fas fa-phone"></i>
-                              </button>
-                              <button class="btn btn-info btn-circle btn" type="button">
-                                <i class="far fa-comments text-white"></i>
-                              </button>
-                            </div> -->
-                            <a href="javascript:void(0)" class="d-flex align-items-center"><img src="<?= "./images/$row[profile]" ?>" height="36" alt="user-img" class="img-circle" />
-                              <div class="ms-2">
-                                <span class="text-dark"><?= $row['username'] ?>
-                                  <small class="d-block text-success d-block">online</small></span>
-                              </div>
-                            </a>
-                          </li>
-                      <?php
-                        }
-                      }
 
-                      $conn->close();
-                      ?>
-
-                    </ul>
-                  </div>
-                </div>
-              </div>
               <!-- /.col -->
             </div>
           </div>

@@ -72,7 +72,10 @@ session_start();
     </div>
 
     <div class="container  ">
-        <div class="row  justify-content-center align-items-center mt-4 bg" style="height: 300px; ">
+        <div class="row  justify-content-center align-items-center mt-4 bg " style="height: 300px; ">
+            <!-- <div style="height: 300px; ">
+                <img src="../images/drbg.jpg" alt="image" height="100%" class="bg" />
+            </div> -->
             <h1 style="font-size:3rem;" class="text-white">Research Office Directory System</h1>
         </div>
         <div class="row d-flex justify-content-center w-100 my-4">
