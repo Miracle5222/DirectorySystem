@@ -56,7 +56,7 @@ session_start();
                     $results = $conn->query($query);
                     if ($results->num_rows > 0) {
                         while ($row = $results->fetch_assoc()) {
-                            if ($username == $row['username'] && $password == $row['password']) {
+                            if ($username == $row['staff_school_id'] && $password == $row['password']) {
 
                                 $_SESSION['username'] = $row['username'];
 
@@ -90,7 +90,7 @@ session_start();
                     $results = $conn->query($query);
                     if ($results->num_rows > 0) {
                         while ($row = $results->fetch_assoc()) {
-                            if ($username == $row['username'] && $password == $row['password']) {
+                            if ($username == $row['admin_school_id'] && $password == $row['password']) {
 
                                 $_SESSION['username'] = $row['username'];
 
@@ -135,7 +135,7 @@ session_start();
                         <!-- Email input -->
                         <div class="form-outline mb-4">
                             <label class="form-label" for="username">Username</label>
-                            <input type="text" id="username" class="form-control form-control-lg" name="username" placeholder="username" />
+                            <input type="text" id="username" class="form-control form-control-lg" name="username" placeholder="2023-12556" />
                             <?php if (isset($GLOBALS['invalidPassword'])) {
                                 echo  $GLOBALS['invalidUsername'];
                             } ?>
@@ -144,7 +144,7 @@ session_start();
                         <!-- Password input -->
                         <div class="form-outline mb-3 ">
                             <label class="form-label" for="password">Password</label>
-                            <input type="password" id="password" class="form-control form-control-lg" name="password" placeholder="password" />
+                            <input type="password" id="password" class="form-control form-control-lg" name="password" placeholder="Password" />
                             <?php if (isset($GLOBALS['invalidPassword'])) {
                                 echo  $GLOBALS['invalidPassword'];
                             } ?>

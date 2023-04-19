@@ -221,7 +221,7 @@ session_start();
             $username = $_POST['username'];
             $phoneNum = $_POST['phoneNum'];
             $email = $_POST['email'];
-            $password = md5($_POST['password']);
+            $password = $_POST['password'];
 
             if (isset($_FILES['profile']['name'])) {
               if ($_FILES['profile']['name'] == "") {
@@ -259,7 +259,7 @@ session_start();
           $username = $_POST['username'];
           $phoneNum = $_POST['phoneNum'];
           $email = $_POST['email'];
-          $password = md5($_POST['password']);
+          $password = $_POST['password'];
 
           $insertquery =
             "update admin_tbl set username = '$username', phoneNum = '$phoneNum', email = '$email', password = '$password' where admin_id = $id";
@@ -362,7 +362,7 @@ session_start();
                       </form>
                     </div>
                   </div>
-                </div>  
+                </div>
                 <?php
               }
             }

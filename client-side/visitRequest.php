@@ -20,28 +20,29 @@ session_start();
 
 
 <body>
-    <div class="w-100  bg-light ">
+    <div class="w-100  bg-success ">
         <div class="container px-0">
-            <nav class="navbar navbar-expand-lg  navbar-light">
+            <nav class="navbar navbar-expand-lg   navbar-light">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="dashboard.php">Research Office Directory System</a>
+                    <a class="navbar-brand  text-light " href="dashboard.php">Research Office Directory System</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse " id="navbarSupportedContent">
                         <div class="d-flex justify-content-between flex-direction w-100">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+
+                                <li class="nav-item">
+                                    <a class="nav-link  text-light " href="profile.php">Profile</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link  text-light " href="visitRequest.php">Visit Request</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link  text-light " aria-current="page" href="about.php">About</a>
+                                </li>
 
 
-                                <li class="nav-item">
-                                    <a class="nav-link" href="profile.php">Profile</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="visitRequest.php">Visit Request</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link " aria-current="page" href="#">About</a>
-                                </li>
                             </ul>
                             <?php if (!isset($_SESSION['student_id'])) {
                                 header("Location: index.php");
@@ -49,7 +50,7 @@ session_start();
                                 <div>
                                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                         <li class="nav-item">
-                                            <a href="logout.php" class="nav-link text-dark">Logout</a>
+                                            <a href="logout.php" class="nav-link  text-light ">Logout</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -63,6 +64,7 @@ session_start();
             </nav>
         </div>
     </div>
+
     <div class="container my-4 ">
         <div class="row">
             <div class="col-md-4">
@@ -121,7 +123,7 @@ session_start();
                             </div>
                             <div class="form-group mb-4">
                                 <label class="col-md-12 p-0">Student ID</label>
-                                <input type="text" placeholder="465887" name="student_id" value="<?= $_SESSION['student_id'] ?>" class="form-control" />
+                                <input type="text" placeholder="465887" name="student_id" value="<?= $_SESSION['school_id'] ?>" class="form-control" />
 
                             </div>
                             <div class="form-group mb-4">
@@ -162,7 +164,7 @@ session_start();
                             </div>
                             <div class="form-group mb-4">
                                 <label class="col-md-12 p-0">Student ID</label>
-                                <input type="text" placeholder="465887" value="<?= $_SESSION['student_id'] ?>" name="student_id" class="form-control" />
+                                <input type="text" placeholder="465887" value="<?= $_SESSION['school_id'] ?>" name="student_id" class="form-control" />
 
                             </div>
                             <div class="form-group mb-4">

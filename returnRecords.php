@@ -213,10 +213,23 @@ session_start();
                 <?php
 
                 if (isset($_POST['submit'])) {
+                    $date_borrowed = $_POST['date_borrowed'];
                     $record_id = $_POST['record_id'];
                     $return_date = $_POST['return_date'];
                     $student_id = $_POST['student_id'];
 
+                    $borrowed_timestamp = strtotime($date_borrowed);
+                    $return_timestamp = strtotime($return_date);
+
+                    $days_diff = ($return_timestamp - $borrowed_timestamp) / (60 * 60 * 24);
+
+                    if ($days_diff > 3) {
+                        // Calculate the penalty
+                        $penalty = ($days_diff - 3) * 50;
+                        echo "alert($penalty)";
+                        // Display the penalty
+                        // echo "You have a penalty of PHP " . $penalty . ".";
+                    }
 
                     $insertquery =
                         "INSERT INTO return_tbl(record_id,student_id,date_today) VALUES(' $record_id ','$student_id','$return_date')";
@@ -278,7 +291,12 @@ session_start();
                                         <input type="text" class="form-control p-0 border-0" required name="student_id" />
                                     </div>
                                 </div>
-
+                                <div class="form-group mb-4">
+                                    <label class="col-md-12 p-0">Date Borrowed</label>
+                                    <div class="col-md-12 border-bottom p-0">
+                                        <input type="date" class="form-control p-0 border-0" required name="date_borrowed" />
+                                    </div>
+                                </div>
                                 <div class="form-group mb-4">
                                     <label class="col-md-12 p-0">Return Date</label>
                                     <div class="col-md-12 border-bottom p-0">

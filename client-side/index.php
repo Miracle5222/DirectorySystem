@@ -29,9 +29,10 @@ session_start();
                             $results = $conn->query($query);
                             if ($results->num_rows > 0) {
                                 while ($row = $results->fetch_assoc()) {
-                                    if ($student_id == $row['student_id'] && $password == $row['password']) {
+                                    if ($student_id == $row['schoolId'] && $password == $row['password']) {
                                         $_SESSION['fullname'] = $row['fname'] . " " . $row['lname'];
                                         $_SESSION['student_id'] = $row['student_id'];
+                                        $_SESSION['school_id'] = $row['school_id'];
                                         echo     $_SESSION['fullname'];
                                         header("Location: ./dashboard.php");
                                     } else {
@@ -71,7 +72,7 @@ session_start();
                         <form method="post" enctype="multipart/form-data">
                             <div class="form-group text-left">
                                 <label for="student_id">Student ID</label>
-                                <input type="text" id="student_id" name="student_id" placeholder="4567888..." class="form-control">
+                                <input type="text" id="student_id" name="student_id" placeholder="2023-13612" class="form-control">
                                 <?php if (isset($GLOBALS['invalid'])) {
                                     echo  $GLOBALS['invalid'];
                                 } ?>

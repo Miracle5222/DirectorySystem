@@ -1,6 +1,6 @@
 <footer class="footer text-center">
 
-    <div class="bg-dark w-100" style="height: 200px;">
+    <div class="bg-success w-100" style="height: 200px;">
         <div class="d-flex align-items-end h-100 justify-content-center">
             <span class="text-light p-2">2022 © Research Office Directory System</span>
         </div>
