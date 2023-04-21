@@ -33,12 +33,12 @@ session_start();
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
-    <div class="preloader">
+    <!-- <div class="preloader">
         <div class="lds-ripple">
             <div class="lds-pos"></div>
             <div class="lds-pos"></div>
         </div>
-    </div>
+    </div> -->
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -218,21 +218,33 @@ session_start();
                     $return_date = $_POST['return_date'];
                     $student_id = $_POST['student_id'];
 
-                    $borrowed_timestamp = strtotime($date_borrowed);
-                    $return_timestamp = strtotime($return_date);
 
-                    $days_diff = ($return_timestamp - $borrowed_timestamp) / (60 * 60 * 24);
+                    $borrowed_datetime = new DateTime($date_borrowed);
+                    $returned_datetime = new DateTime($return_date);
 
-                    if ($days_diff > 3) {
-                        // Calculate the penalty
-                        $penalty = ($days_diff - 3) * 50;
-                        echo "alert($penalty)";
-                        // Display the penalty
-                        // echo "You have a penalty of PHP " . $penalty . ".";
-                    }
+                    $days_diff = $returned_datetime->diff($borrowed_datetime)->days;
 
+                    echo   $days_diff;
+                    echo "<br>";
+
+                    // Calculate the penalty
+                    $penalty = $days_diff  * 50;
+
+                    // echo "alert($penalty)";
+                    // Display the penalty
+                    // echo "You have a penalty of PHP " . $penalty . ".";
+
+                    echo   $date_borrowed;
+                    echo "<br>";
+                    echo   $record_id;
+                    echo "<br>";
+                    echo   $return_date;
+                    echo "<br>";
+                    echo   $student_id;
+                    echo "<br>";
+                    echo   $penalty;
                     $insertquery =
-                        "INSERT INTO return_tbl(record_id,student_id,date_today) VALUES(' $record_id ','$student_id','$return_date')";
+                        "INSERT INTO return_tbl(record_id,schoolId,date_borrowed,date_today,penalty) VALUES('$record_id ','$student_id','$date_borrowed','$return_date','  $penalty')";
 
 
                     // Execute insert query
@@ -359,7 +371,9 @@ session_start();
                                 <thead>
                                     <tr>
                                         <th scope="col">Record ID</th>
-                                        <th scope="col">Date Returned</th>
+                                        <th scope="col">Student Id</th>
+                                        <th scope="col">Penalty</th>
+
 
                                     </tr>
                                 </thead>
@@ -373,8 +387,8 @@ session_start();
                                     ?>
                                             <tr>
                                                 <th scope="row"><?= $row['record_id'] ?></th>
-                                                <td><?= $row['date_today'] ?></td>
-
+                                                <td><?= $row['schoolId'] ?></td>
+                                                <td><?= $row['penalty'] ?></td>
                                             </tr>
                                     <?php
                                         }
