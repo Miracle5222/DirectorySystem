@@ -71,31 +71,37 @@ session_start();
         </div>
     </div>
 
-    <section class="py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h2 class="text-success">About Us</h2>
-                    <p>We are a group of I.T students from JHSCS College, who have come together to create a platform that will help students get the resources they need for their thesis, capstone, or research projects.
+    <section class="">
+        <div class="container-fluid" style="background-image: url(./jgbg.jpg);  background-repeat:no-repeat; background-size:cover; height: 100vh; ">
 
-                        As students ourselves, we understand how challenging it can be to find reliable and relevant sources of information for academic projects. With the proliferation of information on the internet, it can be overwhelming to sift through all the data and determine what is trustworthy and useful.
-                    </p>
-                    <p>
-                        Our team recognized the need for a centralized platform that could simplify the research process and provide students with access to high-quality resources. We have designed this system to be user-friendly, intuitive, and comprehensive. With our platform, students can search for thesis, capstone project, and research materials related to their field of study, and easily cite and reference them in their work.
+            <div class="container">
+                <div class="row py-5">
+                    <div class="col-md-8 pl-4">
+                        <div style="height:auto;background:rgba(172, 172, 172, 0.3);padding:10px;border-radius:12px;">
+                            <h2 class="text-dark">About Us</h2>
+                            <p style="font-size:1.2rem;font-weight:600;color:white;">We are a group of I.T students from JHSCS College, who have come together to create a platform that will help students get the resources they need for their thesis, capstone, or research projects.
 
-                        We believe that this system will be a valuable tool for students at JHSCS College and beyond. Our team is committed to continuously improving the platform, incorporating feedback from users, and staying up-to-date with the latest developments in research and technology.
+                                As students ourselves, we understand how challenging it can be to find reliable and relevant sources of information for academic projects. With the proliferation of information on the internet, it can be overwhelming to sift through all the data and determine what is trustworthy and useful.
+                            </p>
+                            <p style="font-size:1.2rem;font-weight:600;color:white;">
+                                Our team recognized the need for a centralized platform that could simplify the research process and provide students with access to high-quality resources. We have designed this system to be user-friendly, intuitive, and comprehensive. With our platform, students can search for thesis, capstone project, and research materials related to their field of study, and easily cite and reference them in their work.
 
-                        Thank you for visiting our page. We hope that our platform will help you achieve academic success and contribute to the advancement of knowledge in your field.</p>
+                                We believe that this system will be a valuable tool for students at JHSCS College and beyond. Our team is committed to continuously improving the platform, incorporating feedback from users, and staying up-to-date with the latest developments in research and technology.
 
-                </div>
-                <div class="col-md-6 justify-content-center align-items-center d-flex ">
-                    <img src="./logo.png" class="img-fluid" alt="Placeholder image">
+                                Thank you for visiting our page. We hope that our platform will help you achieve academic success and contribute to the advancement of knowledge in your field.</p>
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 justify-content-center align-items-center d-flex ">
+                        <!-- <img src="./logo.png" class="img-fluid" alt="Placeholder image"> -->
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-    <section class="bg-light py-5">
-        <div class="container">
+    <section class="bg-light ">
+        <div class="container py-5">
             <div class="row">
                 <div class="col-md-12">
                     <h1 class="pb-5 text-success"> School Mission And Vision</h1>

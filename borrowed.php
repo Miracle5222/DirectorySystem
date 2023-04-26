@@ -218,6 +218,11 @@ session_start();
                     $student_id = $_POST['student_id'];
                     $date_today = $_POST['date_today'];
 
+                    // echo $record_id;
+                    // echo $return_date;
+                    // echo $student_id;
+                    // echo $date_today;
+
                     $Recordquery = " select * from borrowed_tbl where record_id = '$record_id'";
                     $rquery = mysqli_query($conn, $Recordquery);
 

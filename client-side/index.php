@@ -32,7 +32,7 @@ session_start();
                                     if ($student_id == $row['schoolId'] && $password == $row['password']) {
                                         $_SESSION['fullname'] = $row['fname'] . " " . $row['lname'];
                                         $_SESSION['student_id'] = $row['student_id'];
-                                        $_SESSION['school_id'] = $row['school_id'];
+                                        $_SESSION['school_id'] = $row['schoolId'];
                                         echo     $_SESSION['fullname'];
                                         header("Location: ./dashboard.php");
                                     } else {

@@ -123,7 +123,7 @@ session_start();
                             </div>
                             <div class="form-group mb-4">
                                 <label class="col-md-12 p-0">Student ID</label>
-                                <input type="text" placeholder="465887" name="student_id" value="<?= $_SESSION['school_id'] ?>" class="form-control" />
+                                <input type="text" placeholder="2023-13612" name="student_id" value="<?= $_SESSION['school_id'] ?>" class="form-control" />
 
                             </div>
                             <div class="form-group mb-4">
@@ -155,6 +155,7 @@ session_start();
 
                 <div class="col-sm-4">
                     <div class="white-box">
+
                         <form class="form-horizontal form-material" method="POST" enctype="multipart/form-data">
 
                             <div class="form-group mb-4">
@@ -164,7 +165,7 @@ session_start();
                             </div>
                             <div class="form-group mb-4">
                                 <label class="col-md-12 p-0">Student ID</label>
-                                <input type="text" placeholder="465887" value="<?= $_SESSION['school_id'] ?>" name="student_id" class="form-control" />
+                                <input type="text" placeholder="2023-13612" value="<?= $_SESSION['school_id'] ?>" name="student_id" class="form-control" />
 
                             </div>
                             <div class="form-group mb-4">
@@ -277,6 +278,48 @@ session_start();
                 </div>
             </div>
 
+        </div>
+        <div class="row">
+            <div class="container">
+                <div class="bg-light p-4">
+                    <h1>Borrowed Records</h1>
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Record ID</th>
+                                <th scope="col">Returd Date</th>
+                                <th scope="col">Date Borrowed</th>
+                                <th scope="col">Return</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+
+                            $sql = "SELECT * from borrowed_tbl where schoolId = '$_SESSION[school_id]'";
+                            $result = $conn->query($sql);
+
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                            ?>
+                                    <tr>
+                                        <th scope="row"><?= $row['borrowed_id'] ?></th>
+                                        <td><?= $row['record_id'] ?></td>
+                                        <td><?= $row['return_date'] ?></td>
+                                        <td><?= $row['date_today'] ?></td>
+                                        <td><i class="fas fa-edit"></i></td>
+                                    </tr>
+                            <?php
+                                }
+                            }
+                            ?>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
         </div>
     </div>
 

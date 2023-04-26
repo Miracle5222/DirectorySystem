@@ -5,3 +5,11 @@
   background-size: cover;
   background-repeat: no-repeat;
 }
+.jhcsc {
+  background-image: url("../../images/jgbg.jpg");
+  height: 100vh;
+  z-index: 999;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
