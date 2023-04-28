@@ -217,7 +217,7 @@ session_start();
                     $return_date = $_POST['return_date'];
                     $student_id = $_POST['student_id'];
                     $date_today = $_POST['date_today'];
-
+                    $activeStatus = "Active";
                     // echo $record_id;
                     // echo $return_date;
                     // echo $student_id;
@@ -229,7 +229,7 @@ session_start();
 
                     if (!$rquery->num_rows > 0) {
                         $insertquery =
-                            "INSERT INTO borrowed_tbl(record_id,return_date,schoolId,date_today) VALUES(' $record_id ','$return_date','$student_id','$date_today')";
+                            "INSERT INTO borrowed_tbl(record_id,return_date,schoolId,date_today,status) VALUES(' $record_id ','$return_date','$student_id','$date_today','$activeStatus')";
 
 
                         // Execute insert query

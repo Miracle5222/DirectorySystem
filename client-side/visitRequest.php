@@ -282,7 +282,7 @@ session_start();
         <div class="row">
             <div class="container">
                 <div class="bg-light p-4">
-                    <h1>Borrowed Records</h1>
+                    <h1>My Borrowed Records</h1>
                     <table class="table">
                         <thead class="thead-dark">
                             <tr>
@@ -290,6 +290,7 @@ session_start();
                                 <th scope="col">Record ID</th>
                                 <th scope="col">Returd Date</th>
                                 <th scope="col">Date Borrowed</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">Return</th>
                             </tr>
                         </thead>
@@ -307,7 +308,34 @@ session_start();
                                         <td><?= $row['record_id'] ?></td>
                                         <td><?= $row['return_date'] ?></td>
                                         <td><?= $row['date_today'] ?></td>
-                                        <td><i class="fas fa-edit"></i></td>
+
+                                        <?php
+                                        if ($row['status'] === 'Active') { ?>
+                                            <td class="text-success"><?= $row['status'] ?></td>
+                                        <?php } else if ($row['status'] === 'Pending...') { ?>
+                                            <td class="text-info"><?= $row['status'] ?></td>
+                                        <?php    } else { ?>
+                                            <td class="text-warning"><?= $row['status'] ?></td>
+                                        <?php        }
+                                        ?>
+
+                                        <td>
+                                            <?php
+                                            if ($row['status'] === 'Pending...') {    ?>
+                                                <span class="text-success">Proccess..</span>
+                                            <?php  } else { ?>
+                                                <a href="./returndData.php?borrowed_id=<?= $row['borrowed_id'] ?>">Return Record</a>
+                                            <?php
+                                            }
+                                            ?>
+
+                                            <!-- <form>
+                                                <input type="text" id="borrowed_id" value='<?= $row['borrowed_id'] ?>' hidden name="recordid">
+
+                                                <button class="btn btn-primary" onclick="submitData()">Return Record</button>
+                                            </form> -->
+                                        </td>
+                                        <!-- <td><i class="fas fa-edit"></i></td> -->
                                     </tr>
                             <?php
                                 }
@@ -322,6 +350,21 @@ session_start();
             </div>
         </div>
     </div>
+
+    <script>
+        function submitData() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    alert(this.responseText);
+                }
+            };
+            xhttp.open("POST", "returndData.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            var data = "borrowed_id=" + document.getElementById("borrowed_id").value;
+            xhttp.send(data);
+        }
+    </script>
 
 
 

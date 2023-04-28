@@ -224,8 +224,8 @@ session_start();
 
                     $days_diff = $returned_datetime->diff($borrowed_datetime)->days;
 
-                    echo   $days_diff;
-                    echo "<br>";
+                    // echo   $days_diff;
+                    // echo "<br>";
 
                     // Calculate the penalty
                     $penalty = $days_diff  * 50;
@@ -234,15 +234,15 @@ session_start();
                     // Display the penalty
                     // echo "You have a penalty of PHP " . $penalty . ".";
 
-                    echo   $date_borrowed;
-                    echo "<br>";
-                    echo   $record_id;
-                    echo "<br>";
-                    echo   $return_date;
-                    echo "<br>";
-                    echo   $student_id;
-                    echo "<br>";
-                    echo   $penalty;
+                    // echo   $date_borrowed;
+                    // echo "<br>";
+                    // echo   $record_id;
+                    // echo "<br>";
+                    // echo   $return_date;
+                    // echo "<br>";
+                    // echo   $student_id;
+                    // echo "<br>";
+                    // echo   $penalty;
                     $insertquery =
                         "INSERT INTO return_tbl(record_id,schoolId,date_borrowed,date_today,penalty) VALUES('$record_id ','$student_id','$date_borrowed','$return_date','  $penalty')";
 
@@ -394,7 +394,7 @@ session_start();
                                         }
                                     }
 
-                                    $conn->close();
+
                                     ?>
 
                                 </tbody>
@@ -403,6 +403,67 @@ session_start();
                         </div>
                     </div>
                     <!-- /.col -->
+                </div>
+                <div class="row">
+                    <?php
+
+                    if (isset($_GET['return'])) {
+                        $returnRecords = $_GET['return'];
+                        $updatequery =
+                            "update record_tbl set status = 'Available' where record_id = '$returnRecords'";
+                        $iquery = mysqli_query($conn, $updatequery);
+
+                        $deletequery =
+                            "delete from borrowed_tbl where record_id = '$returnRecords'";
+                        $dquery = mysqli_query($conn, $deletequery);
+
+
+                        $deleteReturnPending =
+                            "delete from return_tbl where record_id = '$returnRecords'";
+                        $dquery = mysqli_query($conn, $deleteReturnPending);
+                    }
+                    ?>
+                    <div class="col-md-12">
+                        <div class="card white-box py-0">
+                            <h3 class="m-2 py-2">Return Request</h3>
+
+                            <table class="table p-2">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Record ID</th>
+                                        <th scope="col">Student Id</th>
+                                        <th scope="col">Penalty</th>
+                                        <th scope="col">Edit</th>
+
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <?php
+                                    $sql = " SELECT * from return_tbl where status = 'Pending...'";
+                                    $result = $conn->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                    ?>
+                                            <tr>
+                                                <th scope="row"><?= $row['record_id'] ?></th>
+                                                <td><?= $row['schoolId'] ?></td>
+                                                <td><?= $row['penalty'] ?></td>
+                                                <td><a href="./returnRecords.php?return=<?= $row['record_id'] ?>">Confirm</a></td>
+                                            </tr>
+                                    <?php
+                                        }
+                                    }
+
+
+                                    ?>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
