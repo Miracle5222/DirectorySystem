@@ -79,8 +79,13 @@ session_start();
                     $record_id = $_POST['record_id'];
                     $borrowStatus = "pending";
 
+                    echo  $purpose;
+                    echo  $student_id;
+                    echo  $visit_date;
+                    echo  $record_id;
+                    echo  $borrowStatus;
 
-                    $addquerry = "insert into borrow_tbl(purpose,student_id,visit_date,borrow_status,record_id) values ('$purpose','$student_id','$visit_date','$borrowStatus','$record_id ')";
+                    $addquerry = "insert into borrow_tbl(purpose,schoolId,visit_date,borrow_status,record_id) values ('$purpose','$student_id','$visit_date','$borrowStatus','$record_id ')";
                     $iquery = mysqli_query($conn, $addquerry);
 
 
@@ -213,7 +218,7 @@ session_start();
                             $q = isset($_GET['q']);
 
 
-                            $sql = "SELECT * from borrow_tbl where student_id = '$_SESSION[student_id]'";
+                            $sql = "SELECT * from borrow_tbl where schoolId = '$_SESSION[school_id]'";
                             $result = $conn->query($sql);
 
                             ?>
@@ -239,7 +244,7 @@ session_start();
                                     ?> <tr>
                                                 <td><?= $row['br_id'] ?></td>
                                                 <td><?= $row['purpose'] ?></td>
-                                                <td><?= $row['student_id'] ?></td>
+                                                <td><?= $row['schoolId'] ?></td>
                                                 <td><?= $row['visit_date'] ?></td>
                                                 <td><a href="../viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View No. <?= $row['record_id'] ?> </a></td>
                                                 <td>
@@ -288,7 +293,7 @@ session_start();
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Record ID</th>
-                                <th scope="col">Returd Date</th>
+                                <th scope="col">Retured Date</th>
                                 <th scope="col">Date Borrowed</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Return</th>

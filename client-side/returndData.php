@@ -24,19 +24,38 @@ if (isset($_GET['borrowed_id'])) {
 
             $date_borrowed = $row['date_today'];
             $record_id = $row['record_id'];
-            $return_date = $row['return_date'];
+
             $student_id = $row['schoolId'];
             $status = "Pending...";
 
+            $return_date = new DateTime();
+            $return_date->format('Y-m-d');
+
+
             $borrowed_datetime = new DateTime($date_borrowed);
-            $returned_datetime = new DateTime($return_date);
+            $returned_datetime =  $return_date;
+
 
             $days_diff = $returned_datetime->diff($borrowed_datetime)->days;
 
-            $penalty = $days_diff  * 50;
 
+            echo $days_diff;
+            echo "<br>";
+            if ($days_diff > 3) {
+
+                $returned_date = new DateTime($row['return_date']);
+                $dateToday = new DateTime();
+                $today = $dateToday->format('Y-m-d');
+
+                $newdays_diff = $dateToday->diff($returned_date)->days;
+                echo $newdays_diff;
+                echo gettype($today);
+                $penalty = $newdays_diff  * 50;
+            } else {
+                $penalty = 0;
+            }
             $insertquery =
-                "INSERT INTO return_tbl(record_id,schoolId,date_borrowed,date_today,penalty,status) VALUES('$record_id ','$student_id','$date_borrowed','$return_date','  $penalty','$status')";
+                "INSERT INTO return_tbl(record_id,schoolId,date_borrowed,date_today,penalty,status) VALUES('$record_id ','$student_id','$date_borrowed','$today','  $penalty','$status')";
             // Execute insert query
             $iquery = mysqli_query($conn, $insertquery);
 
@@ -50,6 +69,8 @@ if (isset($_GET['borrowed_id'])) {
                 $updateBorrowed =
                     "update borrowed_tbl set status = 'Pending...' where record_id = '$record_id'";
                 $dquery = mysqli_query($conn, $updateBorrowed);
+
+                // header("Location:visitRequest.php");
             } else {
                 echo "failed";
             }

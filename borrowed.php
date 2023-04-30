@@ -33,12 +33,16 @@ session_start();
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
-    <div class="preloader">
+
+
+    <!-- <div class="preloader">
         <div class="lds-ripple">
             <div class="lds-pos"></div>
             <div class="lds-pos"></div>
         </div>
-    </div>
+    </div> -->
+
+
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -214,14 +218,18 @@ session_start();
 
                 if (isset($_POST['submit'])) {
                     $record_id = $_POST['record_id'];
-                    $return_date = $_POST['return_date'];
+
                     $student_id = $_POST['student_id'];
                     $date_today = $_POST['date_today'];
                     $activeStatus = "Active";
-                    // echo $record_id;
-                    // echo $return_date;
-                    // echo $student_id;
+                    $smsStatus = 0;
                     // echo $date_today;
+
+                    $date = DateTime::createFromFormat('Y-m-d', $date_today);
+                    $date->modify('+3 days');
+                    $return_date = $date->format('Y-m-d');
+
+
 
                     $Recordquery = " select * from borrowed_tbl where record_id = '$record_id'";
                     $rquery = mysqli_query($conn, $Recordquery);
@@ -229,8 +237,7 @@ session_start();
 
                     if (!$rquery->num_rows > 0) {
                         $insertquery =
-                            "INSERT INTO borrowed_tbl(record_id,return_date,schoolId,date_today,status) VALUES(' $record_id ','$return_date','$student_id','$date_today','$activeStatus')";
-
+                            "INSERT INTO borrowed_tbl(record_id,return_date,schoolId,date_today,status,smsStatus) VALUES(' $record_id ','$return_date','$student_id','$date_today','$activeStatus','$smsStatus')";
 
                         // Execute insert query
                         $iquery = mysqli_query($conn, $insertquery);
@@ -304,12 +311,12 @@ session_start();
 
                                 </div>
 
-                                <div class="form-group mb-4">
+                                <!-- <div class="form-group mb-4">
                                     <label class="col-md-12 p-0">Return Date</label>
                                     <div class="col-md-12 border-bottom p-0">
                                         <input type="date" class="form-control p-0 border-0" required name="return_date" />
                                     </div>
-                                </div>
+                                </div> -->
 
 
                                 <div class="form-group mb-4">

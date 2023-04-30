@@ -215,34 +215,31 @@ session_start();
                 if (isset($_POST['submit'])) {
                     $date_borrowed = $_POST['date_borrowed'];
                     $record_id = $_POST['record_id'];
-                    $return_date = $_POST['return_date'];
+
                     $student_id = $_POST['student_id'];
+                    $return_date = $_POST['return_date'];
 
 
                     $borrowed_datetime = new DateTime($date_borrowed);
-                    $returned_datetime = new DateTime($return_date);
+                    $returned_datetime =   new DateTime($return_date);
+
 
                     $days_diff = $returned_datetime->diff($borrowed_datetime)->days;
 
-                    // echo   $days_diff;
-                    // echo "<br>";
 
-                    // Calculate the penalty
-                    $penalty = $days_diff  * 50;
 
-                    // echo "alert($penalty)";
-                    // Display the penalty
-                    // echo "You have a penalty of PHP " . $penalty . ".";
+                    if ($days_diff > 3) {
+                        $returned_date = new DateTime($return_date);
+                        $dateToday = new DateTime();
+                        $dateToday->format('Y-m-d');
 
-                    // echo   $date_borrowed;
-                    // echo "<br>";
-                    // echo   $record_id;
-                    // echo "<br>";
-                    // echo   $return_date;
-                    // echo "<br>";
-                    // echo   $student_id;
-                    // echo "<br>";
-                    // echo   $penalty;
+                        $newdays_diff = $returned_datetime->diff($dateToday)->days;
+
+                        $penalty = $newdays_diff  * 50;
+                    } else {
+                        $penalty = 0;
+                    }
+
                     $insertquery =
                         "INSERT INTO return_tbl(record_id,schoolId,date_borrowed,date_today,penalty) VALUES('$record_id ','$student_id','$date_borrowed','$return_date','  $penalty')";
 
@@ -418,9 +415,12 @@ session_start();
                         $dquery = mysqli_query($conn, $deletequery);
 
 
-                        $deleteReturnPending =
-                            "delete from return_tbl where record_id = '$returnRecords'";
-                        $dquery = mysqli_query($conn, $deleteReturnPending);
+                        $updateBorrowed =
+                            "update return_tbl set status = 'inStock' where record_id = '$returnRecords'";
+                        $dquery = mysqli_query($conn, $updateBorrowed);
+                        // $deleteReturnPending =
+                        //     "delete from return_tbl where record_id = '$returnRecords'";
+                        // $dquery = mysqli_query($conn, $deleteReturnPending);
                     }
                     ?>
                     <div class="col-md-12">
@@ -433,7 +433,7 @@ session_start();
                                         <th scope="col">Record ID</th>
                                         <th scope="col">Student Id</th>
                                         <th scope="col">Penalty</th>
-                                        <th scope="col">Edit</th>
+                                        <th scope="col">Record Status</th>
 
 
                                     </tr>
