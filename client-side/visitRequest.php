@@ -79,11 +79,7 @@ session_start();
                     $record_id = $_POST['record_id'];
                     $borrowStatus = "pending";
 
-                    echo  $purpose;
-                    echo  $student_id;
-                    echo  $visit_date;
-                    echo  $record_id;
-                    echo  $borrowStatus;
+
 
                     $addquerry = "insert into borrow_tbl(purpose,schoolId,visit_date,borrow_status,record_id) values ('$purpose','$student_id','$visit_date','$borrowStatus','$record_id ')";
                     $iquery = mysqli_query($conn, $addquerry);
@@ -213,6 +209,16 @@ session_start();
                 </div> -->
 
                         <div class="table-responsive">
+                            <!-- canel request-->
+                            <?php
+                            if (isset($_GET['br_id'])) {
+                                $br_id = $_GET['br_id'];
+                                $deletequery =
+                                    "delete from borrow_tbl where br_id = '$br_id'";
+                                $dquery = mysqli_query($conn, $deletequery);
+                            }
+                            ?>
+
 
                             <?php
                             $q = isset($_GET['q']);
@@ -232,7 +238,7 @@ session_start();
                                         <th class="border-top-0">Visit Date</th>
                                         <th class="border-top-0">Record </th>
                                         <th class="border-top-0">Borrow Status</th>
-
+                                        <th class="border-top-0">Edit</th>
                                     </tr>
 
                                 </thead>
@@ -263,6 +269,7 @@ session_start();
                                                     } ?>
 
                                                 </td>
+                                                <td><a href="./visitRequest.php?br_id=<?= $row['br_id']  ?>" class="text-danger">Cancel</a></td>
 
 
 
