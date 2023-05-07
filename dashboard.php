@@ -618,7 +618,7 @@ session_start();
                           ?> <tr>
                               <td><?= $row['br_id'] ?></td>
                               <td><?= $row['purpose'] ?></td>
-                              <td><?= $row['student_id'] ?></td>
+                              <td><?= $row['schoolId'] ?></td>
                               <td><?= $row['visit_date'] ?></td>
                               <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View No. <?= $row['record_id'] ?> </a></td>
                               <td>
@@ -722,7 +722,7 @@ session_start();
                                 <td><?= $row['borrowed_id'] ?></td>
                                 <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View <?= $row['record_id'] ?> </a></td>
                                 <td><?= $row['return_date'] ?></td>
-                                <td><?= $row['student_id'] ?></td>
+                                <td><?= $row['schoolId'] ?></td>
 
 
 
