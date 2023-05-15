@@ -227,7 +227,7 @@ session_start();
                     $password = "student";
 
 
-                    $checkquerry = "select * from student_tbl where student_id = '$student_id'";
+                    $checkquerry = "select * from student_tbl where schoolId = '$student_id'";
                     $cquery = mysqli_query($conn, $checkquerry);
                     // print_r($cquery);
                     if (!$cquery) { ?>
@@ -237,7 +237,7 @@ session_start();
                         </div>
                     <?php } else { ?>
                         <?php
-                        $addquerry = "insert into student_tbl(student_id,fname,lname,email,number,password,course) values ('$student_id','$fname','$lname','$email','$number ','$password','$course')";
+                        $addquerry = "insert into student_tbl(fname,lname,email,number,password,course,schoolId) values ('$fname','$lname','$email','$number ','$password','$course','$student_id')";
                         $iquery = mysqli_query($conn, $addquerry);
 
 
@@ -279,7 +279,9 @@ session_start();
                             <strong>Success!</strong> Student Updated successfully.
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                    <?php } else { ?>
+                    <?php
+
+                    } else { ?>
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <strong>Failed Update!</strong>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -333,10 +335,19 @@ session_start();
                                         </div>
                                         <div class="form-group mb-4">
                                             <label class="col-md-12 p-0">Course</label>
-                                            <div class="col-md-12 border-bottom p-0">
-                                                <input type="text" placeholder="cource" name="course" class="form-control p-2 border-0" />
 
-                                            </div>
+
+                                            <select class="form-select" aria-label="Default select example" required name="course">
+                                                <option selected>Select Course</option>
+                                                <option value="BSIT">BSIT</option>
+                                                <option value="BEED">BEED</option>
+                                                <option value="BSC">BSC</option>
+                                                <option value="BSED">BSED</option>
+                                                <option value="BSHRM">BSHRM</option>
+                                                <option value="MAED">MAED</option>
+                                                <option value="MAGDEV">MAGDEV</option>
+
+                                            </select>
                                         </div>
                                         <div class="form-group mb-4">
                                             <label class="col-md-12 p-0">Default Password <span class="text-danger">*student</span></label>
@@ -393,7 +404,7 @@ session_start();
                                                 while ($row = $result->fetch_assoc()) {
 
                                             ?> <tr>
-                                                        <td><?= $row['student_id'] ?></td>
+                                                        <td><?= $row['schoolId'] ?></td>
                                                         <td><?= $row['fname'] ?></td>
                                                         <td><?= $row['lname'] ?></td>
                                                         <td><?= $row['email'] ?></td>
@@ -450,7 +461,7 @@ session_start();
                                             <div class="form-group mb-4">
                                                 <label class="col-md-12 p-0">Student ID</label>
                                                 <div class="col-md-12 border-bottom p-0">
-                                                    <input type="text" placeholder="Student_ID" name="student_id" value="<?= $row['student_id'] ?>" class="form-control p-0 border-0" required />
+                                                    <input type="text" placeholder="Student_ID" name="student_id" value="<?= $row['schoolId'] ?>" class="form-control p-0 border-0" required />
                                                 </div>
                                             </div>
                                             <div class="form-group mb-4">
@@ -479,10 +490,19 @@ session_start();
                                             </div>
                                             <div class="form-group mb-4">
                                                 <label class="col-md-12 p-0">Course</label>
-                                                <div class="col-md-12 border-bottom p-0">
-                                                    <input type="text" placeholder="cource" name="course" value="<?= $row['course'] ?>" class="form-control p-2 border-0" />
 
-                                                </div>
+
+                                                <select class="form-select" aria-label="Default select example" required name="course">
+                                                    <option selected value="<?= $row['course'] ?>">Select Course: <?= $row['course'] ?></option>
+                                                    <option value="BSIT">BSIT</option>
+                                                    <option value="BEED">BEED</option>
+                                                    <option value="BSC">BSC</option>
+                                                    <option value="BSED">BSED</option>
+                                                    <option value="BSHRM">BSHRM</option>
+                                                    <option value="MAED">MAED</option>
+                                                    <option value="MAGDEV">MAGDEV</option>
+
+                                                </select>
                                             </div>
                                             <div class="form-group mb-4">
                                                 <label class="col-md-12 p-0">Password</label>

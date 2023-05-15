@@ -218,11 +218,11 @@ session_start();
 
                     $student_id = $_POST['student_id'];
                     $return_date = $_POST['return_date'];
+                    $bookStatus = $_POST['bookStatus'];
 
 
                     $borrowed_datetime = new DateTime($date_borrowed);
                     $returned_datetime =   new DateTime($return_date);
-
 
                     $days_diff = $returned_datetime->diff($borrowed_datetime)->days;
 
@@ -241,7 +241,7 @@ session_start();
                     }
 
                     $insertquery =
-                        "INSERT INTO return_tbl(record_id,schoolId,date_borrowed,date_today,penalty) VALUES('$record_id ','$student_id','$date_borrowed','$return_date','  $penalty')";
+                        "INSERT INTO return_tbl(record_id,schoolId,date_borrowed,date_today,penalty,bookStatus) VALUES('$record_id ','$student_id','$date_borrowed','$return_date','  $penalty','$bookStatus')";
 
 
                     // Execute insert query
@@ -312,6 +312,13 @@ session_start();
                                         <input type="date" class="form-control p-0 border-0" required name="return_date" />
                                     </div>
                                 </div>
+                                <div class="form-group mb-4">
+                                    <label class="col-md-12 p-0">Book Status</label>
+                                    <div class="col-md-12 border-bottom p-0">
+                                        <input type="text" class="form-control p-0 border-0" required name="bookStatus" />
+                                    </div>
+                                </div>
+
 
 
                                 <div class="form-group mb-4">
@@ -323,7 +330,7 @@ session_start();
                             </form>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="col-lg-3 col-md-12 col-sm-12">
                         <div class="card white-box py-0">
 
 
@@ -360,7 +367,7 @@ session_start();
                         </div>
 
                     </div>
-                    <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="col-lg-5 col-md-12 col-sm-12">
                         <div class="card white-box py-0">
                             <h3 class="m-2">Returned Records</h3>
 
@@ -370,7 +377,7 @@ session_start();
                                         <th scope="col">Record ID</th>
                                         <th scope="col">Student Id</th>
                                         <th scope="col">Penalty</th>
-
+                                        <th scope="col">Boook Status</th>
 
                                     </tr>
                                 </thead>
@@ -386,6 +393,7 @@ session_start();
                                                 <th scope="row"><?= $row['record_id'] ?></th>
                                                 <td><?= $row['schoolId'] ?></td>
                                                 <td><?= $row['penalty'] ?></td>
+                                                <td><?= $row['bookStatus'] ?></td>
                                             </tr>
                                     <?php
                                         }

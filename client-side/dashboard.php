@@ -130,7 +130,7 @@ session_start();
 
                     <tr>
                         <th class="border-top-0 th-lg">ID</th>
-                        <th class="border-top-0 th-lg">File Name</th>
+                        <th class="border-top-0 th-lg">Title of Studies</th>
                         <th class="border-top-0 th-lg">Department</th>
                         <th class="border-top-0 th-lg">Type</th>
                         <th class="border-top-0 th-lg">Status</th>

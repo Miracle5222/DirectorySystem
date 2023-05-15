@@ -269,7 +269,7 @@ session_start();
                                                     } ?>
 
                                                 </td>
-                                                <td><a href="./visitRequest.php?br_id=<?= $row['br_id']  ?>" class="text-danger">Cancel</a></td>
+                                                <td><a href="./visitRequest.php?br_id=<?= $row['br_id']  ?>" onclick="return confirm('Are you sure you want to cancel your visit?')" class=" text-danger">Cancel</a></td>
 
 
 
