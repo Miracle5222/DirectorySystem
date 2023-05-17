@@ -15,18 +15,28 @@ session_start();
     <meta name="keywords" content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Ample lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Ample admin lite dashboard bootstrap 5 dashboard template">
     <meta name="description" content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Research Office Directory System | Add Records</title>
-    <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
+    <title>Research Office Directory System | Profile</title>
+
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
     <!-- Custom CSS -->
     <link href="css/style.min.css" rel="stylesheet">
+    <link href="./css/mystyle.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+
+    <!-- table styles -->
+    <!-- <link rel="stylesheet" type="text/css" href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" type="text/css" href="  https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
 </head>
 
 <body>
@@ -51,6 +61,7 @@ session_start();
                 <a href="dashboard.php" class="w-75">
                     <h4 class="m-15 text-light">Research Office Directory System </h4>
                 </a>
+                <a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
                 <div class="navbar-header" data-logobg="skin6">
                     <!-- ============================================================== -->
                     <!-- Logo -->
@@ -68,6 +79,7 @@ session_start();
                 <!-- End Logo -->
                 <!-- ============================================================== -->
                 <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+
                     <ul class="navbar-nav d-none d-md-block d-lg-none">
                         <li class="nav-item">
                             <a class="nav-toggler nav-link waves-effect waves-light text-white" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
@@ -109,9 +121,12 @@ session_start();
         <!-- ============================================================== -->
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
+
         <aside class="left-sidebar" data-sidebarbg="skin6">
+
             <!-- Sidebar scroll-->
             <div class="scroll-sidebar">
+
                 <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
@@ -136,7 +151,7 @@ session_start();
                             </a>
                             <ul class="dropdown-menu mx-4">
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="records.php"> <i class="fas fa-eye" aria-hidden="true"></i>View Records</a></li>
-                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="#">
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addRecords.php">
                                         <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="borrowed.php">
                                         <i class="fas fa-eject" aria-hidden="true"></i>Borrowed Records</a></li>
@@ -196,229 +211,135 @@ session_start();
             <div class="page-breadcrumb bg-white">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                        <h4 class="page-title">Add Records</h4>
-
+                        <h4 class="page-title text-primary">List of Return Books</h4>
                     </div>
+                    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                        <div class="d-md-flex">
 
+                        </div>
+                    </div>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            <!-- ============================================================== -->
-            <!-- End Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Container fluid  -->
-            <!-- ============================================================== -->
+            <div class="container-fluid m-6   bg-light">
 
-            <div class="container-fluid">
-                <?php include "./connection/config.php" ?>
-                <?php
+                <div class="row">
 
-                if (isset($_POST['submit'])) {
-                    // get name from the form when submitted
+                </div>
+                <div class="row mx-2">
 
-                    $countfiles = count($_FILES['pdf_file']['name']);
-                    $date = $_POST['date'];
-                    $type = $_POST['type'];
-                    $department_name = $_POST['course'];
-                    $status = "Available";
-                    $BookStatus = "Good Condition";
-                    for ($i = 0; $i < $countfiles; $i++) {
-                        $filename = $_FILES['pdf_file']['name'][$i];
+                    <div class="col-md-12">
+                        <table id="example" class="table table-responsive" style="width:100%">
+                            <thead>
 
-                        // Upload file
-
-                        if (isset($_FILES['pdf_file']['name'])) {
-
-                            $file_name = $_FILES['pdf_file']['name'];
-
-                            // $file_tmp = $_FILES['pdf_file']['tmp_name'];
-                            $strClean =  str_replace("'", "",  "$file_name[$i]");
-
-                            // move_uploaded_file($file_tmp, "./pdf/" . $file_name[0]);
-                            move_uploaded_file($_FILES['pdf_file']['tmp_name'][$i], './pdf/' . $strClean);
-                            $insertquery =
-                                "INSERT INTO record_tbl(date,status,type,department_name,fileName,recordBookStatus) VALUES('$date','$status','$type','$department_name','$strClean',' $BookStatus')";
-
-
-                            // Execute insert query
-                            $iquery = mysqli_query($conn, $insertquery);
-                        } else {
-
-                ?> <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <strong>Failed!</strong> File must be uploaded in PDF format!
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div><?php
-
-
-                                } // end if
-                            } // end if
-                            if ($iquery) { ?>
-
-
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Success!</strong> Data submitted successfully.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div><?php
-
-                            } else {
+                                <tr>
+                                    <th class="border-top-0 th-lg">ID</th>
+                                    <th class="border-top-0 th-lg">Title of Studies</th>
+                                    <th class="border-top-0 th-lg">Department</th>
+                                    <th class="border-top-0 th-lg">Type</th>
+                                    <th class="border-top-0 th-lg">Status</th>
+                                    <th class="border-top-0 th-lg">Remarks</th>
+                                    <th class="border-top-0 th-lg">Date</th>
+                                    <th class="border-top-0 th-lg">Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php include "./connection/config.php" ?>
+                                <?php
+                                $sql = "SELECT record_tbl.`record_id` ,record_tbl.`fileName`,record_tbl.`department_name`,record_tbl.`type`,record_tbl.`status`, record_tbl.`recordBookStatus`,record_tbl.`date` FROM record_tbl inner JOIN return_tbl ON record_tbl.`record_id` = return_tbl.`record_id`";
+                                $result = $conn->query($sql);
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        $exp = explode('.', $row['fileName']);
 
                                 ?>
 
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Failed!</strong> Try Again!
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                <?php
+                                        <tr class="fs-4" style="height:100px;">
+                                            <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View No. <?= $row['record_id'] ?> </a></td>
+                                            <td><?= $exp[0] ?></td>
+                                            <td><?= $row['department_name'] ?></td>
+                                            <td><?= $row['type'] ?></td>
+                                            <td>
+                                                <?php if ($row['status'] == "Available") { ?> <small class="d-block text-success fs-4"><?= $row['status'] ?></small>
+                                                <?php } else { ?>
+                                                    <small class="d-block text-danger fs-4"><?= $row['status'] ?></small>
+                                                <?php } ?>
+                                            </td>
 
-                            }
-                        }
+                                            <?php
+                                            if ($row['recordBookStatus'] == "Good Condition") { ?>
+                                                <td class="text-success">Good Condition</td>
+                                            <?php   } else {    ?>
+                                                <td class="text-warning"><?= $row['recordBookStatus'] ?></td>
+                                            <?php  }
+                                            ?>
+                                            <td><?= $row['date'] ?></td>
+                                            <td>
 
+                                                <div class="d-flex">
 
-
-
-                ?>
-                <div class="row">
-                    <div class="col-sm-5">
-                        <div class="white-box">
-                            <form class="form-horizontal form-material" method="POST" enctype="multipart/form-data">
-
-                                <div class="form-group mb-4">
-                                    <label class="col-md-12 p-0">Record Type</label>
-                                    <div class="col-md-12 border-bottom p-0">
-
-
-                                        <select class="form-select" aria-label="Default select example" name="type">
-                                            <option selected>Select Type</option>
-                                            <option value="Thesis">Thesis</option>
-                                            <option value="Capstone">Capstone</option>
-                                            <option value="Research">Research</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label class="col-md-12 p-0">Date</label>
-                                    <div class="col-md-12 border-bottom p-0">
-                                        <input type="date" class="form-control p-0 border-0" required name="date" />
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label class="col-md-12 p-0">Course</label>
-                                    <div class="col-md-12 border-bottom p-0">
+                                                    <a href="./editRecords.php?id=<?= $row['record_id'] ?>" class="btn btn-info text-light mx-2">Edit</a>
 
 
-                                        <select class="form-select" aria-label="Default select example" name="course">
-                                            <option selected>Select Department</option>
-                                            <option value="BEED">BEED</option>
-                                            <option value="BSIT">BSIT</option>
-                                            <option value="BSC">BSC</option>
-                                            <option value="BSED">BSED</option>
-                                            <option value="BSHRM">BSHRM</option>
-                                            <option value="MAED">MAED</option>
-                                            <option value="MAGDEV">MAGDEV</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group mb-4">
-
-                                    <div class="col-md-12 border-bottom p-0">
-                                        <input type="file" placeholder="123 456 7890" id="pdf" multiple required name="pdf_file[]" accept=".pdf" class="form-control p-2 border-0" />
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <div class="col-sm-12">
-                                        <input type="submit" placeholder="123 456 7890" name="submit" required class="btn btn-success" />
-
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12 col-sm-12">
-                        <div class="card white-box py-0">
-
-
-                            <table class="table p-2">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Departments</th>
-                                        <th scope="col">Total Records</th>
-
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <?php
-                                    $sql = " SELECT COUNT(department_name) AS TotalRecords,department_name  FROM record_tbl GROUP BY department_name";
-                                    $result = $conn->query($sql);
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                    ?>
-                                            <tr>
-                                                <th scope="row"><?= $row['department_name'] ?></th>
-                                                <td><?= $row['TotalRecords'] ?></td>
-
-                                            </tr>
-                                    <?php
-                                        }
+                                                    <?php if ($_SESSION['admin_type'] === "1") { ?>
+                                                        <a onClick="return confirm('are you sure you want to delete this file?')" href="./process/delete.php?id=<?= $row['record_id'] ?>&file=<?= $row['fileName'] ?>" class="btn btn-danger text-light">Delete</a>
+                                                    <?php } ?>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                <?php
                                     }
+                                }
 
-                                    $conn->close();
-                                    ?>
+                                $conn->close();
+                                ?>
 
-                                </tbody>
-                            </table>
-
-                        </div>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th class="border-top-0 th-lg">ID</th>
+                                    <th class="border-top-0 th-lg">Title of Studies</th>
+                                    <th class="border-top-0 th-lg">Department</th>
+                                    <th class="border-top-0 th-lg">Type</th>
+                                    <th class="border-top-0 th-lg">Status</th>
+                                    <th class="border-top-0 th-lg">Remarks</th>
+                                    <th class="border-top-0 th-lg">Date</th>
+                                    <th class="border-top-0 th-lg">Edit</th>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
-                    <!-- /.col -->
                 </div>
+
+
             </div>
         </div>
 
-        <!-- ============================================================== -->
-        <!-- End PAge Content -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Right sidebar -->
-        <!-- ============================================================== -->
-        <!-- .right-sidebar -->
-        <!-- ============================================================== -->
-        <!-- End Right sidebar -->
-        <!-- ============================================================== -->
+
+
+
+        <script>
+            $(document).ready(function() {
+                $('#example').DataTable();
+            });
+        </script>
+
+        <footer class="footer text-center"> 2022 © Research Office Directory System
+        </footer>
+
     </div>
-    <!-- ============================================================== -->
-    <!-- End Container fluid  -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- footer -->
-    <!-- ============================================================== -->
-    <footer class="footer text-center"> 2022 © Research Office Directory System
-    </footer>
-    <!-- ============================================================== -->
-    <!-- End footer -->
-    <!-- ============================================================== -->
+
     </div>
-    <!-- ============================================================== -->
-    <!-- End Page wrapper  -->
-    <!-- ============================================================== -->
-    </div>
-    <!-- ============================================================== -->
-    <!-- End Wrapper -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- All Jquery -->
-    <!-- ============================================================== -->
-    <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap tether Core JavaScript -->
+
+    <!-- <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script> -->
+
     <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/app-style-switcher.js"></script>
-    <!--Wave Effects -->
+
     <script src="js/waves.js"></script>
-    <!--Menu sidebar -->
+
     <script src="js/sidebarmenu.js"></script>
-    <!--Custom JavaScript -->
+
     <script src="js/custom.js"></script>
 </body>
 

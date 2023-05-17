@@ -38,12 +38,16 @@ session_start();
                         <div class="d-flex justify-content-between flex-direction w-100">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
 
-                                <li class="nav-item">
-                                    <a class="nav-link  text-light " href="profile.php">Profile</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link  text-light " href="visitRequest.php">Visit Request</a>
-                                </li>
+                                <div class="dropdown">
+                                    <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                        Profile
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="profile.php">Account</a>
+                                        <a class="dropdown-item" href="visitRequest.php">Visit Request</a>
+                                        <a class="dropdown-item" href="borrowedRecords.php">Borrowed Records</a>
+                                    </div>
+                                </div>
                                 <li class="nav-item">
                                     <a class="nav-link  text-light " aria-current="page" href="about.php">About</a>
                                 </li>

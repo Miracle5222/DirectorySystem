@@ -13,9 +13,7 @@ curl_setopt_array($curl, [
     CURLOPT_POSTFIELDS => json_encode([
         'messages' => [
             [
-
-                'source' => 'mashape',
-                'from' => '+639061229183',
+                'source' => 'shared',
                 'body' => 'This is a message from roneil',
                 'to' => '+639534686569',
                 'custom_string' => 'This is a message from roneil'

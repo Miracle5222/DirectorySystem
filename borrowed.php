@@ -143,7 +143,9 @@ session_start();
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="#">
                                         <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="borrowed.php">
-                                        <i class="fas fa-eject" aria-hidden="true"></i>Add Borrowed Records</a></li>
+                                        <i class="fas fa-eject" aria-hidden="true"></i>Borrowed Records</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="viewBorrowedRecords.php">
+                                        <i class="fas fa-eye" aria-hidden="true"></i>View Borrowed Record List</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="returnRecords.php">
                                         <i class="fas fa-file" aria-hidden="true"></i>Return Records</a></li>
 
@@ -291,23 +293,51 @@ session_start();
                                 <!-- $_SESSION['studentId'] -->
                                 <div class="form-group mb-4">
                                     <label class="col-md-12 p-0">Record ID</label>
-                                    <div class="col-md-12 border-bottom p-0">
-                                        <input type="number" class="form-control p-0 border-0" required name="record_id" />
-                                    </div>
+                                    <select class="form-select" aria-label="Default select example" required name="record_id">
+                                        <?php
+                                        $sql = " SELECT * from record_tbl where status = 'Available'";
+                                        $result = $conn->query($sql);
+                                        if ($result->num_rows > 0) {
+                                            while ($row = $result->fetch_assoc()) {
+                                        ?>
+                                                <option selected value="<?= $row['record_id'] ?>"><?= $row['record_id'] ?></option>
 
+                                            <?php
+                                            }
+                                        } else {  ?>
+                                            <option>Not Available</option>
+                                        <?php  }
+
+
+                                        ?>
+                                    </select>
                                 </div>
                                 <div class="form-group mb-4">
-                                    <label class="col-md-12 p-0">Date Today</label>
+                                    <label class="col-md-12 p-0">Date Borrowed</label>
                                     <div class="col-md-12 border-bottom p-0">
                                         <input type="date" class="form-control p-0 border-0" required name="date_today" />
                                     </div>
                                 </div>
                                 <div class="form-group mb-4">
                                     <label class="col-md-12 p-0">Student ID</label>
-                                    <div class="col-md-12 border-bottom p-0">
-                                        <input type="text" class="form-control p-0 border-0" required name="student_id" />
-                                    </div>
+                                    <select class="form-select" aria-label="Default select example" required name="student_id">
+                                        <?php
+                                        $sql = " SELECT * from student_tbl";
+                                        $result = $conn->query($sql);
+                                        if ($result->num_rows > 0) {
+                                            while ($row = $result->fetch_assoc()) {
+                                        ?>
+                                                <option selected value="<?= $row['schoolId'] ?>"><?= $row['schoolId'] ?></option>
 
+                                            <?php
+                                            }
+                                        } else {  ?>
+                                            <option>Not Available</option>
+                                        <?php  }
+
+
+                                        ?>
+                                    </select>
 
                                 </div>
 

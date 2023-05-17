@@ -142,7 +142,9 @@ session_start();
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="#">
                                         <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="borrowed.php">
-                                        <i class="fas fa-eject" aria-hidden="true"></i>Add Borrowed Records</a></li>
+                                        <i class="fas fa-eject" aria-hidden="true"></i>Borrowed Records</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="viewBorrowedRecords.php">
+                                        <i class="fas fa-eye" aria-hidden="true"></i>View Borrowed Record List</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="returnRecords.php">
                                         <i class="fas fa-file" aria-hidden="true"></i>Return Records</a></li>
 
@@ -221,26 +223,32 @@ session_start();
                     $fileName = trim($_POST['fileName']) . ".pdf";
                     $department_name = $_POST['course'];
                     $status = $_POST['status'];
-
+                    $bookStatus = $_POST['bookStatus'];
 
 
 
                     $updateQuery = "update record_tbl set status = '$status', type= '$type', department_name = '$department_name' ,fileName = '$fileName' where record_id =$id ";
 
 
+
+
                     // Execute insert query
 
-                    if ($iquery = mysqli_query($conn, $updateQuery)) { ?>
+                    if ($iquery = mysqli_query($conn, $updateQuery)) {
 
+                        $insertquery = "update record_tbl set recordBookStatus = '$bookStatus' where record_id = '$id'";
 
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Success!</strong> Data Updated successfully.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div><?php
+                        $iqueryReturnRecord = mysqli_query($conn, $insertquery);
+                        if ($iqueryReturnRecord) { ?>
 
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Success!</strong> Data Updated successfully.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div><?php
+                                }
                             } else {
 
-                                ?>
+                                    ?>
 
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <strong>Failed Update</strong> Try Again!
@@ -256,17 +264,20 @@ session_start();
                 <div class="row">
                     <div class="col-sm-5">
                         <div class="white-box">
-                            <?php include "./connection/config.php" ?>
-                            <?php
-                            $id = $_GET['id'];
-                            $sql = " SELECT * FROM record_tbl where record_id = $id";
-                            $result = $conn->query($sql);
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    $exp = explode('.', $row['fileName']);
+                            <form class="form-horizontal form-material" method="POST" enctype="multipart/form-data">
 
-                            ?>
-                                    <form class="form-horizontal form-material" method="POST" enctype="multipart/form-data">
+                                <?php
+                                $id = $_GET['id'];
+                                $sql = "SELECT record_tbl.`record_id` ,record_tbl.`fileName`,record_tbl.`department_name`,record_tbl.`type`,record_tbl.`status`, return_tbl.`bookStatus`,record_tbl.`date` FROM record_tbl left JOIN return_tbl ON record_tbl.`record_id` = return_tbl.`record_id` where record_tbl.record_id = $id";
+                                $result = $conn->query($sql);
+
+
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        $exp = explode('.', $row['fileName']);
+
+                                ?>
+
                                         <div class="form-group mb-4">
                                             <label class="col-md-12 p-0">FileName</label>
                                             <div class="col-md-12 border-bottom p-0">
@@ -314,6 +325,23 @@ session_start();
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="form-group mb-4">
+                                            <label class="col-md-12 p-0">Record Status</label>
+
+                                            <select class="form-select" aria-label="Default select example" required name="bookStatus">
+                                                <option selected value="<?= $row['bookStatus']  ?>">Select Record Status:</option>
+                                                <option value="Good Condition">Good Condition</option>
+                                                <option value="Lack of Pages">Lack of Pages</option>
+                                                <option value="Torn or Damaged Pages">Torn or Damaged Pages</option>
+                                                <option value="Bent or Folded Pages">Bent or Folded Pages</option>
+                                                <option value="Stains or Spills">Stains or Spills</option>
+                                                <option value="Cover Damage">Cover Damage</option>
+                                                <option value="Dust or Dirt">Dust or Dirt</option>
+                                                <option value="Lost">Lost</option>
+
+                                            </select>
+
+                                        </div>
 
 
                                         <div class="form-group mb-4">
@@ -322,13 +350,14 @@ session_start();
 
                                             </div>
                                         </div>
-                                    </form>
-                            <?php
+
+                                <?php
+                                    }
                                 }
-                            }
 
 
-                            ?>
+                                ?>
+                            </form>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12">

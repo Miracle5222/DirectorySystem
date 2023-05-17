@@ -37,6 +37,18 @@ session_start();
     <!-- table styles -->
     <!-- <link rel="stylesheet" type="text/css" href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"> -->
     <link rel="stylesheet" type="text/css" href="  https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+
 </head>
 
 <body>
@@ -49,6 +61,44 @@ session_start();
             <div class="lds-pos"></div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                "order": [],
+                "columnDefs": [{
+                    "targets": [2, 3, 4, 5],
+                    "render": function(data, type, row, meta) {
+                        if (type === 'filter') {
+                            var api = new $.fn.dataTable.Api(meta.settings);
+                            var column = api.column(meta.col);
+                            var select = $('<select><option value=""></option></select>')
+                                .appendTo($(column.header()).empty())
+                                .on('change', function() {
+                                    column.search($(this).val()).draw();
+                                });
+                            column.data().unique().sort().each(function(d, j) {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+                            });
+                        }
+                        if (type === 'display') {
+                            if (meta.col === 4) {
+                                if (data === 'Available') {
+                                    return '<span class="text-success">' + data + '</span>';
+                                } else if (data === 'Not Available') {
+                                    return '<span class="text-danger">' + data + '</span>';
+                                }
+                            }
+                            return data;
+                        }
+                        return data;
+                    }
+                }]
+            });
+        });
+    </script>
+
+
+
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -154,7 +204,9 @@ session_start();
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addRecords.php">
                                         <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="borrowed.php">
-                                        <i class="fas fa-eject" aria-hidden="true"></i>Add Borrowed Records</a></li>
+                                        <i class="fas fa-eject" aria-hidden="true"></i>Borrowed Records</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="viewBorrowedRecords.php">
+                                        <i class="fas fa-eye" aria-hidden="true"></i>View Borrowed Record List</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="returnRecords.php">
                                         <i class="fas fa-file" aria-hidden="true"></i>Return Records</a></li>
 
@@ -231,14 +283,15 @@ session_start();
                                 <th class="border-top-0 th-lg">Department</th>
                                 <th class="border-top-0 th-lg">Type</th>
                                 <th class="border-top-0 th-lg">Status</th>
+                                <th class="border-top-0 th-lg">Remarks</th>
                                 <th class="border-top-0 th-lg">Date</th>
-                                <th class="border-top-0 th-lg">Edit</th>
+                                <th class="border-top-0 th-lg">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php include "./connection/config.php" ?>
                             <?php
-                            $sql = " SELECT * FROM record_tbl";
+                            $sql = "SELECT record_tbl.`record_id` ,record_tbl.`fileName`,record_tbl.`department_name`,record_tbl.`type`,record_tbl.`status`, record_tbl.`recordBookStatus`,record_tbl.`date` FROM record_tbl LEFT JOIN return_tbl ON record_tbl.`record_id` = return_tbl.`record_id`";
                             $result = $conn->query($sql);
                             if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
@@ -258,6 +311,13 @@ session_start();
                                             <?php } ?>
                                         </td>
 
+                                        <?php
+                                        if ($row['recordBookStatus'] == "Good Condition") { ?>
+                                            <td class="text-success">Good Condition</td>
+                                        <?php   } else {    ?>
+                                            <td class="text-warning"><?= $row['recordBookStatus'] ?></td>
+                                        <?php  }
+                                        ?>
                                         <td><?= $row['date'] ?></td>
                                         <td>
 
@@ -282,12 +342,14 @@ session_start();
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
+                                <th class="border-top-0 th-lg">ID</th>
+                                <th class="border-top-0 th-lg">Title of Studies</th>
+                                <th class="border-top-0 th-lg">Department</th>
+                                <th class="border-top-0 th-lg">Type</th>
+                                <th class="border-top-0 th-lg">Status</th>
+                                <th class="border-top-0 th-lg">Remarks</th>
+                                <th class="border-top-0 th-lg">Date</th>
+                                <th class="border-top-0 th-lg">Action</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -300,11 +362,12 @@ session_start();
 
 
 
-        <script>
+        <!-- <script>
             $(document).ready(function() {
                 $('#example').DataTable();
             });
-        </script>
+        </script> -->
+
 
         <footer class="footer text-center"> 2022 © Research Office Directory System
         </footer>

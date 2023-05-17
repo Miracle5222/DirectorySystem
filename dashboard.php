@@ -6,7 +6,7 @@ session_start();
 } ?>
 <?php include "./query.php" ?>
 <?php include "./connection/config.php" ?>
-
+<?php include "./sendText.php" ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -40,6 +40,22 @@ session_start();
     </div>
   </div>
 
+  <?php
+  // Set the time interval (in seconds) after which the page should be reloaded
+  $reloadInterval = 86400; // 24 hours
+  // $reloadInterval = 3; // 3 seconds
+  // Get the current page URL
+  $pageURL = $_SERVER['REQUEST_URI'];
+
+  // Set the refresh header to reload the page
+  header("Refresh: $reloadInterval; URL=$pageURL");
+  ?>
+  <script>
+    // JavaScript function to reload the page after the specified time interval
+    setTimeout(function() {
+      location.reload();
+    }, <?php echo $reloadInterval * 1000; ?>); // Convert the interval to milliseconds
+  </script>
 
   <!-- ============================================================== -->
   <!-- Main wrapper - style you can find in pages.scss -->
@@ -160,7 +176,9 @@ session_start();
                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="addRecords.php">
                     <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="borrowed.php">
-                    <i class="fas fa-eject" aria-hidden="true"></i>Add Borrowed Records</a></li>
+                    <i class="fas fa-eject" aria-hidden="true"></i>Borrowed Records</a></li>
+                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="viewBorrowedRecords.php">
+                    <i class="fas fa-eye" aria-hidden="true"></i>View Borrowed Record List</a></li>
                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="returnRecords.php">
                     <i class="fas fa-file" aria-hidden="true"></i>Return Records</a></li>
 
@@ -666,96 +684,9 @@ session_start();
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-12 col-lg-12 col-sm-12">
-                <div class="white-box">
-                  <div class="d-flex justify-content-between align-items-center ">
-                    <h3 class="box-title" id="hint">Borrowed Records</h3>
-                    <form action="./sendText.php">
-                      <button class="btn btn-outline-info" type="submit">Notify Student</button>
-                    </form>
-                  </div>
-                  <div class="row d-flex justify-content-start align-items-center ">
-
-                    <!-- <div class="col-md-3 ">
-
-                  <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                    <option>Sort By</option>
-                    <option selected value="visit_date">Visit Date</option>
-                    <option value="br_id">Request ID</option>
-                    <option value="record_id">Record ID</option>
-                  </select>
-
-                </div> -->
-
-                    <div class="table-responsive">
-
-                      <?php
 
 
-
-                      $sql = " SELECT * FROM borrowed_tbl";
-                      $result = $conn->query($sql);
-
-                      ?>
-                      <?php
-                      if ($result->num_rows > 0) { ?>
-                        <table class="table text-nowrap">
-                          <thead>
-
-                            <tr>
-                              <th class="border-top-0">Borrowed ID</th>
-                              <th class="border-top-0">Record</th>
-                              <th class="border-top-0">Return Date</th>
-                              <th class="border-top-0">Student ID</th>
-
-
-                            </tr>
-
-                          </thead>
-                          <tbody id="sort">
-                            <?php
-
-                            while ($row = $result->fetch_assoc()) {
-
-                            ?> <tr>
-                                <td><?= $row['borrowed_id'] ?></td>
-                                <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View <?= $row['record_id'] ?> </a></td>
-                                <td><?= $row['return_date'] ?></td>
-                                <td><?= $row['schoolId'] ?></td>
-
-
-
-
-                              </tr>
-
-                            <?php
-                            }
-
-
-
-
-                            ?>
-
-
-
-                          </tbody>
-                        </table>
-                      <?php
-
-                      } else {
-                        echo "No Borrowed Records";
-                      }
-
-
-
-                      ?>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- <div class="row">
+            <!-- <div class="row">
        
             <div class="col-md-12 col-lg-8 col-sm-12">
               <div class="card white-box p-0">
@@ -848,64 +779,64 @@ session_start();
 
 
 
-              <!-- /.col -->
-            </div>
+            <!-- /.col -->
           </div>
-          <!-- ============================================================== -->
-          <!-- End Container fluid  -->
-          <!-- ============================================================== -->
-          <!-- ============================================================== -->
-          <!-- footer -->
-          <!-- ============================================================== -->
-          <footer class="footer text-center">
-            2022 © Research Office Directory System
-
-          </footer>
-          <script>
-
-          </script>
-          <!-- ============================================================== -->
-          <!-- End footer -->
-          <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
-        <!-- End Page wrapper  -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer text-center">
+          2022 © Research Office Directory System
+
+        </footer>
+        <script>
+
+        </script>
+        <!-- ============================================================== -->
+        <!-- End footer -->
         <!-- ============================================================== -->
       </div>
-      <script>
-        const data = [0, 5, 6, 10, 9, 12, 4, 9]
-        const config = {
-          type: 'bar',
-          height: '50',
-          barWidth: '10',
-          resize: true,
-          barSpacing: '5',
-          barColor: '#7ace4c'
-        }
-        $('#sparklinedash5').sparkline(data, config)
-      </script>
       <!-- ============================================================== -->
-      <!-- End Wrapper -->
+      <!-- End Page wrapper  -->
       <!-- ============================================================== -->
-      <!-- ============================================================== -->
-      <!-- All Jquery -->
-      <!-- ============================================================== -->
-      <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
-      <!-- Bootstrap tether Core JavaScript -->
-      <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-      <script src="js/app-style-switcher.js"></script>
-      <script src="plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
-      <!--Wave Effects -->
-      <script src="js/waves.js"></script>
-      <!--Menu sidebar -->
-      <script src="js/sidebarmenu.js"></script>
-      <!--Custom JavaScript -->
-      <script src="js/custom.js"></script>
-      <!--This page JavaScript -->
-      <!--chartis chart-->
-      <script src="plugins/bower_components/chartist/dist/chartist.min.js"></script>
-      <script src="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
-      <script src="js/pages/dashboards/dashboard1.js"></script>
+    </div>
+    <script>
+      const data = [0, 5, 6, 10, 9, 12, 4, 9]
+      const config = {
+        type: 'bar',
+        height: '50',
+        barWidth: '10',
+        resize: true,
+        barSpacing: '5',
+        barColor: '#7ace4c'
+      }
+      $('#sparklinedash5').sparkline(data, config)
+    </script>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="plugins/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app-style-switcher.js"></script>
+    <script src="plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
+    <!--Wave Effects -->
+    <script src="js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="js/custom.js"></script>
+    <!--This page JavaScript -->
+    <!--chartis chart-->
+    <script src="plugins/bower_components/chartist/dist/chartist.min.js"></script>
+    <script src="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+    <script src="js/pages/dashboards/dashboard1.js"></script>
 </body>
 
 </html>

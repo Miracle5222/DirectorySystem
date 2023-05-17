@@ -139,7 +139,9 @@ session_start();
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="#">
                                         <i class="fas fa-edit" aria-hidden="true"></i>Add Records</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="borrowed.php">
-                                        <i class="fas fa-eject" aria-hidden="true"></i>Add Borrowed Records</a></li>
+                                        <i class="fas fa-eject" aria-hidden="true"></i>Borrowed Records</a></li>
+                                <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="viewBorrowedRecords.php">
+                                        <i class="fas fa-eye" aria-hidden="true"></i>View Borrowed Record List</a></li>
                                 <li><a class="dropdown-item sidebar-link waves-effect waves-dark sidebar-link" href="returnRecords.php">
                                         <i class="fas fa-file" aria-hidden="true"></i>Return Records</a></li>
 
@@ -209,6 +211,9 @@ session_start();
             <!-- ============================================================== -->
 
             <div class="container-fluid">
+                <div class="my-4">
+                    <a href="newReturnRecords.php" class="btn btn-outline-primary">View Return Records</a>
+                </div>
                 <?php include "./connection/config.php" ?>
                 <?php
 
@@ -229,12 +234,8 @@ session_start();
 
 
                     if ($days_diff > 3) {
-                        $returned_date = new DateTime($return_date);
-                        $dateToday = new DateTime();
-                        $dateToday->format('Y-m-d');
 
-                        $newdays_diff = $returned_datetime->diff($dateToday)->days;
-
+                        $newdays_diff =  $days_diff - 3;
                         $penalty = $newdays_diff  * 50;
                     } else {
                         $penalty = 0;
@@ -286,24 +287,79 @@ session_start();
                     <div class="col-sm-4">
                         <div class="white-box">
                             <form class="form-horizontal form-material" method="POST" enctype="multipart/form-data">
-
                                 <div class="form-group mb-4">
                                     <label class="col-md-12 p-0">Record ID</label>
-                                    <div class="col-md-12 border-bottom p-0">
-                                        <input type="number" class="form-control p-0 border-0" required name="record_id" />
-                                    </div>
+
+                                    <select class="form-select" aria-label="Default select example" required name="record_id">
+                                        <?php
+                                        $sql = " SELECT * from borrowed_tbl";
+                                        $result = $conn->query($sql);
+                                        if ($result->num_rows > 0) {
+                                            while ($row = $result->fetch_assoc()) {
+                                        ?>
+                                                <option selected value="<?= $row['record_id'] ?>"><?= $row['record_id'] ?></option>
+
+                                            <?php
+                                            }
+                                        } else {  ?>
+                                            <option>Not Available</option>
+                                        <?php  }
+
+
+                                        ?>
+                                    </select>
                                 </div>
+
+
+
 
                                 <div class="form-group mb-4">
                                     <label class="col-md-12 p-0">Student ID</label>
                                     <div class="col-md-12 border-bottom p-0">
-                                        <input type="text" class="form-control p-0 border-0" required name="student_id" />
+
+
+
+                                        <select class="form-select" aria-label="Default select example" required name="student_id">
+                                            <?php
+                                            $sql = " SELECT * from borrowed_tbl";
+                                            $result = $conn->query($sql);
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+                                            ?>
+                                                    <option selected value="<?= $row['schoolId'] ?>"><?= $row['schoolId'] ?></option>
+
+                                                <?php
+                                                }
+                                            } else {  ?>
+                                                <option>Not Available</option>
+                                            <?php  }
+
+
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-4">
                                     <label class="col-md-12 p-0">Date Borrowed</label>
                                     <div class="col-md-12 border-bottom p-0">
-                                        <input type="date" class="form-control p-0 border-0" required name="date_borrowed" />
+                                        <select class="form-select" aria-label="Default select example" required name="date_borrowed">
+                                            <?php
+                                            $sql = " SELECT * from borrowed_tbl";
+                                            $result = $conn->query($sql);
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+                                            ?>
+                                                    <option selected value="<?= $row['date_today'] ?>"><?= $row['date_today'] ?></option>
+
+                                                <?php
+                                                }
+                                            } else {  ?>
+                                                <option>Not Available</option>
+                                            <?php  }
+
+
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-4">
@@ -314,9 +370,19 @@ session_start();
                                 </div>
                                 <div class="form-group mb-4">
                                     <label class="col-md-12 p-0">Book Status</label>
-                                    <div class="col-md-12 border-bottom p-0">
-                                        <input type="text" class="form-control p-0 border-0" required name="bookStatus" />
-                                    </div>
+
+                                    <select class="form-select" aria-label="Default select example" required name="bookStatus">
+                                        <option selected>Select Record Status:</option>
+                                        <option value="Lack of Pages">Lack of Pages</option>
+                                        <option value="Torn or Damaged Pages">Torn or Damaged Pages</option>
+                                        <option value="Bent or Folded Pages">Bent or Folded Pages</option>
+                                        <option value="Stains or Spills">Stains or Spills</option>
+                                        <option value="Cover Damage">Cover Damage</option>
+                                        <option value="Dust or Dirt">Dust or Dirt</option>
+                                        <option value="Lost">Lost</option>
+
+                                    </select>
+
                                 </div>
 
 
@@ -330,108 +396,29 @@ session_start();
                             </form>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-12 col-sm-12">
-                        <div class="card white-box py-0">
+
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <?php
+
+                        if (isset($_GET['return'])) {
+                            $returnRecords = $_GET['return'];
+                            $updatequery =
+                                "update record_tbl set status = 'Available' where record_id = '$returnRecords'";
+                            $iquery = mysqli_query($conn, $updatequery);
+
+                            $deletequery =
+                                "delete from borrowed_tbl where record_id = '$returnRecords'";
+                            $dquery = mysqli_query($conn, $deletequery);
 
 
-                            <table class="table p-2">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Departments</th>
-                                        <th scope="col">Total Records</th>
-
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <?php
-                                    $sql = " SELECT COUNT(department_name) AS TotalRecords,department_name  FROM record_tbl GROUP BY department_name";
-                                    $result = $conn->query($sql);
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                    ?>
-                                            <tr>
-                                                <th scope="row"><?= $row['department_name'] ?></th>
-                                                <td><?= $row['TotalRecords'] ?></td>
-
-                                            </tr>
-                                    <?php
-                                        }
-                                    }
-
-                                    ?>
-
-                                </tbody>
-                            </table>
-
-                        </div>
-
-                    </div>
-                    <div class="col-lg-5 col-md-12 col-sm-12">
-                        <div class="card white-box py-0">
-                            <h3 class="m-2">Returned Records</h3>
-
-                            <table class="table p-2">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Record ID</th>
-                                        <th scope="col">Student Id</th>
-                                        <th scope="col">Penalty</th>
-                                        <th scope="col">Boook Status</th>
-
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <?php
-                                    $sql = " SELECT * from return_tbl order by date_today desc limit 10";
-                                    $result = $conn->query($sql);
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                    ?>
-                                            <tr>
-                                                <th scope="row"><?= $row['record_id'] ?></th>
-                                                <td><?= $row['schoolId'] ?></td>
-                                                <td><?= $row['penalty'] ?></td>
-                                                <td><?= $row['bookStatus'] ?></td>
-                                            </tr>
-                                    <?php
-                                        }
-                                    }
-
-
-                                    ?>
-
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>
-                    <!-- /.col -->
-                </div>
-                <div class="row">
-                    <?php
-
-                    if (isset($_GET['return'])) {
-                        $returnRecords = $_GET['return'];
-                        $updatequery =
-                            "update record_tbl set status = 'Available' where record_id = '$returnRecords'";
-                        $iquery = mysqli_query($conn, $updatequery);
-
-                        $deletequery =
-                            "delete from borrowed_tbl where record_id = '$returnRecords'";
-                        $dquery = mysqli_query($conn, $deletequery);
-
-
-                        $updateBorrowed =
-                            "update return_tbl set status = 'inStock' where record_id = '$returnRecords'";
-                        $dquery = mysqli_query($conn, $updateBorrowed);
-                        // $deleteReturnPending =
-                        //     "delete from return_tbl where record_id = '$returnRecords'";
-                        // $dquery = mysqli_query($conn, $deleteReturnPending);
-                    }
-                    ?>
-                    <div class="col-md-12">
+                            $updateBorrowed =
+                                "update return_tbl set status = 'inStock' where record_id = '$returnRecords'";
+                            $dquery = mysqli_query($conn, $updateBorrowed);
+                            // $deleteReturnPending =
+                            //     "delete from return_tbl where record_id = '$returnRecords'";
+                            // $dquery = mysqli_query($conn, $deleteReturnPending);
+                        }
+                        ?>
                         <div class="card white-box py-0">
                             <h3 class="m-2 py-2">Return Request</h3>
 
@@ -470,22 +457,27 @@ session_start();
                                 </tbody>
                             </table>
 
+
                         </div>
                     </div>
+                    <!-- /.col -->
                 </div>
+
             </div>
         </div>
+    </div>
+    </div>
 
-        <!-- ============================================================== -->
-        <!-- End PAge Content -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Right sidebar -->
-        <!-- ============================================================== -->
-        <!-- .right-sidebar -->
-        <!-- ============================================================== -->
-        <!-- End Right sidebar -->
-        <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- End PAge Content -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Right sidebar -->
+    <!-- ============================================================== -->
+    <!-- .right-sidebar -->
+    <!-- ============================================================== -->
+    <!-- End Right sidebar -->
+    <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
     <!-- End Container fluid  -->

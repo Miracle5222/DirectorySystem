@@ -39,8 +39,6 @@ if (isset($_GET['borrowed_id'])) {
             $days_diff = $returned_datetime->diff($borrowed_datetime)->days;
 
 
-            echo $days_diff;
-            echo "<br>";
             if ($days_diff > 3) {
 
                 $returned_date = new DateTime($row['return_date']);
@@ -48,8 +46,7 @@ if (isset($_GET['borrowed_id'])) {
                 $today = $dateToday->format('Y-m-d');
 
                 $newdays_diff = $dateToday->diff($returned_date)->days;
-                echo $newdays_diff;
-                echo gettype($today);
+
                 $penalty = $newdays_diff  * 50;
             } else {
                 $penalty = 0;

@@ -32,12 +32,18 @@ session_start();
                         <div class="d-flex justify-content-between flex-direction w-100">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
 
-                                <li class="nav-item">
-                                    <a class="nav-link  text-light " href="profile.php">Profile</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link  text-light " href="visitRequest.php">Visit Request</a>
-                                </li>
+
+                                <div class="dropdown">
+                                    <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                        Profile
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="profile.php">Account</a>
+                                        <a class="dropdown-item" href="visitRequest.php">Visit Request</a>
+                                        <a class="dropdown-item" href="borrowedRecords.php">Borrowed Records</a>
+                                    </div>
+                                </div>
+
                                 <li class="nav-item">
                                     <a class="nav-link  text-light " aria-current="page" href="about.php">About</a>
                                 </li>
@@ -66,7 +72,7 @@ session_start();
     </div>
 
     <div class="container my-4 ">
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-4">
                 <?php
 
@@ -191,13 +197,13 @@ session_start();
                         </form>
                     </div>
                 </div>
-            <?php  } ?>
+            <?php  } ?> -->
 
-            <div class="col-md-8 col-lg-8 col-sm-8">
-                <div class="card bg-light border-0 p-4">
-                    <h3 class="box-title text-info" id="hint">Visit Request</h3>
-                    <div class="row d-flex justify-content-start align-items-center ">
-                        <!-- <div class="col-md-3 ">
+        <div class="col-md-12 col-lg-12 col-sm-12">
+            <div class="card bg-light border-0 p-4">
+                <h3 class="box-title text-info" id="hint">Visit Request</h3>
+                <div class="row d-flex justify-content-start align-items-center ">
+                    <!-- <div class="col-md-3 ">
 
                   <select class="form-select form-select-sm" aria-label=".form-select-sm example">
                     <option>Sort By</option>
@@ -208,159 +214,99 @@ session_start();
 
                 </div> -->
 
-                        <div class="table-responsive">
-                            <!-- canel request-->
-                            <?php
-                            if (isset($_GET['br_id'])) {
-                                $br_id = $_GET['br_id'];
-                                $deletequery =
-                                    "delete from borrow_tbl where br_id = '$br_id'";
-                                $dquery = mysqli_query($conn, $deletequery);
-                            }
-                            ?>
+                    <div class="table-responsive">
+                        <!-- canel request-->
+                        <?php
+                        if (isset($_GET['br_id'])) {
+                            $br_id = $_GET['br_id'];
+                            $deletequery =
+                                "delete from borrow_tbl where br_id = '$br_id'";
+                            $dquery = mysqli_query($conn, $deletequery);
+                        }
+                        ?>
 
 
-                            <?php
-                            $q = isset($_GET['q']);
+                        <?php
+                        $q = isset($_GET['q']);
 
 
-                            $sql = "SELECT * from borrow_tbl where schoolId = '$_SESSION[school_id]'";
-                            $result = $conn->query($sql);
+                        $sql = "SELECT * from borrow_tbl where schoolId = '$_SESSION[school_id]'";
+                        $result = $conn->query($sql);
 
-                            ?>
-                            <table class="table text-nowrap">
-                                <thead>
+                        ?>
+                        <table class="table text-nowrap">
+                            <thead>
 
-                                    <tr>
-                                        <th class="border-top-0">Request ID</th>
-                                        <th class="border-top-0">Purpose</th>
-                                        <th class="border-top-0">Student ID</th>
-                                        <th class="border-top-0">Visit Date</th>
-                                        <th class="border-top-0">Record </th>
-                                        <th class="border-top-0">Borrow Status</th>
-                                        <th class="border-top-0">Edit</th>
-                                    </tr>
+                                <tr>
+                                    <th class="border-top-0">Request ID</th>
+                                    <th class="border-top-0">Purpose</th>
+                                    <th class="border-top-0">Student ID</th>
+                                    <th class="border-top-0">Visit Date</th>
+                                    <th class="border-top-0">Record </th>
+                                    <th class="border-top-0">Borrow Status</th>
+                                    <th class="border-top-0">Edit</th>
+                                </tr>
 
-                                </thead>
-                                <tbody id="sort">
-                                    <?php
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
+                            </thead>
+                            <tbody id="sort">
+                                <?php
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
 
-                                    ?> <tr>
-                                                <td><?= $row['br_id'] ?></td>
-                                                <td><?= $row['purpose'] ?></td>
-                                                <td><?= $row['schoolId'] ?></td>
-                                                <td><?= $row['visit_date'] ?></td>
-                                                <td><a href="../viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View No. <?= $row['record_id'] ?> </a></td>
-                                                <td>
-                                                    <?php if ($row['borrow_status'] == "pending") { ?>
-                                                        <small class="d-block text-info fs-5"><?= $row['borrow_status'] ?></small>
-                                                    <?php } elseif ($row['borrow_status'] == "Declined") {
-                                                    ?>
-                                                        <small class="d-block text-danger fs-5"><?= $row['borrow_status'] ?></small>
-                                                    <?php
-                                                    } else { ?>
-                                                        <small class="d-block text-success fs-5"><?= $row['borrow_status'] ?></small>
-                                                    <?php
+                                ?> <tr>
+                                            <td><?= $row['br_id'] ?></td>
+                                            <td><?= $row['purpose'] ?></td>
+                                            <td><?= $row['schoolId'] ?></td>
+                                            <td><?= $row['visit_date'] ?></td>
+                                            <td><a href="../viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View No. <?= $row['record_id'] ?> </a></td>
+                                            <td>
+                                                <?php if ($row['borrow_status'] == "pending") { ?>
+                                                    <small class="d-block text-info fs-5"><?= $row['borrow_status'] ?></small>
+                                                <?php } elseif ($row['borrow_status'] == "Declined") {
+                                                ?>
+                                                    <small class="d-block text-danger fs-5"><?= $row['borrow_status'] ?></small>
+                                                <?php
+                                                } else { ?>
+                                                    <small class="d-block text-success fs-5"><?= $row['borrow_status'] ?></small>
+                                                <?php
 
 
 
-                                                    } ?>
+                                                } ?>
 
-                                                </td>
+                                            </td>
+                                            <?php
+
+                                            if ($row['borrow_status'] == "Granted") { ?>
+                                                <td><a href="#" class=" text-info">...</a></td>
+
+                                            <?php    } else { ?>
                                                 <td><a href="./visitRequest.php?br_id=<?= $row['br_id']  ?>" onclick="return confirm('Are you sure you want to cancel your visit?')" class=" text-danger">Cancel</a></td>
+                                            <?php  }
+                                            ?>
 
 
 
-                                            </tr>
 
-                                    <?php
-                                        }
+                                        </tr>
+
+                                <?php
                                     }
+                                }
 
-                                    ?>
+                                ?>
 
 
 
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-
         </div>
-        <div class="row">
-            <div class="container">
-                <div class="bg-light p-4">
-                    <h1>My Borrowed Records</h1>
-                    <table class="table">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Record ID</th>
-                                <th scope="col">Retured Date</th>
-                                <th scope="col">Date Borrowed</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Return</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
 
-                            $sql = "SELECT * from borrowed_tbl where schoolId = '$_SESSION[school_id]'";
-                            $result = $conn->query($sql);
+    </div>
 
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                            ?>
-                                    <tr>
-                                        <th scope="row"><?= $row['borrowed_id'] ?></th>
-                                        <td><?= $row['record_id'] ?></td>
-                                        <td><?= $row['return_date'] ?></td>
-                                        <td><?= $row['date_today'] ?></td>
-
-                                        <?php
-                                        if ($row['status'] === 'Active') { ?>
-                                            <td class="text-success"><?= $row['status'] ?></td>
-                                        <?php } else if ($row['status'] === 'Pending...') { ?>
-                                            <td class="text-info"><?= $row['status'] ?></td>
-                                        <?php    } else { ?>
-                                            <td class="text-warning"><?= $row['status'] ?></td>
-                                        <?php        }
-                                        ?>
-
-                                        <td>
-                                            <?php
-                                            if ($row['status'] === 'Pending...') {    ?>
-                                                <span class="text-success">Proccess..</span>
-                                            <?php  } else { ?>
-                                                <a href="./returndData.php?borrowed_id=<?= $row['borrowed_id'] ?>">Return Record</a>
-                                            <?php
-                                            }
-                                            ?>
-
-                                            <!-- <form>
-                                                <input type="text" id="borrowed_id" value='<?= $row['borrowed_id'] ?>' hidden name="recordid">
-
-                                                <button class="btn btn-primary" onclick="submitData()">Return Record</button>
-                                            </form> -->
-                                        </td>
-                                        <!-- <td><i class="fas fa-edit"></i></td> -->
-                                    </tr>
-                            <?php
-                                }
-                            }
-                            ?>
-
-                        </tbody>
-                    </table>
-
-
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
