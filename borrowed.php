@@ -358,43 +358,7 @@ session_start();
                             </form>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-12 col-sm-12">
-                        <div class="card white-box py-0">
 
-
-                            <table class="table p-2">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Departments</th>
-                                        <th scope="col">Total Records</th>
-
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <?php
-                                    $sql = " SELECT COUNT(department_name) AS TotalRecords,department_name  FROM record_tbl GROUP BY department_name";
-                                    $result = $conn->query($sql);
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                    ?>
-                                            <tr>
-                                                <th scope="row"><?= $row['department_name'] ?></th>
-                                                <td><?= $row['TotalRecords'] ?></td>
-
-                                            </tr>
-                                    <?php
-                                        }
-                                    }
-
-                                    $conn->close();
-                                    ?>
-
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>
                     <!-- /.col -->
                 </div>
             </div>

@@ -66,7 +66,7 @@ session_start();
             $('#example').DataTable({
                 "order": [],
                 "columnDefs": [{
-                    "targets": [2, 3, 4, 5],
+                    "targets": [3, 4, 5],
                     "render": function(data, type, row, meta) {
                         if (type === 'filter') {
                             var api = new $.fn.dataTable.Api(meta.settings);
@@ -280,9 +280,10 @@ session_start();
                             <tr>
                                 <th class="border-top-0 th-lg">ID</th>
                                 <th class="border-top-0 th-lg">Title of Studies</th>
+                                <th class="border-top-0 th-lg">Status</th>
                                 <th class="border-top-0 th-lg">Department</th>
                                 <th class="border-top-0 th-lg">Type</th>
-                                <th class="border-top-0 th-lg">Status</th>
+
                                 <th class="border-top-0 th-lg">Remarks</th>
                                 <th class="border-top-0 th-lg">Date</th>
                                 <th class="border-top-0 th-lg">Action</th>
@@ -302,14 +303,15 @@ session_start();
                                     <tr class="fs-4" style="height:100px;">
                                         <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View No. <?= $row['record_id'] ?> </a></td>
                                         <td><?= $exp[0] ?></td>
-                                        <td><?= $row['department_name'] ?></td>
-                                        <td><?= $row['type'] ?></td>
                                         <td>
                                             <?php if ($row['status'] == "Available") { ?> <small class="d-block text-success fs-4"><?= $row['status'] ?></small>
                                             <?php } else { ?>
                                                 <small class="d-block text-danger fs-4"><?= $row['status'] ?></small>
                                             <?php } ?>
                                         </td>
+                                        <td><?= $row['department_name'] ?></td>
+                                        <td><?= $row['type'] ?></td>
+
 
                                         <?php
                                         if ($row['recordBookStatus'] == "Good Condition") { ?>
