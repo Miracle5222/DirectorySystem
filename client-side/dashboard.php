@@ -26,6 +26,42 @@ session_start();
 
 
 <body>
+
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                "order": [],
+                "columnDefs": [{
+                    "targets": [2, 3, 5],
+                    "render": function(data, type, row, meta) {
+                        if (type === 'filter') {
+                            var api = new $.fn.dataTable.Api(meta.settings);
+                            var column = api.column(meta.col);
+                            var select = $('<select><option value=""></option></select>')
+                                .appendTo($(column.header()).empty())
+                                .on('change', function() {
+                                    column.search($(this).val()).draw();
+                                });
+                            column.data().unique().sort().each(function(d, j) {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+                            });
+                        }
+                        if (type === 'display') {
+                            if (meta.col === 4) {
+                                if (data === 'Available') {
+                                    return '<span class="text-success">' + data + '</span>';
+                                } else if (data === 'Not Available') {
+                                    return '<span class="text-danger">' + data + '</span>';
+                                }
+                            }
+                            return data;
+                        }
+                        return data;
+                    }
+                }]
+            });
+        });
+    </script>
     <div class="w-100  bg-success ">
         <div class="container px-0">
             <nav class="navbar navbar-expand-lg   navbar-light">
@@ -237,6 +273,7 @@ session_start();
                         <th class="border-top-0 th-lg">Department</th>
                         <th class="border-top-0 th-lg">Type</th>
                         <th class="border-top-0 th-lg">Status</th>
+                        <th class="border-top-0 th-lg">Remarks</th>
                         <th class="border-top-0 th-lg">Date</th>
                         <th class="border-top-0 th-lg">Request</th>
 
@@ -245,7 +282,7 @@ session_start();
                 <tbody>
 
                     <?php
-                    $sql = " SELECT * FROM record_tbl where status='Available'";
+                    $sql = "SELECT record_tbl.`record_id` ,record_tbl.`fileName`,record_tbl.`department_name`,record_tbl.`type`,record_tbl.`status`, record_tbl.`recordBookStatus`,record_tbl.`date` FROM record_tbl LEFT JOIN return_tbl ON record_tbl.`record_id` = return_tbl.`record_id`";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
@@ -259,15 +296,22 @@ session_start();
                                 <td class="text-dark fs-6"><?= $row['department_name'] ?></td>
                                 <td class="text-dark fs-6"><?= $row['type'] ?></td>
                                 <td>
-                                    <?php if ($row['status'] == "Available") { ?> <small class="d-block text-success fs-6"><?= $row['status'] ?></small>
+                                    <?php if ($row['status'] == "Available") { ?> <small class="d-block text-success fs-4"><?= $row['status'] ?></small>
                                     <?php } else { ?>
-                                        <small class="d-block text-danger fs-6"><?= $row['status'] ?></small>
+                                        <small class="d-block text-danger fs-4"><?= $row['status'] ?></small>
                                     <?php } ?>
                                 </td>
+                                <?php
+                                if ($row['recordBookStatus'] == "Good Condition") { ?>
+                                    <td class="text-success">Good Condition</td>
+                                <?php   } else {    ?>
+                                    <td class="text-warning"><?= $row['recordBookStatus'] ?></td>
+                                <?php  }
+                                ?>
 
                                 <td class="text-dark fs-6"><?= $row['date'] ?></td>
                                 <!-- <td class="text-dark fs-6"> <a class="btn btn-success d-flex" data-toggle="modal" data-target="#myModal">Request Visit</a></td> -->
-                                <td class="text-dark fs-6"> <a href="dashboard.php?recordID=<?= $row['record_id'] ?>" class="btn btn-success d-flex" data-toggle="modal" data-target="#myModal">Request Visit</a></td>
+                                <td class="text-dark fs-6 d-flex justify-content-between    "><a href="dashboard.php?recordID=<?= $row['record_id'] ?>" class="btn btn-info mr-2 d-flex" data-toggle="modal" data-target="#myModal">Borrowed Request</a> <a href="dashboard.php?recordID=<?= $row['record_id'] ?>" class="btn btn-success d-flex" data-toggle="modal" data-target="#myModal">Request Visit</a></td>
                             </tr>
                     <?php
                         }
@@ -279,12 +323,14 @@ session_start();
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Office</th>
-                        <th>Age</th>
-                        <th>Start date</th>
-                        <th>Salary</th>
+                        <th class="border-top-0 th-lg">ID</th>
+                        <th class="border-top-0 th-lg">Title of Studies</th>
+                        <th class="border-top-0 th-lg">Department</th>
+                        <th class="border-top-0 th-lg">Type</th>
+                        <th class="border-top-0 th-lg">Status</th>
+                        <th class="border-top-0 th-lg">Remarks</th>
+                        <th class="border-top-0 th-lg">Date</th>
+                        <th class="border-top-0 th-lg">Request</th>
                     </tr>
                 </tfoot>
             </table>

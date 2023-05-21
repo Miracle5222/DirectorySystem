@@ -155,10 +155,7 @@ session_start();
 
                         </div>
 
-                        <div class="d-flex justify-content-between align-items-center">
 
-                            <a href="#!" class="text-body text-center">Forgot password?</a>
-                        </div>
 
 
 

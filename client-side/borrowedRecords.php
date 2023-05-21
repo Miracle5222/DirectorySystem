@@ -70,6 +70,76 @@ session_start();
     </div>
 
     <div class="container my-4 ">
+        <div class="row">
+            <div class="container">
+                <div class="bg-light p-4">
+                    <h1>Borrowed Request</h1>
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Record ID</th>
+                                <th scope="col">Retured Date</th>
+                                <th scope="col">Date Borrowed</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Return</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+
+                            $sql = "SELECT * from borrowed_tbl where schoolId = '$_SESSION[school_id]'";
+                            $result = $conn->query($sql);
+
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                            ?>
+                                    <tr>
+                                        <th scope="row"><?= $row['borrowed_id'] ?></th>
+                                        <td><?= $row['record_id'] ?></td>
+                                        <td><?= $row['return_date'] ?></td>
+                                        <td><?= $row['date_today'] ?></td>
+
+                                        <?php
+                                        if ($row['status'] === 'Active') { ?>
+                                            <td class="text-success"><?= $row['status'] ?></td>
+                                        <?php } else if ($row['status'] === 'Pending...') { ?>
+                                            <td class="text-info"><?= $row['status'] ?></td>
+                                        <?php    } else { ?>
+                                            <td class="text-warning"><?= $row['status'] ?></td>
+                                        <?php        }
+                                        ?>
+
+                                        <td>
+                                            <?php
+                                            if ($row['status'] === 'Pending...') {    ?>
+                                                <span class="text-success">Proccess..</span>
+                                            <?php  } else { ?>
+                                                <a href="./returndData.php?borrowed_id=<?= $row['borrowed_id'] ?>">Return Record</a>
+                                            <?php
+                                            }
+                                            ?>
+
+                                            <!-- <form>
+                                                <input type="text" id="borrowed_id" value='<?= $row['borrowed_id'] ?>' hidden name="recordid">
+
+                                                <button class="btn btn-primary" onclick="submitData()">Return Record</button>
+                                            </form> -->
+                                        </td>
+                                        <!-- <td><i class="fas fa-edit"></i></td> -->
+                                    </tr>
+                            <?php
+                                }
+                            }
+                            ?>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="container">

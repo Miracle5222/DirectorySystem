@@ -329,14 +329,9 @@ session_start();
                                             <label class="col-md-12 p-0">Record Status</label>
 
                                             <select class="form-select" aria-label="Default select example" required name="bookStatus">
-                                                <option selected value="<?= $row['bookStatus']  ?>">Select Record Status:</option>
+                                                <option selected value="<?= $row['bookStatus']  ?>">Select Record Status: <?= $row['bookStatus']  ?></option>
                                                 <option value="Good Condition">Good Condition</option>
-                                                <option value="Lack of Pages">Lack of Pages</option>
-                                                <option value="Torn or Damaged Pages">Torn or Damaged Pages</option>
-                                                <option value="Bent or Folded Pages">Bent or Folded Pages</option>
-                                                <option value="Stains or Spills">Stains or Spills</option>
-                                                <option value="Cover Damage">Cover Damage</option>
-                                                <option value="Dust or Dirt">Dust or Dirt</option>
+                                                <option value="Damage">Damage</option>
                                                 <option value="Lost">Lost</option>
 
                                             </select>
@@ -360,43 +355,7 @@ session_start();
                             </form>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-12 col-sm-12">
-                        <div class="card white-box py-0">
 
-
-                            <table class="table p-2">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Departments</th>
-                                        <th scope="col">Total Records</th>
-
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <?php
-                                    $sql = " SELECT COUNT(department_name) AS TotalRecords,department_name  FROM record_tbl GROUP BY department_name";
-                                    $result = $conn->query($sql);
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                    ?>
-                                            <tr>
-                                                <th scope="row"><?= $row['department_name'] ?></th>
-                                                <td><?= $row['TotalRecords'] ?></td>
-
-                                            </tr>
-                                    <?php
-                                        }
-                                    }
-
-                                    $conn->close();
-                                    ?>
-
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>
                     <!-- /.col -->
                 </div>
             </div>

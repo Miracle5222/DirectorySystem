@@ -6,7 +6,7 @@ session_start();
 } ?>
 <?php include "./query.php" ?>
 <?php include "./connection/config.php" ?>
-<?php include "./sendText.php" ?>
+ <?php include "./sendText.php" ?> 
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -42,7 +42,7 @@ session_start();
 
   <?php
   // Set the time interval (in seconds) after which the page should be reloaded
-  $reloadInterval = 86400; // 24 hours
+  $reloadInterval = 43200; // 12 hours
   // $reloadInterval = 3; // 3 seconds
   // Get the current page URL
   $pageURL = $_SERVER['REQUEST_URI'];

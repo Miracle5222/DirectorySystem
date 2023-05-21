@@ -373,12 +373,8 @@ session_start();
 
                                     <select class="form-select" aria-label="Default select example" required name="bookStatus">
                                         <option selected>Select Record Status:</option>
-                                        <option value="Lack of Pages">Lack of Pages</option>
-                                        <option value="Torn or Damaged Pages">Torn or Damaged Pages</option>
-                                        <option value="Bent or Folded Pages">Bent or Folded Pages</option>
-                                        <option value="Stains or Spills">Stains or Spills</option>
-                                        <option value="Cover Damage">Cover Damage</option>
-                                        <option value="Dust or Dirt">Dust or Dirt</option>
+                                        <option value="Good Condition">Good Condition</option>
+                                        <option value="Damage">Damage</option>
                                         <option value="Lost">Lost</option>
 
                                     </select>

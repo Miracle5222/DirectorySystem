@@ -239,6 +239,7 @@ session_start();
                                     <th class="border-top-0 th-lg">Type</th>
                                     <th class="border-top-0 th-lg">Status</th>
                                     <th class="border-top-0 th-lg">Remarks</th>
+                                    <th class="border-top-0 th-lg">Penalty</th>
                                     <th class="border-top-0 th-lg">Date</th>
                                     <th class="border-top-0 th-lg">Edit</th>
                                 </tr>
@@ -246,7 +247,7 @@ session_start();
                             <tbody>
                                 <?php include "./connection/config.php" ?>
                                 <?php
-                                $sql = "SELECT record_tbl.`record_id` ,record_tbl.`fileName`,record_tbl.`department_name`,record_tbl.`type`,record_tbl.`status`, record_tbl.`recordBookStatus`,record_tbl.`date` FROM record_tbl inner JOIN return_tbl ON record_tbl.`record_id` = return_tbl.`record_id`";
+                                $sql = "SELECT record_tbl.`record_id` ,record_tbl.`fileName`, return_tbl.penalty,record_tbl.`department_name`,record_tbl.`type`,record_tbl.`status`, record_tbl.`recordBookStatus`,record_tbl.`date` FROM record_tbl inner JOIN return_tbl ON record_tbl.`record_id` = return_tbl.`record_id`";
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
@@ -273,6 +274,7 @@ session_start();
                                                 <td class="text-warning"><?= $row['recordBookStatus'] ?></td>
                                             <?php  }
                                             ?>
+                                            <td><?= $row['penalty'] ?></td>
                                             <td><?= $row['date'] ?></td>
                                             <td>
 
@@ -281,9 +283,9 @@ session_start();
                                                     <a href="./editRecords.php?id=<?= $row['record_id'] ?>" class="btn btn-info text-light mx-2">Edit</a>
 
 
-                                                    <?php if ($_SESSION['admin_type'] === "1") { ?>
+                                                    <!-- <?php if ($_SESSION['admin_type'] === "1") { ?>
                                                         <a onClick="return confirm('are you sure you want to delete this file?')" href="./process/delete.php?id=<?= $row['record_id'] ?>&file=<?= $row['fileName'] ?>" class="btn btn-danger text-light">Delete</a>
-                                                    <?php } ?>
+                                                    <?php } ?> -->
                                                 </div>
                                             </td>
                                         </tr>
@@ -303,6 +305,7 @@ session_start();
                                     <th class="border-top-0 th-lg">Type</th>
                                     <th class="border-top-0 th-lg">Status</th>
                                     <th class="border-top-0 th-lg">Remarks</th>
+                                    <th class="border-top-0 th-lg">Penalty</th>
                                     <th class="border-top-0 th-lg">Date</th>
                                     <th class="border-top-0 th-lg">Edit</th>
                                 </tr>
