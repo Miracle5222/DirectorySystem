@@ -67,7 +67,7 @@ if (isset($_GET['borrowed_id'])) {
                     "update borrowed_tbl set status = 'Pending...' where record_id = '$record_id'";
                 $dquery = mysqli_query($conn, $updateBorrowed);
 
-                header("Location:visitRequest.php");
+                header("Location: borrowedRecords.php");
             } else {
                 echo "failed";
             }

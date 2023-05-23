@@ -287,7 +287,7 @@ session_start();
 
                 ?>
                 <div class="row">
-                    <div class="col-sm-5">
+                    <div class="col-sm-4">
                         <div class="white-box">
                             <form class="form-horizontal form-material" method="POST" enctype="multipart/form-data">
                                 <!-- $_SESSION['studentId'] -->
@@ -356,6 +356,133 @@ session_start();
                                     </div>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="white-box">
+                            <h3 class="box-title" id="hint">Borrowed Request</h3>
+                            <div class="row d-flex justify-content-start align-items-center ">
+                                <!-- <div class="col-md-3 ">
+
+                  <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                    <option>Sort By</option>
+                    <option selected value="visit_date">Visit Date</option>
+                    <option value="br_id">Request ID</option>
+                    <option value="record_id">Record ID</option>
+                  </select>
+
+                </div> -->
+                                <?php
+                                if (isset($_GET['id'])) {
+                                    $updatequery =
+                                        "update borrowed_tbl set status = 'Active' where borrowed_id = '$_GET[id]'";
+
+                                    // Execute insert query
+                                    $uquery = mysqli_query($conn, $updatequery);
+
+
+                                    $ipdatequery =
+                                        "update record_tbl set status = 'Not Available' where record_id = '$_GET[recordId]'";
+
+
+
+                                    // Execute insert query
+                                    $iquery = mysqli_query($conn, $ipdatequery);
+                                    if ($uquery && $iquery) {
+                                ?>
+
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            Successfully added to borrowed Record
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div><?php
+
+                                            } else { ?>
+
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <strong>Failed!</strong> Try Again!
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                <?php
+
+                                            }
+                                        }
+                                ?>
+
+
+                                <div class="table-responsive">
+
+                                    <?php
+                                    $q = isset($_GET['q']);
+
+
+                                    $sql = "SELECT * from borrowed_tbl where status = 'Pending...'";
+                                    $result = $conn->query($sql);
+
+                                    ?>
+                                    <table class="table text-nowrap">
+                                        <thead>
+
+                                            <tr>
+                                                <th class="border-top-0">Request ID</th>
+
+                                                <th class="border-top-0">Student ID</th>
+                                                <th class="border-top-0">Date</th>
+                                                <th class="border-top-0">Record </th>
+                                                <th class="border-top-0">Borrow Status</th>
+
+                                                <?php if ($_SESSION['admin_type'] === "1") { ?>
+                                                    <th class="border-top-0">Request Status</th>
+                                                <?php } ?>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody id="sort">
+                                            <?php
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+
+                                            ?> <tr>
+                                                        <td><?= $row['borrowed_id'] ?></td>
+
+                                                        <td><?= $row['schoolId'] ?></td>
+                                                        <td><?= $row['date_today'] ?></td>
+                                                        <td><a href="./viewpdf.php?id=<?= $row['status'] ?>" target="_blank" type="button" class="btn btn-primary">View No. <?= $row['record_id'] ?> </a></td>
+                                                        <td>
+                                                            <?php if ($row['status'] == "Pending...") { ?>
+                                                                <small class="d-block text-info fs-4"><?= $row['status'] ?></small>
+                                                            <?php
+                                                            } else { ?>
+                                                                <small class="d-block text-danger fs-4"><?= $row['status'] ?></small>
+                                                            <?php
+
+
+
+                                                            } ?>
+
+                                                        </td>
+                                                        <?php if ($_SESSION['admin_type'] === "1") { ?>
+                                                            <td>
+
+                                                                <a href="./borrowed.php?id=<?= $row['borrowed_id'] ?>&recordId=<?= $row['record_id'] ?>" class="btn btn-success text-light">Grant</a>
+                                                                <a href="./process/deleteRequest.php?id=<?= $row['borrowed_id'] ?>" class="btn btn-danger text-light">Decline</a>
+                                                            </td>
+                                                        <?php } ?>
+
+
+                                                    </tr>
+
+                                            <?php
+                                                }
+                                            }
+
+                                            ?>
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

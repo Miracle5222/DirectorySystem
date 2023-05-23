@@ -6,7 +6,7 @@ strcmp($script_tz, ini_get('date.timezone'));
 
 
 $dateToday = date('Y-m-d', strtotime('+1 days'));
-$sql3 = "SELECT borrowed_tbl.borrowed_id, borrowed_tbl.`return_date`, student_tbl.`number` FROM borrowed_tbl INNER JOIN student_tbl ON borrowed_tbl.`schoolId` = student_tbl.`schoolId`  WHERE borrowed_tbl.`smsStatus` = 0";
+$sql3 = "SELECT borrowed_tbl.borrowed_id, borrowed_tbl.`return_date`, student_tbl.`number` FROM borrowed_tbl INNER JOIN student_tbl ON borrowed_tbl.`schoolId` = student_tbl.`schoolId`  WHERE borrowed_tbl.`smsStatus` = 0 and borrowed_tbl.`status` = 'Active' ";
 $result3 = $conn->query($sql3);
 
 

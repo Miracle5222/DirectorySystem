@@ -112,24 +112,100 @@ session_start();
 
 
     <div class="container  ">
-        <div class="mt-4"> <?php
+        <div class="mt-4">
 
-                            if (isset($_POST['submit'])) {
-                                // $id = $_SESSION['staff_id'];
+            <?php
 
-                                $purpose = $_POST['purpose'];
-                                $student_id = $_POST['student_id'];
-                                $visit_date = $_POST['visit_date'];
-                                $record_id = $_POST['record_id'];
-                                $borrowStatus = "pending";
+            if (isset($_POST['submitBorrowed'])) {
+                $record_id = $_POST['record_id'];
+
+                $student_id = $_POST['student_id'];
+                $date_today = $_POST['date_today'];
+                $activeStatus = "Pending...";
+                $smsStatus = 0;
+                // echo $date_today;
+
+                $date = DateTime::createFromFormat('Y-m-d', $date_today);
+                $date->modify('+3 days');
+                $return_date = $date->format('Y-m-d');
 
 
 
-                                $addquerry = "insert into borrow_tbl(purpose,schoolId,visit_date,borrow_status,record_id) values ('$purpose','$student_id','$visit_date','$borrowStatus','$record_id ')";
-                                $iquery = mysqli_query($conn, $addquerry);
+                $Recordquery = " select * from borrowed_tbl where record_id = '$record_id'";
+                $rquery = mysqli_query($conn, $Recordquery);
 
 
-                                if ($iquery) { ?>
+                if (!$rquery->num_rows > 0) {
+                    $insertquery =
+                        "INSERT INTO borrowed_tbl(record_id,return_date,schoolId,date_today,status,smsStatus) VALUES(' $record_id ','$return_date','$student_id','$date_today','$activeStatus','$smsStatus')";
+
+                    // Execute insert query
+                    $iquery = mysqli_query($conn, $insertquery);
+                    if ($iquery) {
+
+
+                        if ($iquery) { ?>
+                            <?php
+
+                            ?>
+
+
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Success!</strong> your request is being process...
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                        <?php
+
+                        } else {
+
+                        ?>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong> Failed request borrowed</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                    <?php
+
+                        }
+                    }
+                } else { ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Failed!</strong> Record Not Available
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+            <?php }
+            }
+
+
+
+
+            ?>
+
+
+
+
+            <?php
+
+            if (isset($_POST['submit'])) {
+                // $id = $_SESSION['staff_id'];
+
+                $purpose = $_POST['purpose'];
+                $student_id = $_POST['student_id'];
+                $visit_date = $_POST['visit_date'];
+                $record_id = $_POST['record_id'];
+                $borrowStatus = "pending";
+
+
+
+                $addquerry = "insert into borrow_tbl(purpose,schoolId,visit_date,borrow_status,record_id) values ('$purpose','$student_id','$visit_date','$borrowStatus','$record_id ')";
+                $iquery = mysqli_query($conn, $addquerry);
+
+
+                if ($iquery) { ?>
 
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <strong>Success!</strong> your request is being process...
@@ -146,8 +222,8 @@ session_start();
                         </button>
                     </div>
             <?php
-                                }
-                            }
+                }
+            }
 
             ?>
         </div>
@@ -204,66 +280,17 @@ session_start();
     <div class="container my-4  bg-light ">
 
         <div class="row mx-2 p-4">
+            <div id="showModal">
 
-
-            <div class="modal fade" id="myModal">
-
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Visit Request</h5>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="white-box">
-                                <form class="form-horizontal form-material" method="POST" enctype="multipart/form-data">
-                                    <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Record Type</label>
-                                        <input type="text" placeholder="Purpose..." name="purpose" class="form-control" />
-                                    </div>
-                                    <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Student ID</label>
-                                        <input type="text" placeholder="2023-13612" value="<?= $_SESSION['school_id'] ?>" name="student_id" class="form-control" />
-                                    </div>
-                                    <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Visit Date</label>
-                                        <div class="col-md-12 border-bottom p-0">
-                                            <input type="date" class="form-control p-0 border-0" name="visit_date" required name="date" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Record ID</label>
-                                        <!-- <input type="text" placeholder="326" name="record_id" class="form-control" /> -->
-                                        <select class="custom-select" aria-label="Default select example" required name="record_id">
-                                            <?php
-                                            $sql = " SELECT * from record_tbl";
-                                            $result = $conn->query($sql);
-                                            if ($result->num_rows > 0) {
-                                                while ($row = $result->fetch_assoc()) {
-                                            ?>
-                                                    <option selected value="<?= $row['record_id'] ?>"><?= $row['record_id'] ?></option>
-
-                                                <?php
-                                                }
-                                            } else {  ?>
-                                                <option>Not Available</option>
-                                            <?php  }
-
-
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <div class="form-group mb-4">
-                                        <div class="col-sm-12">
-                                            <input type="submit" name="submit" required class="btn btn-success" />
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
+
+            <div id="showModal2">
+
+            </div>
+
+
+
+
             <table id="example" class="table table-stripe  bg-light" style="width:100%">
                 <thead>
 
@@ -282,7 +309,7 @@ session_start();
                 <tbody>
 
                     <?php
-                    $sql = "SELECT record_tbl.`record_id` ,record_tbl.`fileName`,record_tbl.`department_name`,record_tbl.`type`,record_tbl.`status`, record_tbl.`recordBookStatus`,record_tbl.`date` FROM record_tbl LEFT JOIN return_tbl ON record_tbl.`record_id` = return_tbl.`record_id`";
+                    $sql = "SELECT record_tbl.`record_id` ,record_tbl.`fileName`,record_tbl.`department_name`,record_tbl.`type`,record_tbl.`status`, record_tbl.`recordBookStatus`,record_tbl.`date` FROM record_tbl LEFT JOIN return_tbl ON record_tbl.`record_id` = return_tbl.`record_id` group by  record_tbl.`record_id`";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
@@ -311,7 +338,12 @@ session_start();
 
                                 <td class="text-dark fs-6"><?= $row['date'] ?></td>
                                 <!-- <td class="text-dark fs-6"> <a class="btn btn-success d-flex" data-toggle="modal" data-target="#myModal">Request Visit</a></td> -->
-                                <td class="text-dark fs-6 d-flex justify-content-between    "><a href="dashboard.php?recordID=<?= $row['record_id'] ?>" class="btn btn-info mr-2 d-flex" data-toggle="modal" data-target="#myModal">Borrowed Request</a> <a href="dashboard.php?recordID=<?= $row['record_id'] ?>" class="btn btn-success d-flex" data-toggle="modal" data-target="#myModal">Request Visit</a></td>
+                                <td class="text-dark fs-6 d-flex justify-content-between    ">
+                                    <button class="btn btn-info mr-2 d-flex" onclick="showHint(this.value)" value="<?= $row['record_id'] ?> " data-toggle="modal" data-target="#myModals">Borrowed Request</button>
+                                    <button class="btn btn-success mr-2 d-flex" onclick="visitRequest(this.value)" value="<?= $row['record_id'] ?> " data-toggle="modal" data-target="#myModal">Visit Request</button>
+                                    <!-- <a href="dashboard.php?recordID=<?= $row['record_id'] ?>" class="btn btn-info mr-2 d-flex" data-toggle="modal" data-target="#myModal">Borrowed Request</a> -->
+                                    <!-- <a href="dashboard.php?recordID=<?= $row['record_id'] ?>" class="btn btn-success d-flex" data-toggle="modal" data-target="#myModal">Request Visit</a> -->
+                                </td>
                             </tr>
                     <?php
                         }
@@ -338,7 +370,48 @@ session_start();
 
 
     </div>
+    <script>
+        function showHint(str) {
 
+            console.log(str);
+            if (str.length == 0) {
+                document.getElementById("txtHint").innerHTML = "";
+                return;
+            } else {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(this.responseText);
+                        document.getElementById("showModal").innerHTML = this.response;
+                        // document.getElementById("txtHint").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttp.open("GET", "borrowedRequest.php?id=" + str, true);
+                xmlhttp.send();
+            }
+        }
+
+        function visitRequest(str) {
+
+            console.log(str);
+            if (str.length == 0) {
+                document.getElementById("txtHint").innerHTML = "";
+                return;
+            } else {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(this.responseText);
+                        document.getElementById("showModal2").innerHTML = this.response;
+                        // document.getElementById("txtHint").innerHTML = this.responseText;
+                    }
+                };
+                xmlhttp.open("GET", "requestVisit.php?id=" + str, true);
+                xmlhttp.send();
+            }
+        }
+    </script>
+    </script>
 
 
 
@@ -348,7 +421,6 @@ session_start();
             $('#example').DataTable();
         });
     </script>
-
 
 
 
