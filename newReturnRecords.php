@@ -223,8 +223,10 @@ session_start();
             </div>
             <div class="container-fluid m-6   bg-light">
 
-                <div class="row">
-
+                <div class="row mb-4">
+                    <div>
+                        <a href="printReturn.php" class="btn btn-outline-primary">Print Return Records</a>
+                    </div>
                 </div>
                 <div class="row mx-2">
 

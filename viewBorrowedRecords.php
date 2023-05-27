@@ -258,7 +258,11 @@ session_start();
                 <!-- /.col-lg-12 -->
             </div>
             <div class="container-fluid m-6   bg-light">
-
+                <div class="row mb-4">
+                    <div>
+                        <a href="printBorrow.php" class="btn btn-outline-primary">Print Borrowed Records</a>
+                    </div>
+                </div>
                 <div class="row mx-2">
                     <table id="example" class="table table-responsive" style="width:100%">
                         <thead>

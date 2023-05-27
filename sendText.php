@@ -40,7 +40,7 @@ if ($result3->num_rows > 0) {
             ]
         }",
         CURLOPT_HTTPHEADER => [
-          "Authorization: Basic ZG9uZ2hpbmJhbjA5MjhAZ21haWwuY29tOlB1cnBsZWJveDUyMjJA",
+          "Authorization: Basic bWFyeWdyYWNlLmJ1YWdhc0BubXNjLmVkdS5waDpQdXJwbGVib3g1MjIyQA==",
           "Content-Type: application/json",
           "X-RapidAPI-Host: clicksend.p.rapidapi.com",
           "X-RapidAPI-Key: 21fccc639fmsh043c6176002db99p112a8ajsnf8f0d6718ca8",
