@@ -64,6 +64,7 @@ session_start();
                     <table style="width:100%">
                         <tr>
                             <th class="border-top-0 th-lg">ID</th>
+                            <th class="border-top-0 th-lg">Student ID</th>
                             <th class="border-top-0 th-lg">Title of Studies</th>
                             <th class="border-top-0 th-lg">Status</th>
                             <th class="border-top-0 th-lg">Department</th>
@@ -76,7 +77,7 @@ session_start();
                         </tr>
                         <?php include "./connection/config.php" ?>
                         <?php
-                        $sql = "SELECT record_tbl.`record_id` ,record_tbl.`fileName`,record_tbl.`department_name`,record_tbl.`type`,record_tbl.`status`, record_tbl.`recordBookStatus`,record_tbl.`date` FROM record_tbl INNER JOIN borrowed_tbl ON borrowed_tbl.`record_id` = record_tbl.`record_id`";
+                        $sql = "SELECT student_tbl.`schoolId`, record_tbl.`record_id` ,record_tbl.`fileName`,record_tbl.`department_name`,record_tbl.`type`,record_tbl.`status`, record_tbl.`recordBookStatus`,record_tbl.`date` FROM record_tbl INNER JOIN borrowed_tbl ON borrowed_tbl.`record_id` = record_tbl.`record_id` INNER JOIN student_tbl ON student_tbl.`schoolId` = borrowed_tbl.`schoolId`";
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
@@ -87,6 +88,7 @@ session_start();
                                 <tr class="fs-4" style="height:100px;">
                                     <td> <?= $row['record_id'] ?></td>
                                     <!-- <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View No. <?= $row['record_id'] ?> </a></td> -->
+                                    <td><?= $row['schoolId'] ?></td>
                                     <td><?= $exp[0] ?></td>
                                     <td>
                                         <?php if ($row['status'] == "Available") { ?> <small class="d-block text-success fs-4"><?= $row['status'] ?></small>

@@ -236,7 +236,9 @@ session_start();
 
                                 <tr>
                                     <th class="border-top-0 th-lg">ID</th>
+                                    <th class="border-top-0 th-lg">Student ID</th>
                                     <th class="border-top-0 th-lg">Title of Studies</th>
+
                                     <th class="border-top-0 th-lg">Department</th>
                                     <th class="border-top-0 th-lg">Type</th>
                                     <th class="border-top-0 th-lg">Status</th>
@@ -249,7 +251,8 @@ session_start();
                             <tbody>
                                 <?php include "./connection/config.php" ?>
                                 <?php
-                                $sql = "SELECT record_tbl.`record_id` ,record_tbl.`fileName`, return_tbl.penalty,record_tbl.`department_name`,record_tbl.`type`,record_tbl.`status`, record_tbl.`recordBookStatus`,record_tbl.`date` FROM record_tbl inner JOIN return_tbl ON record_tbl.`record_id` = return_tbl.`record_id`";
+                                $sql = "
+                                SELECT student_tbl.`schoolId`, record_tbl.`record_id` ,record_tbl.`fileName`, return_tbl.penalty,record_tbl.`department_name`,record_tbl.`type`,record_tbl.`status`, record_tbl.`recordBookStatus`,record_tbl.`date` FROM record_tbl INNER JOIN return_tbl ON record_tbl.`record_id` = return_tbl.`record_id` INNER JOIN student_tbl ON student_tbl.`schoolId` = return_tbl.`schoolId`";
                                 $result = $conn->query($sql);
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
@@ -259,6 +262,7 @@ session_start();
 
                                         <tr class="fs-4" style="height:100px;">
                                             <td><a href="./viewpdf.php?id=<?= $row['record_id'] ?>" target="_blank" type="button" class="btn btn-primary">View No. <?= $row['record_id'] ?> </a></td>
+                                            <td><?= $row['schoolId'] ?></td>
                                             <td><?= $exp[0] ?></td>
                                             <td><?= $row['department_name'] ?></td>
                                             <td><?= $row['type'] ?></td>
